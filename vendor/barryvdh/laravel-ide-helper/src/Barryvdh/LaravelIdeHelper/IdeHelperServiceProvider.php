@@ -61,5 +61,4 @@ class IdeHelperServiceProvider extends ServiceProvider {
 	{
         return array('command.ide-helper.generate', 'command.ide-helper.models');
 	}
-
 }
