@@ -1,5 +1,19 @@
 <?php
 
+$sqlsrver = array(
+	'server' 	=> 'b6ofy60lsl.database.windows.net:1433',
+	'user'		=> 'ccis-admin',
+	'pwd'		=> 'x6dKKS#JP&e3',
+	'db'		=> 'informher_db'
+);
+
+$mysql = array(
+	'server' 	=> 'db-progguild.cloudapp.net:12345',
+	'user'		=> 'informher',
+	'pwd'		=> 'db_informher',
+	'db'		=> 'informher_db'
+);
+
 return array(
 
 	/*
@@ -54,10 +68,10 @@ return array(
 
 		'mysql' => array(
 			'driver'    => 'mysql',
-			'host'      => 'localhost',
-			'database'  => 'database',
-			'username'  => 'root',
-			'password'  => '',
+			'host'      => $mysql['server'],
+			'database'  => $mysql['db'],
+			'username'  => $mysql['user'],
+			'password'  => $mysql['pwd'],
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',
@@ -76,10 +90,10 @@ return array(
 
 		'sqlsrv' => array(
 			'driver'   => 'sqlsrv',
-			'host'     => 'localhost',
-			'database' => 'database',
-			'username' => 'root',
-			'password' => '',
+			'host'     => $sqlsrver['server'],
+			'database' => $sqlsrver['db'],
+			'username' => $sqlsrver['user'],
+			'password' => $sqlsrver['pwd'],
 			'prefix'   => '',
 		),
 

@@ -19,3 +19,11 @@ Route::get('/', function()
 Route::get('index', function() {
 	return View::make('home');
 });
+
+Route::get('posts', function() {
+	return 'TODO POSTS';
+});
+
+Route::get('posts/{name}', function($name) {
+	return "TODO POSTS on item # {$name}.";
+});
