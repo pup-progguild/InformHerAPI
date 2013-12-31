@@ -273,7 +273,7 @@ class ModelsCommand extends Command {
                        list($relation, $returnModel, $rest) = $parts;
                        $returnModel = "\\".ltrim($returnModel, "\\");
                        $relation = trim($relation, ' (');
-    
+
                        if($relation === "belongsTo" or $relation === 'hasOne'){
                            //Single model is returned
                            $this->setProperty($method, $returnModel, true, null);
@@ -438,5 +438,4 @@ class ModelsCommand extends Command {
         }
         return $paramsWithDefault;
     }
-
 }
