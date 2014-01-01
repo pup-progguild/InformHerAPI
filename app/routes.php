@@ -27,3 +27,11 @@ Route::get('posts', function() {
 Route::get('posts/{name}', function($name) {
 	return "TODO POSTS on item # {$name}.";
 });
+
+Route::get('seed', function() {
+	$post = new Post;
+	$post->type = 'ask';
+	$post->title = 'Is it right to ask me anything without saying anything at all? #ask';
+	$post->content = 'To make your document look professionally produced, Word provides header, footer, cover page, and text box designs that complement each other. For example, you can add a matching cover page, header, and sidebar. Click Insert and then choose the elements you want from the different galleries.';
+	$post->save();
+});

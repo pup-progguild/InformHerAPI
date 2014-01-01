@@ -1,19 +1,5 @@
 <?php
 
-$sqlsrver = array(
-	'server' 	=> 'b6ofy60lsl.database.windows.net:1433',
-	'user'		=> 'ccis-admin',
-	'pwd'		=> 'x6dKKS#JP&e3',
-	'db'		=> 'informher_db'
-);
-
-$mysql = array(
-	'server' 	=> 'db-progguild.cloudapp.net:12345',
-	'user'		=> 'informher',
-	'pwd'		=> 'db_informher',
-	'db'		=> 'informher_db'
-);
-
 return array(
 
 	/*
@@ -40,7 +26,7 @@ return array(
 	|
 	*/
 
-	'default' => 'mysql',
+	'default' => 'azure_mysql',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -66,37 +52,28 @@ return array(
 			'prefix'   => '',
 		),
 
-		'mysql' => array(
+		'azure_mysql' => array(
 			'driver'    => 'mysql',
-			'host'      => $mysql['server'],
-			'database'  => $mysql['db'],
-			'username'  => $mysql['user'],
-			'password'  => $mysql['pwd'],
+			'host'      => 'db-progguild.cloudapp.net',
+			'port'      => '12345',
+			'database'  => 'informher_db',
+			'username'  => 'informher',
+			'password'  => 'db_informher',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',
 		),
 
-		'pgsql' => array(
-			'driver'   => 'pgsql',
-			'host'     => 'localhost',
-			'database' => 'database',
-			'username' => 'root',
-			'password' => '',
-			'charset'  => 'utf8',
-			'prefix'   => '',
-			'schema'   => 'public',
+		'local_mysql' => array(
+			'driver'    => 'mysql',
+			'host'      => 'localhost',
+			'database'  => 'informher_db',
+			'username'  => 'informher',
+			'password'  => 'db_informher',
+			'charset'   => 'utf8',
+			'collation' => 'utf8_unicode_ci',
+			'prefix'    => '',
 		),
-
-		'sqlsrv' => array(
-			'driver'   => 'sqlsrv',
-			'host'     => $sqlsrver['server'],
-			'database' => $sqlsrver['db'],
-			'username' => $sqlsrver['user'],
-			'password' => $sqlsrver['pwd'],
-			'prefix'   => '',
-		),
-
 	),
 
 	/*
