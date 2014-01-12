@@ -3,20 +3,18 @@
  * Created by PhpStorm.
  * 
  * User: hoshi~
- * Date: 1/2/14
- * Time: 1:41 AM
+ * Date: 1/13/14
+ * Time: 12:37 AM
  *
  * @property integer $id
- * @property string $type
- * @property string $title
- * @property string $content
+ * @property string $message
  * @property integer $user_id
+ * @property integer $post_id
+ * @property integer $comment_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property \Carbon\Carbon $deleted_at
  */ 
-class Post extends Eloquent {
-	public function posts() {
+class Comment extends Eloquent {
 
-	}
 }
