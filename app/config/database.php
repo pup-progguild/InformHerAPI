@@ -26,7 +26,7 @@ return array(
 	|
 	*/
 
-	'default' => 'local_mysql',
+	'default' => 'local_mysql', //TODO make this get values from getenv()
 
 	/*
 	|--------------------------------------------------------------------------

@@ -16,7 +16,5 @@
  * @property \Carbon\Carbon $deleted_at
  */ 
 class Post extends Eloquent {
-	public function posts() {
 
-	}
 }

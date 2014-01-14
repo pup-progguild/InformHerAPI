@@ -10,5 +10,5 @@
  * @property string $tagname
  */ 
 class Tag extends Eloquent {
-
+    protected $table = 'post_tags';
 }

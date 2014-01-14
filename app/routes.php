@@ -31,13 +31,7 @@ Route::get('posts/{name}', function($name) {
 });
 
 Route::post('user', function() {
-	$user = new User;
-	$user->username = Input::get('username');
-	$user->password = Hash::make(Input::get('password'));
-	$user->email = Input::get('email');
-	$user->save();
 
-	return Response::make('User created! Hurray!');
 });
 
 Route::get('seed', function() {
