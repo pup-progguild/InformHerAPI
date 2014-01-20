@@ -26,7 +26,7 @@ return array(
 	|
 	*/
 
-	'default' => 'local_mysql', //TODO make this get values from getenv()
+	'default' => 'mysql', //TODO make this get values from getenv()
 
 	/*
 	|--------------------------------------------------------------------------
@@ -52,28 +52,17 @@ return array(
 			'prefix'   => '',
 		),
 
-		'azure_mysql' => array(
-			'driver'    => 'mysql',
-			'host'      => 'db-progguild.cloudapp.net',
-			'port'      => '12345',
-			'database'  => 'informher_db',
-			'username'  => 'informher',
-			'password'  => 'db_informher',
-			'charset'   => 'utf8',
-			'collation' => 'utf8_unicode_ci',
-			'prefix'    => '',
-		),
-
-		'local_mysql' => array(
-			'driver'    => 'mysql',
-			'host'      => 'localhost',
-			'database'  => 'informher_db',
-			'username'  => 'informher',
-			'password'  => 'db_informher',
-			'charset'   => 'utf8',
-			'collation' => 'utf8_unicode_ci',
-			'prefix'    => '',
-		),
+		'mysql' => array(
+            'driver'    => 'mysql',
+            'host'      => getenv('DB_HOST'),
+            'port'      => getenv('DB_PORT'),
+            'database'  => getenv('DB_NAME'),
+            'username'  => getenv('DB_USERNAME'),
+            'password'  => getenv('DB_PASSWORD'),
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+        )
 	),
 
 	/*
