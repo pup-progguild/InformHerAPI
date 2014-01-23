@@ -1,5 +1,7 @@
 ## InformHer API
 
+[![Build Status](https://travis-ci.org/pup-progguild/InformHerAPI.png)](https://travis-ci.org/pup-progguild/InformHerAPI)
+
 This is the InformHer API for the InformHer app for mobile and web.
 
 ## Documentation
