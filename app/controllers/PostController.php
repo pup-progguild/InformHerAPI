@@ -13,9 +13,13 @@ class PostController extends BaseController {
 	 *
 	 * @return Response
 	 */
-	public function index()
-	{
-		//
+	public function index() {
+        $post = Post::whereNull('deleted_at')->get();
+        return Response::json(array(
+            'status'    =>  'POSTS_ALL_RETRIEVE_SUCCESSFUL',
+            'posts'     =>  $post->toArray()
+            ), 200
+        );
 	}
 
 	/**
@@ -29,11 +33,14 @@ class PostController extends BaseController {
         $post->title   = Input::get('title');
         $post->content = Input::get('content');
         $post->type    = Input::get('type');
-        $post->user_id = Input::get('user_id');
+        $post->user_id = Auth::user()->getAuthIdentifier();
 
         $post->save();
 
-        return Response::Make('POST_ADD_SUCCESSFUL');
+        return Response::json(array(
+           'status' => 'POST_ADD_SUCCESSFUL',
+           'posts'  => $post->toArray(), 200)
+        );
 	}
 
 	/**
@@ -47,14 +54,19 @@ class PostController extends BaseController {
 	}
 
 	/**
-	 * Display the specified resource.
+	 * Display the specified resource.  // FIXME empty array returned, but successful query.
 	 *
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
-	{
-		//
+	public function show($id) {
+		$post = Post::where('id', $id)->get();
+
+        return Response::json(array(
+            'status'    =>  'POST_SHOW_SUCCESSFUL',
+            'posts'     =>  $post->toArray()
+            ), 200
+        );
 	}
 
 	/**
@@ -74,7 +86,7 @@ class PostController extends BaseController {
 	 * @return Response
 	 */
 	public function update($id) {
-        $post = Post::findOrFail($id);
+        $post = Post::where('user_id', Auth::user()->getAuthIdentifier())->findOrFail($id);
 
         $post->title   = Input::get('title');
         $post->content = Input::get('content');
@@ -82,7 +94,11 @@ class PostController extends BaseController {
 
         $post->save();
 
-        return Response::Make('POST_UPDATE_SUCCESSFUL');
+        return Response::json(array(
+            'status'    => 'POST_UPDATE_SUCCESSFUL',
+            'posts'     =>  $post->toArray()
+            ), 200
+        );
 	}
 
 	/**
@@ -92,10 +108,14 @@ class PostController extends BaseController {
 	 * @return Response
 	 */
 	public function destroy($id) {
-        $post = Post::findOrFail($id);
+        $post = Post::where('user_id', Auth::user()->getAuthIdentifier())->findOrFail($id);
         $post->delete();
 
-        return Response::Make('POST_DELETE_SUCCESSFUL');
+        return Response::json(array(
+                'status' => 'POST_DELETE_SUCCESSFUL',
+                'posts'  => $post->toArray()
+            ), 200
+        );
 	}
 
     public function reply() {

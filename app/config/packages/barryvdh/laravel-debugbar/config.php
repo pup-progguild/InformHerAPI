@@ -11,7 +11,7 @@ return array(
   | Debugbar is enabled by default, when debug is set to true in app.php.
   |
   */
-  'enabled' => \Config::get('app.debug'),
+  'enabled' => Config::get('app.debug'),
 
   /*
    |--------------------------------------------------------------------------
@@ -55,7 +55,7 @@ return array(
        'db' => true,                // Show database (PDO) queries and bindings
        'views' => true,             // Views with their data
        'route' => true,             // Current route information
-       'laravel' => false,          // Laravel version and environment
+       'laravel' => true,          // Laravel version and environment
        'events' => false,           // All events fired
        'twig' => false,             // Twig, requires barryvdh/laravel-twigbridge
        'default_request'=> false,   // Regular or special Symfony request logger

@@ -1,25 +1,56 @@
 <?php
 
-class UserController extends \BaseController {
+class UserController extends BaseController {
 
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
-	public function index()
-	{
+	public function index() {
 		//
 	}
 
     public function login() {
-        $creds = Input::only('username', 'password');
+        $errors = new MessageBag();
 
-        if (Auth::attempt($creds)) {
-            return Redirect::intended('/');
+        if($old = Input::old("errors")) {
+            $errors = $old;
         }
 
-        return Redirect::to('UsersController@login');
+        $data = [
+            "errors" => $errors
+        ];
+
+        if(Input::server("REQUEST_METHOD") == "POST") {
+            $validator = Validator::make(Input::all(), [
+                "username" => "required",
+                "password" => "required"
+            ]);
+
+            if($validator->passes()) {
+                $creds = [
+                    "username"  =>  Input::get("username"),
+                    "password"  =>  Input::get("password")
+                ];
+
+                if(Auth::attempt($creds)) {
+                    return Redirect::intended("/");
+                }
+            }
+
+            $data["errors"] = new MessageBag([
+                "password"  => [
+                    "Username and/or password invalid."
+                ]
+            ]);
+
+            $data["username"] = Input::get("username");
+
+            return Redirect::to('UsersController@login')->withInput($data);
+        }
+
+        return View::make('UsersController@login');
     }
 
     public function logout() {

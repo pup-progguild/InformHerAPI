@@ -8,33 +8,32 @@
 
 class PostTableSeeder extends Seeder {
     public function run() {
-        DB::table('posts')->delete();
 
         Post::create(array(
             'type'      =>  'ask',
             'title'     =>  'Is it normal for women to submit to men? #ask',
-            'content'   =>  '',
+            'content'   =>  'To make your document look professionally produced, Word provides header, footer, cover page, and text box designs that complement each other. For example, you can add a matching cover page, header, and sidebar.',
             'user_id'   =>  '1',
         ));
 
         Post::create(array(
             'type'    => 'ask',
-            'title'   => '',
-            'content' => '',
+            'title'   => 'Is it alright to ask a question here? #ask',
+            'content' => 'To make your document look professionally produced, Word provides header, footer, cover page, and text box designs that complement each other. For example, you can add a matching cover page, header, and sidebar.',
             'user_id' => '2',
         ));
 
         Post::create(array(
             'type'    => 'ask',
-            'title'   => '',
-            'content' => '',
+            'title'   => 'I am a Doctor. Ask me anything #ask',
+            'content' => 'To make your document look professionally produced, Word provides header, footer, cover page, and text box designs that complement each other. For example, you can add a matching cover page, header, and sidebar.',
             'user_id' => '1',
         ));
 
         Post::create(array(
             'type'    => 'ask',
-            'title'   => '',
-            'content' => '',
+            'title'   => 'I am a Teacher. Ask me anything #ask',
+            'content' => 'To make your document look professionally produced, Word provides header, footer, cover page, and text box designs that complement each other. For example, you can add a matching cover page, header, and sidebar.',
             'user_id' => '2',
         ));
     }
