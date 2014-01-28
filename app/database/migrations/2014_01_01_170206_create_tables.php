@@ -82,9 +82,9 @@ class CreateTables extends Migration {
 		});
 
 		Schema::create('password_reminders', function($t) {
-			$table->string('email')->index();
-			$table->string('token')->index();
-			$table->timestamp('created_at');
+			$t->string('email')->index();
+			$t->string('token')->index();
+			$t->timestamp('created_at');
 		});
 	}
 
