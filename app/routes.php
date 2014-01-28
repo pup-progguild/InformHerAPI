@@ -50,8 +50,6 @@ Route::group(["before"  =>  "auth.basic"], function() {
         "uses" => "PostController@store"
     ]);
 
-
-
     Route::put("post/{post}", [
         "as"   => "post/update",
         "uses" => "PostController@update"
@@ -62,5 +60,7 @@ Route::group(["before"  =>  "auth.basic"], function() {
         "uses" => "PostController@destroy"
     ]);
 });
+
+
 
 

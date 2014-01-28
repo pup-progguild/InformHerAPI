@@ -16,5 +16,5 @@
  * @property \Carbon\Carbon $deleted_at
  */ 
 class Post extends Eloquent {
-
+	protected $softDelete = true;
 }

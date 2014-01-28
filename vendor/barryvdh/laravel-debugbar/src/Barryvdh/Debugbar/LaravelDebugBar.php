@@ -22,6 +22,7 @@ use Barryvdh\Debugbar\DataCollector\SymfonyRequestCollector;
 use Barryvdh\Debugbar\DataCollector\FilesCollector;
 use Barryvdh\Debugbar\DataCollector\LogsCollector;
 use Barryvdh\Debugbar\DataCollector\ConfigCollector;
+use Barryvdh\Debugbar\Storage\FilesystemStorage;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -67,6 +68,14 @@ class LaravelDebugbar extends DebugBar
     }
 
     /**
+     * Check if the Debugbar is enabled
+     * @return boolean
+     */
+    public function isEnabled(){
+        return $this->app['config']->get('laravel-debugbar::config.enabled');
+    }
+
+    /**
      * Enable the Debugbar and boot, if not already booted.
      */
     public function enable(){
@@ -94,6 +103,13 @@ class LaravelDebugbar extends DebugBar
 
         $debugbar = $this;
         $app = $this->app;
+
+        if($this->app['config']->get('laravel-debugbar::config.storage.enabled')){
+            $path = $this->app['config']->get('laravel-debugbar::config.storage.path');
+            $storage = new FilesystemStorage($this->app['files'], $path);
+            $debugbar->setStorage($storage);
+        }
+
         if($this->shouldCollect('phpinfo', true)){
             $this->addCollector(new PhpInfoCollector());
         }
@@ -105,16 +121,22 @@ class LaravelDebugbar extends DebugBar
             $this->addCollector(new TimeDataCollector());
 
             $this->app->booted(function() use($debugbar)
-            {
-                if(defined('LARAVEL_START')){
-                    $debugbar['time']->addMeasure('Booting', LARAVEL_START, microtime(true));
-                }
-            });
+                {
+                    if(defined('LARAVEL_START')){
+                        $debugbar['time']->addMeasure('Booting', LARAVEL_START, microtime(true));
+                    }
+                });
 
-            $this->app->before(function() use($debugbar)
-            {
+            //Check if App::before is already called..
+            if(version_compare($app::VERSION, '4.1', '>=') && $this->app->isBooted()){
                 $debugbar->startMeasure('application', 'Application');
-            });
+            }else{
+                $this->app->before(function() use($debugbar)
+                    {
+                        $debugbar->startMeasure('application', 'Application');
+                    });
+            }
+
             $this->app->after(function() use($debugbar)
             {
                 $debugbar->stopMeasure('application');
@@ -228,7 +250,8 @@ class LaravelDebugbar extends DebugBar
         }
 
         if($this->shouldCollect('logs', false)){
-            $this->addCollector(new LogsCollector());
+            $file = $this->app['config']->get('laravel-debugbar::config.options.logs.file');
+            $this->addCollector(new LogsCollector($file));
         }
         if($this->shouldCollect('files', false)){
             $this->addCollector(new FilesCollector());
@@ -242,9 +265,13 @@ class LaravelDebugbar extends DebugBar
 
     }
 
+    protected function isDebugbarRequest(){
+        return $this->app['request']->segment(1) == '_debugbar';
+    }
+
     public function modifyResponse($request, $response){
         $app = $this->app;
-        if( $app->runningInConsole() or (!$app['config']->get('laravel-debugbar::config.enabled')) ){
+        if( $app->runningInConsole() or !$this->isEnabled() || $this->isDebugbarRequest()){
             return $response;
         }
 
@@ -254,13 +281,13 @@ class LaravelDebugbar extends DebugBar
         $this->setHttpDriver($httpDriver);
 
         if($this->shouldCollect('symfony_request', true) and !$this->hasCollector('request')){
-            $this->addCollector(new SymfonyRequestCollector($request, $response, $app['session'], $app->make('Symfony\Component\HttpKernel\DataCollector\RequestDataCollector')));
+            $this->addCollector(new SymfonyRequestCollector($request, $response, $sessionManager));
         }
 
         if($response->isRedirection()){
             $this->stackData();
         }elseif( $request->isXmlHttpRequest() and $app['config']->get('laravel-debugbar::config.capture_ajax', true)){
-            $this->sendDataInHeaders();
+            $this->sendDataInHeaders(true);
         }elseif(
             ($response->headers->has('Content-Type') && false === strpos($response->headers->get('Content-Type'), 'html'))
             || 'html' !== $request->getRequestFormat()
@@ -304,7 +331,7 @@ class LaravelDebugbar extends DebugBar
             try{
                 $collector->stopMeasure($name);
             }catch(\Exception $e){
-                $this->addException($e);
+              //  $this->addException($e);
             }
 
         }
@@ -392,6 +419,12 @@ class LaravelDebugbar extends DebugBar
         $pos = $posrFunction($content, '</body>');
 
         $renderer = $this->getJavascriptRenderer();
+        if($this->getStorage()){
+            $openHandlerUrl = $this->app['url']->route('debugbar.openhandler');
+            $renderer->setOpenHandlerUrl($openHandlerUrl);
+        }
+
+
         $debugbar = $renderer->renderHead() . $renderer->render();
 
         if (false !== $pos) {

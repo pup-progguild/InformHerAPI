@@ -28,19 +28,7 @@ class PostController extends BaseController {
 	 * @return Response
 	 */
 	public function create() {
-        $post = $this->post;
-
-        $post->title   = Input::get('title');
-        $post->content = Input::get('content');
-        $post->type    = Input::get('type');
-        $post->user_id = Auth::user()->getAuthIdentifier();
-
-        $post->save();
-
-        return Response::json(array(
-           'status' => 'POST_ADD_SUCCESSFUL',
-           'posts'  => $post->toArray(), 200)
-        );
+        
 	}
 
 	/**
@@ -48,9 +36,21 @@ class PostController extends BaseController {
 	 *
 	 * @return Response
 	 */
-	public function store()
-	{
-		//
+	public function store() {
+		$post = $this->post;
+
+        $post->title   = Request::get('title');
+        $post->content = Request::get('content');
+        $post->type    = Request::get('type');
+        $post->user_id = Auth::user()->getAuthIdentifier();
+
+        $post->save();
+
+        return Response::json(array(
+           'status' => 'POST_ADD_SUCCESSFUL',
+           'posts'  => $post->toArray()
+           ), 200
+        );
 	}
 
 	/**
@@ -60,7 +60,7 @@ class PostController extends BaseController {
 	 * @return Response
 	 */
 	public function show($id) {
-		$post = Post::where('id', $id)->get();
+		$post = Post::where('id', $id)->take(1)->get();
 
         return Response::json(array(
             'status'    =>  'POST_SHOW_SUCCESSFUL',
@@ -88,9 +88,9 @@ class PostController extends BaseController {
 	public function update($id) {
         $post = Post::where('user_id', Auth::user()->getAuthIdentifier())->findOrFail($id);
 
-        $post->title   = Input::get('title');
-        $post->content = Input::get('content');
-        $post->type    = Input::get('type');
+        $post->title   = Request::get('title');
+        $post->content = Request::get('content');
+        $post->type    = Request::get('type');
 
         $post->save();
 
