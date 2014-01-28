@@ -80,6 +80,12 @@ class CreateTables extends Migration {
 			$t->integer('last_activity');
 			$t->timestamps();
 		});
+
+		Schema::create('password_reminders', function($t) {
+			$table->string('email')->index();
+			$table->string('token')->index();
+			$table->timestamp('created_at');
+		});
 	}
 
 	/**
@@ -98,5 +104,6 @@ class CreateTables extends Migration {
 		Schema::drop('comments');
 		Schema::drop('likes');
 		Schema::drop('sessions');
+		Schema::drop('password_reminders');
 	}
 }

@@ -2326,56 +2326,6 @@
         ]
     },
     {
-        "name": "artdarek/oauth-4-laravel",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/artdarek/oauth-4-laravel.git",
-            "reference": "006fbdbf0e31ff9eaf86ed85eda6d692692fd864"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/artdarek/oauth-4-laravel/zipball/006fbdbf0e31ff9eaf86ed85eda6d692692fd864",
-            "reference": "006fbdbf0e31ff9eaf86ed85eda6d692692fd864",
-            "shasum": ""
-        },
-        "require": {
-            "lusitanian/oauth": "0.2.*",
-            "php": ">=5.3"
-        },
-        "require-dev": {
-            "illuminate/support": "4.0.*"
-        },
-        "time": "2014-01-24 08:48:33",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Artdarek\\OAuth": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Artdarek",
-                "email": "artdarek@gmail.com",
-                "role": "Developer"
-            }
-        ],
-        "description": "OAuth Service Provider for Laravel 4",
-        "homepage": "https://github.com/artdarek/oauth-4-laravel",
-        "keywords": [
-            "Lusitanian",
-            "laravel",
-            "oauth",
-            "php"
-        ]
-    },
-    {
         "name": "maximebf/debugbar",
         "version": "1.9.1",
         "version_normalized": "1.9.1.0",
@@ -2474,6 +2424,56 @@
             "laravel",
             "profiler",
             "webprofiler"
+        ]
+    },
+    {
+        "name": "artdarek/oauth-4-laravel",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/artdarek/oauth-4-laravel.git",
+            "reference": "88dd5c107b3636392e47f3d932e8c2413d48092c"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/artdarek/oauth-4-laravel/zipball/88dd5c107b3636392e47f3d932e8c2413d48092c",
+            "reference": "88dd5c107b3636392e47f3d932e8c2413d48092c",
+            "shasum": ""
+        },
+        "require": {
+            "lusitanian/oauth": "0.2.*",
+            "php": ">=5.3"
+        },
+        "require-dev": {
+            "illuminate/support": "4.0.*"
+        },
+        "time": "2014-01-28 06:08:55",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Artdarek\\OAuth": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Artdarek",
+                "email": "artdarek@gmail.com",
+                "role": "Developer"
+            }
+        ],
+        "description": "OAuth Service Provider for Laravel 4",
+        "homepage": "https://github.com/artdarek/oauth-4-laravel",
+        "keywords": [
+            "Lusitanian",
+            "laravel",
+            "oauth",
+            "php"
         ]
     }
 ]

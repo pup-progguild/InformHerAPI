@@ -12,5 +12,5 @@
  */ 
 
 class Role extends Eloquent {
-
+	
 }
