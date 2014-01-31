@@ -20,12 +20,17 @@
                     'password'   => Hash::make('two'),
                     'email'      => 'ni-kun@informher.com',
                     'twt_handle' => 'ni-kun'
+                ],
+                [
+                    'username'   => 'san-kun',
+                    'password'   => Hash::make('three'),
+                    'email'      => 'san-kun@informher.com',
+                    'twt_handle' => 'san-kun'
                 ]
             );
 
             foreach ($users as $user) {
                 User::create($user);
             }
-
         }
     }

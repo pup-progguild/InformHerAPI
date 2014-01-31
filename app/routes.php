@@ -24,7 +24,7 @@
     /*
      * InformHer API routes/ endpoints
      *
-     * */
+     */
 
     Route::model("post", "Post");
 
@@ -38,12 +38,13 @@
         "uses" => "PostController@show"
     ]);
 
-    Route::post("post/store", [
-        "as"   => "post/store",
-        "uses" => "PostController@store"
-    ]);
+
 
     Route::group(["before" => "auth.basic"], function () {
+        Route::post("post/store", [
+            "as"   => "post/store",
+            "uses" => "PostController@store"
+        ]);
 
         Route::put("post/{post}/update", [
             "as"   => "post/{post}",

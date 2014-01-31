@@ -43,7 +43,7 @@
             $post->title   = Request::get('title');
             $post->content = Request::get('content');
             $post->type    = Request::get('type');
-            $post->user_id = Auth::user()->getAuthIdentifier();
+            $post->user_id = Request::get('user_id'); //Auth::user()->getAuthIdentifier();
 
             $post->save();
 

@@ -125,6 +125,8 @@
             Schema::drop('roles');
             Schema::drop('assigned_roles');
             Schema::drop('posts');
+            Schema::drop('categories');
+            Schema::drop('post_category');
             Schema::drop('tags');
             Schema::drop('likes');
             Schema::drop('post_tags');

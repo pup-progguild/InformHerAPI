@@ -4,16 +4,16 @@
     use Illuminate\Auth\Reminders\RemindableInterface;
 
     /**
-     * An Eloquent Model: 'User'
-     *
-     * @property integer $id
-     * @property string $username
-     * @property string $password
-     * @property string $email
-     * @property string $twt_handle
-     * @property \Carbon\Carbon $created_at
-     * @property \Carbon\Carbon $updated_at
-     */
+ * An Eloquent Model: 'User'
+ *
+ * @property integer $id
+ * @property string $username
+ * @property string $password
+ * @property string $email
+ * @property string $twt_handle
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ */
     class User extends Eloquent implements UserInterface, RemindableInterface {
 
         /**
