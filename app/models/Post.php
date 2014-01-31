@@ -75,8 +75,12 @@ class Post extends Eloquent {
 		return $this->date($this->created_at);
 	}
 
+	public function category() {
+		return $this->belongsTo("Category", "post_id", "category_id");
+	}
+
 	public function tags() {
-		return $this->belongsToMany('Tag');
+		return $this->belongsToMany("Tag","post_tags", "post_id", "tag_id");
 	}
 
 	/**

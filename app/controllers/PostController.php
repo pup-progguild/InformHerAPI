@@ -49,24 +49,7 @@ class PostController extends BaseController {
 	 *
 	 * @return Response
 	 */
-	public function storeAsk() {
-		$post = $this->post;
-
-		$post->title   = Request::get('title');
-		$post->content = Request::get('content');
-		$post->type    = Request::get('type');
-		$post->user_id = Auth::user()->getAuthIdentifier();
-
-		$post->save();
-
-		return Response::json(array(
-				'status' => 'POST_ADD_SUCCESSFUL',
-				'posts'  => $post->toArray()
-			), 200
-		);
-	}
-
-	public function storeRelate() {
+	public function store() {
 		$post = $this->post;
 
 		$post->title   = Request::get('title');
@@ -179,8 +162,34 @@ class PostController extends BaseController {
 		);
 	}
 
-	public function reply() {
+	public function comments(Post $id) {
+		$comments = $id->comments;
 
+		if(is_null($comments)) {
+			return Response::json(array(
+					'status'      => 'POST_COMMENT_RETRIEVE_FAILED',
+					'description' => "Comment {$id} not found."
+				), 404
+			);
+		}
+
+//		var_dump($id->id);
+
+		return Response::json(array(
+			'status'   => 'POST_COMMENT_RETRIEVE_SUCCESSFUL',
+			'comments' => $comments->toArray()
+			, 200)
+		);
+	}
+
+	public function tags(Post $id) {
+		$tags = $id->tags;
+
+		return Response::json(array(
+				'status'    =>  'POST_TAG_RETRIEVE_SUCCESSFUL',
+		        'tags'      =>  $tags->toArray()
+			), 200
+		);
 	}
 
 	public function like() {

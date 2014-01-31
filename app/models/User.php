@@ -13,6 +13,9 @@ use Illuminate\Auth\Reminders\RemindableInterface;
  * @property string $twt_handle
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Post[] $posts
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Comment[] $comments
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Role[] $roles
  */
 class User extends Eloquent implements UserInterface, RemindableInterface {
 

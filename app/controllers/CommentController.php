@@ -42,8 +42,24 @@ class CommentController extends BaseController {
 	 * @param  int $id
 	 * @return Response
 	 */
-	public function show($id) {
-		//
+	public function show(Post $id1,Comment $id2) {      //TODO - wrong logic
+		$comments = $id1->comments->lists($id2->id, 'id');
+
+		if (is_null($id2)) {
+			return Response::json(array(
+					'status'      => 'COMMENT_SHOW_FAILED',
+					'description' => "Comment {$id2->id} not found."
+				), 404
+			);
+		}
+
+		var_dump($comments);
+
+		return Response::json(array(
+				'status' => 'COMMENT_SHOW_SUCCESSFUL',
+				'posts'  => 'asdasdas'
+			), 200
+		);
 	}
 
 	/**

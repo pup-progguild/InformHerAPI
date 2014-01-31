@@ -9,6 +9,8 @@
  * @property integer $id
  * @property integer $comment_id
  * @property integer $user_id
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
  */
 
 class CommentLike extends Eloquent {

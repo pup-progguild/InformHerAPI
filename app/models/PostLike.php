@@ -10,6 +10,8 @@
  * @property integer $id
  * @property integer $post_id
  * @property integer $user_id
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
  */
 class PostLike extends Eloquent {
 	protected $table = 'post_likes';

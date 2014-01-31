@@ -28,6 +28,8 @@ Route::get('test', function () {
 
 Route::model("post", "Post");
 Route::model("user", "User");
+Route::model("comment", "Comment");
+Route::model("tag", "Tag");
 
 Route::get("post", [
 	"as"   => "post/index",
@@ -39,15 +41,30 @@ Route::get("post/{post}", [
 	"uses" => "PostController@show"
 ]);
 
+Route::get("post/{post}/comments", [
+	"as"    => "post/{post}/comments",
+    "uses"  => "PostController@comments"
+]);
+
+Route::get("post/{post}/tags", [
+	"as"   => "post/{post}/tags",
+	"uses" => "PostController@tags"
+]);
+
+Route::get("post/{post}/comments/{comment}", [
+	"as"   => "post/{post}/comments/{comment}",
+	"uses" => "CommentController@show"
+]);
+
 Route::group(["before" => "auth.basic"], function () {
 	Route::post("post/ask", [
 		"as"   => "post/ask",
-		"uses" => "PostController@storeAsk"
+		"uses" => "PostController@store"
 	]);
 
 	Route::post("post/relate", [
 		"as"   => "post/relate",
-		"uses" => "PostController@storeRelate"
+		"uses" => "PostController@store"
 	]);
 
 	Route::post("post/shoutout", [

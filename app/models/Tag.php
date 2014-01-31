@@ -11,5 +11,7 @@
  * @property string $tagname
  */
 class Tag extends Eloquent {
+	public function tagnames() {
 
+	}
 }
