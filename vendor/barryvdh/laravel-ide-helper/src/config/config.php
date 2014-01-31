@@ -57,4 +57,5 @@ return array(
             'emergency' => 'Monolog\Logger::addEmergency',
         )
     )
+
 );

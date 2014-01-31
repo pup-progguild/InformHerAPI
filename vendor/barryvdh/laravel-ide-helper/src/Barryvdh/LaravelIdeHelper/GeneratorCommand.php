@@ -55,11 +55,11 @@ class GeneratorCommand extends Command {
             $this->error('Error generating IDE Helper: first delete bootstrap/compiled.php (php artisan clear-compiled)');
         }else{
             $filename = $this->argument('filename');
-
+    
             if($this->option('memory')){
                 $this->useMemoryDriver();
             }
-
+    
             $this->extra = \Config::get('laravel-ide-helper::extra');
             $this->magic = \Config::get('laravel-ide-helper::magic');
 
@@ -70,15 +70,15 @@ class GeneratorCommand extends Command {
             }
 
             $content = $this->generateDocs();
-
+    
             $written = \File::put($filename, $content);
-
+    
             if($written !== false){
                 $this->info("A new helper file was written to $filename");
             }else{
                 $this->error("The helper file could not be created at $filename");
             }
-        }
+        }    
     }
 
     protected function useMemoryDriver(){
@@ -487,4 +487,5 @@ exit('Only to be used as an helper for your IDE');\n\n";
             }
         }
     }
+
 }

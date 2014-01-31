@@ -90,5 +90,3 @@ Note: With namespaces, wrap your model name in " signs: `php artisan ide-helper:
 ### License
 
 The Laravel IDE Helper Generator is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
-
-ASJDJSADH
