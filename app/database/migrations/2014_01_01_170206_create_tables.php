@@ -33,7 +33,6 @@ class CreateTables extends Migration {
 			$t->timestamps();
 		});
 
-		// Creates the assigned_roles (Many-to-Many relation) table
 		Schema::create('assigned_roles', function (Blueprint $t) {
 			$t->increments('id');
 			$t->integer('user_id')->unsigned()->index();
@@ -93,10 +92,16 @@ class CreateTables extends Migration {
 			$t->softDeletes();
 		});
 
-		Schema::create('likes', function (Blueprint $t) {
+		Schema::create('post_likes', function (Blueprint $t) {
 			$t->increments('id');
 			$t->integer('post_id')->unsigned();
 			$t->foreign('post_id')->references('id')->on('posts');
+			$t->integer('user_id')->unsigned();
+			$t->foreign('user_id')->references('id')->on('users');
+		});
+
+		Schema::create('comment_likes', function (Blueprint $t) {
+			$t->increments('id');
 			$t->integer('comment_id')->unsigned();
 			$t->foreign('comment_id')->references('id')->on('comments');
 			$t->integer('user_id')->unsigned();
@@ -130,7 +135,8 @@ class CreateTables extends Migration {
 		Schema::drop('categories');
 		Schema::drop('post_category');
 		Schema::drop('tags');
-		Schema::drop('likes');
+		Schema::drop('post_likes');
+		Schema::drop('comment_likes');
 		Schema::drop('post_tags');
 		Schema::drop('comments');
 		Schema::drop('likes');

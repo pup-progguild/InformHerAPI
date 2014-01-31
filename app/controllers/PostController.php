@@ -14,13 +14,25 @@ class PostController extends BaseController {
 	 * @return Response
 	 */
 	public function index() {
-		$post = Post::all();
+		$post = $this->post->all();
 
 		return Response::json(array(
 				'status' => 'POSTS_ALL_RETRIEVE_SUCCESSFUL',
 				'posts'  => $post->toArray()
 			), 200
 		);
+	}
+
+	public function showAsk() {
+
+	}
+
+	public function showRelate() {
+
+	}
+
+	public function showShoutout() {
+
 	}
 
 	/**

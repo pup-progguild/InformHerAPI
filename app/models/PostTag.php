@@ -1,12 +1,21 @@
 <?php
 
 /**
- * An Eloquent Model: 'PostTags'
+ * An Eloquent Model: 'PostTag'
  *
  * @property integer $id
  * @property integer $post_id
  * @property integer $tag_id
+ * @property-read \Post $tags
  */
-class PostTags extends Eloquent {
+class PostTag extends Eloquent {
 	protected $table = 'post_tags';
+
+	public function post() {
+		return $this->belongsTo('Post', 'post_id');
+	}
+
+	public function tags() {
+		return $this->hasMany('Tag');
+	}
 }

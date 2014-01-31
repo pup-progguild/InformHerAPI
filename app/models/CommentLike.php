@@ -1,17 +1,16 @@
 <?php
-
 /**
  * Created by PhpStorm.
  * 
- * User: hoshi~
- * Date: 1/13/14
- * Time: 12:39 AM
+ * User: REDFOX Wizpad
+ * Date: 1/31/14
+ * Time: 2:48 PM
  *
  * @property integer $id
- * @property integer $post_id
  * @property integer $comment_id
  * @property integer $user_id
  */
-class Like extends Eloquent {
 
+class CommentLike extends Eloquent {
+	protected $table = 'comment_likes';
 }

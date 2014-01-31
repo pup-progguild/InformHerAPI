@@ -26,8 +26,7 @@ return array(
 	|
 	*/
 
-	'default'     => 'mysql', //TODO make this get values from getenv()
-
+	'default'     => 'mysql',
 	/*
 	|--------------------------------------------------------------------------
 	| Database Connections
@@ -45,12 +44,6 @@ return array(
 	*/
 
 	'connections' => array(
-
-		'sqlite' => array(
-			'driver'   => 'sqlite',
-			'database' => __DIR__ . '/../database/production.sqlite',
-			'prefix'   => '',
-		),
 
 		'mysql'  => array(
 			'driver'    => 'mysql',

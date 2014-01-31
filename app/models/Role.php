@@ -8,8 +8,6 @@
  * Time: 12:37 AM
  *
  * @property integer $id
- * @property integer $user_id
- * @property string $role
  * @property string $name
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
