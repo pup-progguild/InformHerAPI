@@ -38,12 +38,20 @@
         "uses" => "PostController@show"
     ]);
 
-
-
     Route::group(["before" => "auth.basic"], function () {
-        Route::post("post/store", [
+        Route::post("post/ask", [
             "as"   => "post/store",
-            "uses" => "PostController@store"
+            "uses" => "PostController@storeAsk"
+        ]);
+
+        Route::post("post/relate", [
+            "as"   => "post/relate",
+            "uses" => "PostController@storeRelate"
+        ]);
+
+        Route::post("post/shoutout", [
+            "as"   => "post/shoutout",
+            "uses" => "PostController@storeShoutout"
         ]);
 
         Route::put("post/{post}/update", [

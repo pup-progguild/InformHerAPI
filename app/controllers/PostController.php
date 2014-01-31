@@ -37,13 +37,47 @@
          *
          * @return Response
          */
-        public function store() {
+        public function storeAsk() {
             $post = $this->post;
 
             $post->title   = Request::get('title');
             $post->content = Request::get('content');
             $post->type    = Request::get('type');
-            $post->user_id = Request::get('user_id'); //Auth::user()->getAuthIdentifier();
+            $post->user_id = Auth::user()->getAuthIdentifier();
+
+            $post->save();
+
+            return Response::json(array(
+                    'status' => 'POST_ADD_SUCCESSFUL',
+                    'posts'  => $post->toArray()
+                ), 200
+            );
+        }
+
+        public function storeRelate() {
+            $post = $this->post;
+
+            $post->title   = Request::get('title');
+            $post->content = Request::get('content');
+            $post->type    = Request::get('type');
+            $post->user_id = Auth::user()->getAuthIdentifier();
+
+            $post->save();
+
+            return Response::json(array(
+                    'status' => 'POST_ADD_SUCCESSFUL',
+                    'posts'  => $post->toArray()
+                ), 200
+            );
+        }
+
+        public function storeShoutout() {
+            $post = $this->post;
+
+            $post->title   = Request::get('title');
+            $post->content = Request::get('content');
+            $post->type    = Request::get('type');
+            $post->user_id = Auth::user()->getAuthIdentifier();
 
             $post->save();
 
