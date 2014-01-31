@@ -51,10 +51,10 @@ Route::get("post/{post}/tags", [
 	"uses" => "PostController@tags"
 ]);
 
-Route::get("post/{post}/comments/{comment}", [
+/*Route::get("post/{post}/comments/{comment}", [
 	"as"   => "post/{post}/comments/{comment}",
 	"uses" => "CommentController@show"
-]);
+]);*/
 
 Route::group(["before" => "auth.basic"], function () {
 	Route::post("post/ask", [

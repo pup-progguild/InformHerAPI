@@ -11,6 +11,8 @@
  * @property string $tagname
  */
 class Tag extends Eloquent {
+	protected $hidden = array('pivot');
+	
 	public function tagnames() {
 
 	}
