@@ -1,6 +1,6 @@
 <?php
 
-    /**
+/**
  * Created by PhpStorm.
  * 
  * User: hoshi~
@@ -15,7 +15,9 @@
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property \Carbon\Carbon $deleted_at
+ * @property string $geolocation
+ * @property string $srclink
  */
-    class Post extends Eloquent {
-        protected $softDelete = true;
-    }
+class Post extends Eloquent {
+	// protected $softDelete = true;
+}

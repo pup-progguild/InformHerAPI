@@ -6,7 +6,7 @@
  * Time: 8:48 AM
  */
 
-    $session = Auth::getSession();
+$session = Auth::getSession();
 
-    echo $session->getId();
+echo $session->getId();
 

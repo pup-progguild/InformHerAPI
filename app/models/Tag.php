@@ -1,6 +1,6 @@
 <?php
 
-    /**
+/**
  * Created by PhpStorm.
  * 
  * User: hoshi~
@@ -10,6 +10,6 @@
  * @property integer $id
  * @property string $tagname
  */
-    class Tag extends Eloquent {
+class Tag extends Eloquent {
 
-    }
+}

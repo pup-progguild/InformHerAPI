@@ -1,6 +1,6 @@
 <?php
 
-    /**
+/**
  * Created by PhpStorm.
  * 
  * User: hoshi~
@@ -12,6 +12,6 @@
  * @property integer $comment_id
  * @property integer $user_id
  */
-    class Like extends Eloquent {
+class Like extends Eloquent {
 
-    }
+}

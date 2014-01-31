@@ -1,6 +1,6 @@
 <?php
 
-    /**
+/**
  * Created by PhpStorm.
  * 
  * User: hoshi~
@@ -16,6 +16,6 @@
  * @property \Carbon\Carbon $updated_at
  * @property \Carbon\Carbon $deleted_at
  */
-    class Comment extends Eloquent {
+class Comment extends Eloquent {
 
-    }
+}
