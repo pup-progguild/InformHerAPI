@@ -16,6 +16,10 @@ class PostController extends BaseController {
 	public function index() {
 		$post = $this->post->all();
 
+		$post = $this->post->where('id', '=', 1)->first();
+
+		//return $post->getAttribute('category');
+
 		return Response::json(array(
 				'status' => 'POSTS_ALL_RETRIEVE_SUCCESSFUL',
 				'posts'  => $post->toArray()
@@ -24,7 +28,7 @@ class PostController extends BaseController {
 	}
 
 	public function showAsk() {
-
+		$post = $this->post->category();
 	}
 
 	public function showRelate() {

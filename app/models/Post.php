@@ -19,9 +19,14 @@
  * @property-read \User $author
  * @property-read \Illuminate\Database\Eloquent\Collection|\Comment[] $comments
  * @property-read \Illuminate\Database\Eloquent\Collection|\Tag[] $tags
+ * @property-read mixed $post_category
  */
 class Post extends Eloquent {
 	protected $softDelete = true;
+
+	protected $appends = array(
+		'post_category'
+	);
 
 	/**
 	 * Returns a formatted post content entry,
@@ -45,6 +50,14 @@ class Post extends Eloquent {
 		}
 
 		return String::date($date);
+	}
+
+//	public function getCategoryAttribute() {
+//		return $this->category;
+//	}
+
+	public function getPostCategoryAttribute() {
+		return $this->category;
 	}
 
 	/**
@@ -76,7 +89,7 @@ class Post extends Eloquent {
 	}
 
 	public function category() {
-		return $this->belongsTo("Category", "post_id", "category_id");
+		return $this->belongsToMany("Category", "post_category","post_id", "category_id");
 	}
 
 	public function tags() {
