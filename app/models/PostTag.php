@@ -11,12 +11,4 @@
  */
 class PostTag extends Eloquent {
 	protected $table = 'post_tags';
-
-	public function post() {
-		return $this->belongsTo('Post', 'post_id');
-	}
-
-	public function tags() {
-		return $this->hasMany('Tag');
-	}
 }

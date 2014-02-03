@@ -29,24 +29,6 @@ class Comment extends Eloquent {
 	}
 
 	/**
-	 * Get the comment's author.
-	 *
-	 * @return User
-	 */
-	public function author() {
-		return $this->belongsTo('User', 'user_id');
-	}
-
-	/**
-	 * Get the comment's post's.
-	 *
-	 * @return Post
-	 */
-	public function post() {
-		return $this->belongsTo('Post', 'post_id');
-	}
-
-	/**
 	 * Get the date the post was created.
 	 *
 	 * @param \Carbon|null $date
@@ -79,4 +61,24 @@ class Comment extends Eloquent {
 	public function updated_at() {
 		return $this->date($this->updated_at);
 	}
+
+
+	/**
+	 * Get the comment's author.
+	 *
+	 * @return User
+	 */
+	public function author() {
+		return $this->belongsTo('User', 'user_id');
+	}
+
+	/**
+	 * Get the comment's post's.
+	 *
+	 * @return Post
+	 */
+	public function post() {
+		return $this->belongsTo('Post', 'post_id');
+	}
+
 }

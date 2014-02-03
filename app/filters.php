@@ -37,9 +37,8 @@ Route::filter('auth', function () {
 
 
 Route::filter('auth.basic', function () {
-
-	if (Auth::getSession() != null) {
-
+	if(!(Auth::check())) {
+		return Redirect::to('/');
 	}
 
 	return Auth::basic("username");

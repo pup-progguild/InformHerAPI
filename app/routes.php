@@ -17,10 +17,6 @@ Route::get('/', function () {
 	return View::make('home');
 });
 
-Route::get('test', function () {
-	return View::make('test');
-});
-
 /*
  * InformHer API routes/ endpoints
  *
@@ -31,93 +27,102 @@ Route::model("user", "User");
 Route::model("comment", "Comment");
 Route::model("tag", "Tag");
 
-Route::get("post", [
-	"as"   => "post/index",
-	"uses" => "PostController@index"
-]);
-
-Route::get("post/{post}", [
-	"as"   => "post/{post}",
-	"uses" => "PostController@show"
-]);
-
-Route::get("post/{post}/comments", [
-	"as"    => "post/{post}/comments",
-    "uses"  => "PostController@comments"
-]);
-
-Route::get("post/{post}/tags", [
-	"as"   => "post/{post}/tags",
-	"uses" => "PostController@tags"
-]);
-
 /*Route::get("post/{post}/comments/{comment}", [
 	"as"   => "post/{post}/comments/{comment}",
 	"uses" => "CommentController@show"
 ]);*/
 
-Route::group(["before" => "auth.basic"], function () {
-	Route::post("post/ask", [
-		"as"   => "post/ask",
-		"uses" => "PostController@store"
+
+Route::group(["prefix" => "post"], function () {
+	Route::get("/", [
+		"as"   => "post/index",
+		"uses" => "PostController@index"
 	]);
 
-	Route::post("post/relate", [
-		"as"   => "post/relate",
-		"uses" => "PostController@store"
+	Route::get("/{post}", [
+		"as"   => "GetPost",
+		"uses" => "PostController@show"
 	]);
 
-	Route::post("post/shoutout", [
-		"as"   => "post/shoutout",
-		"uses" => "PostController@storeShoutout"
+	Route::get("/{post}/comments", [
+		"as"   => "GetAllCommentsFromPost",
+		"uses" => "PostController@comments"
 	]);
 
-	Route::put("post/{post}/update", [
-		"as"   => "post/{post}",
-		"uses" => "PostController@update"
+	Route::get("/{post}/tags", [
+		"as"   => "GetAllTagsFromPost",
+		"uses" => "PostController@tags"
 	]);
 
-	Route::delete("post/{post}", [
-		"as"   => "post/{post}",
-		"uses" => "PostController@destroy"
-	]);
+	Route::group(["before" => "auth.basic"], function () {
+		Route::post("/ask", [
+			"as"   => "PostInAsk",
+			"uses" => "PostController@store"
+		]);
+		Route::post("/relate", [
+			"as"   => "PostInRelate",
+			"uses" => "PostController@store"
+		]);
+
+		Route::post("/shoutout", [
+			"as"   => "PostInShoutout",
+			"uses" => "PostController@storeShoutout"
+		]);
+
+		Route::put("/{post}/update", [
+			"as"   => "UpdatePost",
+			"uses" => "PostController@update"
+		]);
+
+		Route::delete("/{post}", [
+			"as"   => "DeletePost",
+			"uses" => "PostController@destroy"
+		]);
+
+		Route::get('/test', function () {
+			return View::make('test');
+		});
+	});
 });
 
-Route::get("user/login", [
-	"as"   => "user/login",
-	"uses" => "UserController@login"
-]);
 
-Route::get("user/logout", [
-	"as"   => "user/logout",
-	"uses" => "UserController@logout"
-]);
-
-Route::post("user", [
-	"as"   => "user/register",
-	"uses" => "UserController@create"
-]);
-
-Route::group(["before" => "auth.basic"], function () {
-
-	Route::get("user/profile", [
-		"as"   => "user/profile",
-		"uses" => "UserController@index"
+Route::group(["prefix" => "user"], function () {
+	Route::get("/login", [
+		"as"   => "UserLogin",
+		"uses" => "UserController@login"
 	]);
 
-	Route::get("user/{user}", [
-		"as"   => "user/show",
-		"uses" => "UserController@show"
+	Route::get("/logout", [
+		"as"   => "UserLogout",
+		"uses" => "UserController@logout"
 	]);
 
-	Route::put("user/{user}", [
-		"as"   => "user/update",
-		"uses" => "UserController@update"
+	Route::post("/register", [
+		"as"   => "UserRegistration",
+		"uses" => "UserController@create"
 	]);
 
-	Route::delete("user/{user}", [
-		"as"   => "user/destroy",
-		"uses" => "UserController@destroy"
-	]);
+	Route::group(["before" => "auth.basic"], function () {
+		Route::get("/profile", [
+			"as"   => "GetUserProfileInfo",
+			"uses" => "UserController@index"
+		]); // XXX this route isn't restful at all. >___>
+
+		Route::get("/{user}", [
+			"as"   => "GetUserInfo",
+			"uses" => "UserController@show"
+		]);
+
+		Route::put("/{user}", [
+			"as"   => "user/update",
+			"uses" => "UserController@update"
+		]);
+
+		Route::delete("/{user}", [
+			"as"   => "user/destroy",
+			"uses" => "UserController@destroy"
+		]);
+	});
 });
+
 

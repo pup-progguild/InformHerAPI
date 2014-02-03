@@ -16,27 +16,37 @@ class PostController extends BaseController {
 	public function index() {
 		$post = $this->post->all();
 
-		$post = $this->post->where('id', '=', 1)->first();
+		$data = Input::all();
 
-		//return $post->getAttribute('category');
+		$rules = [
+			'category' => 'alpha_num'
+		];
+
+		$isValid = Validator::make($data, $rules)->passes();
+
+		if ($isValid) {
+			$category = Input::get('category');
+
+			if (is_null($category)) {
+				return Response::json(array(
+						'status' => 'POST_SHOW_SUCCESSFUL',
+						'posts'  => $post->toArray()
+					), 200
+				);
+			} else {    // TODO : filter by ?category={a-z0-9}
+				$post = $this->post->whereHas('Category', function($q) use ($category) {
+					$q->where('name', '=', $category);
+				})->get();
+
+				return $post;
+			}
+		}
 
 		return Response::json(array(
-				'status' => 'POSTS_ALL_RETRIEVE_SUCCESSFUL',
-				'posts'  => $post->toArray()
-			), 200
+				'status'      => 'POST_SHOW_FAILED',
+				'description' => "Returned empty result"
+			), 404
 		);
-	}
-
-	public function showAsk() {
-		$post = $this->post->category();
-	}
-
-	public function showRelate() {
-
-	}
-
-	public function showShoutout() {
-
 	}
 
 	/**
@@ -90,31 +100,23 @@ class PostController extends BaseController {
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param  int $id
+	 * @param  Post $id
 	 * @return Response
 	 */
-	public function show($id) {
-		//$post = $this->post->where('id', '=', $id)->get();
-
+	public function show(Post $id) {
 		if (is_null($id)) {
-			// If we ended up in here, it means that
-			// a page or a blog post didn't exist.
-			// So, this means that it is time for
-			// 404 error page.
 			return Response::json(array(
-					'status' => 'POST_SHOW_FAILED',
-					'description'  => "Post {$id} not found."
+					'status'      => 'POST_SHOW_FAILED',
+					'description' => "Post {$id} not found."
 				), 404
 			);
 		}
-
 
 		return Response::json(array(
 				'status' => 'POST_SHOW_SUCCESSFUL',
 				'posts'  => $id->toArray()
 			), 200
 		);
-		//return var_dump($post);
 	}
 
 	/**
@@ -155,43 +157,57 @@ class PostController extends BaseController {
 	 * @param  int $id
 	 * @return Response
 	 */
-	public function destroy($id) {
-		$post = $this->post->where('user_id', Auth::user()->getAuthIdentifier())->findOrFail($id);
-		$post->delete();
+	public function destroy(Post $id) {
+		//$post = $this->post->where('user_id', Auth::user()->getAuthIdentifier())->findOrFail($id);
 
-		return Response::json(array(
-				'status' => 'POST_DELETE_SUCCESSFUL',
-				'posts'  => $post->toArray()
-			), 200
-		);
+		if (Auth::check()) {
+			$post = $id;
+
+			$id->delete();
+
+			return Response::json(array(
+					'status' => 'POST_DELETE_SUCCESSFUL',
+					'posts'  => $post->toArray()
+				), 200
+			);
+		}
+
+		return Redirect::to('/');
 	}
 
 	public function comments(Post $id) {
 		$comments = $id->comments;
 
-		if(is_null($comments)) {
+		if (is_null($comments)) {
 			return Response::json(array(
 					'status'      => 'POST_COMMENT_RETRIEVE_FAILED',
-					'description' => "Comment {$id} not found."
+					'description' => "Comments for Post {$id->id} not found."
 				), 404
 			);
 		}
 
-//		var_dump($id->id);
-
 		return Response::json(array(
-			'status'   => 'POST_COMMENT_RETRIEVE_SUCCESSFUL',
-			'comments' => $comments->toArray()
-			, 200)
+				'status'   => 'POST_COMMENT_RETRIEVE_SUCCESSFUL',
+				'comments' => $comments->toArray()
+				, 200
+			)
 		);
 	}
 
 	public function tags(Post $id) {
 		$tags = $id->tags;
 
+		if (is_null($tags)) {
+			return Response::json(array(
+					'status'      => 'POST_COMMENT_RETRIEVE_FAILED',
+					'description' => "Tags for Post {$id->id} not found."
+				), 404
+			);
+		}
+
 		return Response::json(array(
-				'status'    =>  'POST_TAG_RETRIEVE_SUCCESSFUL',
-		        'tags'      =>  $tags->toArray()
+				'status' => 'POST_TAG_RETRIEVE_SUCCESSFUL',
+				'tags'   => $tags->toArray()
 			), 200
 		);
 	}

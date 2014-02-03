@@ -25,7 +25,7 @@ class Post extends Eloquent {
 	protected $softDelete = true;
 
 	protected $appends = array(
-		'post_category'
+		'post_category'//, 'author'
 	);
 
 	/**
@@ -49,33 +49,19 @@ class Post extends Eloquent {
 			$date = $this->created_at;
 		}
 
-		return String::date($date);
+		return $date->toDateTimeString();
 	}
 
-//	public function getCategoryAttribute() {
-//		return $this->category;
-//	}
+	public function getAuthorAttribute() {
+		return $this->author;   //TODO: this doesn't work.
+	}
 
 	public function getPostCategoryAttribute() {
-		return $this->category;
+		return $this->category; //TODO: Why does this return empty, while creating another attribute, returns right result? fuck.
 	}
 
-	/**
-	 * Get the post's author.
-	 *
-	 * @return User
-	 */
-	public function author() {
-		return $this->belongsTo('User', 'user_id');
-	}
-
-	/**
-	 * Get the post's comments.
-	 *
-	 * @return array
-	 */
-	public function comments() {
-		return $this->hasMany('Comment');
+	public function getTagsAttribute() {
+		return $this->tags; //TODO: this doesn't work.
 	}
 
 	/**
@@ -88,14 +74,6 @@ class Post extends Eloquent {
 		return $this->date($this->created_at);
 	}
 
-	public function category() {
-		return $this->belongsToMany("Category", "post_category","post_id", "category_id");
-	}
-
-	public function tags() {
-		return $this->belongsToMany("Tag","post_tags", "post_id", "tag_id");
-	}
-
 	/**
 	 * Returns the date of the blog post last update,
 	 * on a good and more readable format :)
@@ -104,5 +82,41 @@ class Post extends Eloquent {
 	 */
 	public function updated_at() {
 		return $this->date($this->updated_at);
+	}
+
+	/**
+	 * Get the post's author.
+	 *
+	 * @return User
+	 */
+	public function author() {
+		return $this->belongsTo('User', 'user_id');
+	}
+
+	/**
+	 * Get the post category.
+	 *
+	 * @return Category
+	 */
+	public function category() {
+		return $this->belongsToMany("Category", "post_category", "post_id", "category_id");
+	}
+
+	/**
+	 * Get the post's tags.
+	 *
+	 * @return Tag
+	 */
+	public function tags() {
+		return $this->belongsToMany("Tag", "post_tags", "post_id", "tag_id");
+	}
+
+	/**
+	 * Get the post's comments.
+	 *
+	 * @return Comment
+	 */
+	public function comments() {
+		return $this->hasMany('Comment');
 	}
 }
