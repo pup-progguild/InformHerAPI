@@ -11,6 +11,16 @@ This is the [InformHer API](https://github.com/pup-progguild/InformHerAPI) for t
 
 TODO
 
+### BuiltWith
+
+- [Laravel PHP](https://github.com/laravel/laravel)
+
+### TechStack
+
+- PHP 5.4+
+- IIS 8
+- MariaDB 10+
+
 ### Installation
 
 ```bash
@@ -29,8 +39,8 @@ Unless required by applicable law or agreed to in writing, software distributed 
 
 ### Devs
 
-- Mark Jayson Fuentes | [awkwardusername](https://github.com/awkwardusername) [lead]
-- PUP Programming Guild | [pup-progguild](https://github.com/pup-progguild) [the rest of the team ;)]
+- Mark Jayson Fuentes @[awkwardusername](https://github.com/awkwardusername) [lead]
+- PUP Programming Guild @[pup-progguild](https://github.com/pup-progguild) [the rest of the team ;)]
 
 About Us
 --------
