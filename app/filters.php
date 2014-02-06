@@ -32,16 +32,19 @@ App::after(function ($request, $response) {
 */
 
 Route::filter('auth', function () {
-	if (Auth::guest()) return Redirect::guest('login');
+	if (Auth::guest()) {
+		if (Request::ajax()) {
+			return Response::make('', 401, array('HTTP/1.1 401 Unauthorized'));
+		}
+
+		return Redirect::guest('login');
+	}
 });
 
 
 Route::filter('auth.basic', function () {
-	if(!(Auth::check())) {
-		return Redirect::to('/');
-	}
 
-	return Auth::basic("username");
+	return Auth::oncebasic("username");
 });
 
 /*

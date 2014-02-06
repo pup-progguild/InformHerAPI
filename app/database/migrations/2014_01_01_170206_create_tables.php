@@ -14,9 +14,11 @@ class CreateTables extends Migration {
 		Schema::create('users', function (Blueprint $t) {
 			$t->increments('id');
 			$t->string('username', 35)->unique();
-			$t->string('password', 60);
+			$t->string('password');
 			$t->string('email', 100);
 			$t->string('twt_handle', 15);
+			$t->string('confirmation_code');
+			$t->boolean('confirmed')->default(false);
 			$t->timestamps();
 		});
 
@@ -28,16 +30,34 @@ class CreateTables extends Migration {
 		});
 
 		Schema::create('roles', function (Blueprint $t) {
-			$t->increments('id');
-			$t->string('name');
+			$t->increments('id')->unsigned();
+			$t->string('name')->unique();
 			$t->timestamps();
 		});
 
+		// Creates the assigned_roles (Many-to-Many relation) table
 		Schema::create('assigned_roles', function (Blueprint $t) {
-			$t->increments('id');
-			$t->integer('user_id')->unsigned()->index();
-			$t->foreign('user_id')->references('id')->on('users');
-			$t->integer('role_id')->unsigned()->index();
+			$t->increments('id')->unsigned();
+			$t->integer('user_id')->unsigned();
+			$t->integer('role_id')->unsigned();
+			$t->foreign('user_id')->references('id')->on('users'); // assumes a users table
+			$t->foreign('role_id')->references('id')->on('roles');
+		});
+
+		// Creates the permissions table
+		Schema::create('permissions', function (Blueprint $t) {
+			$t->increments('id')->unsigned();
+			$t->string('name');
+			$t->string('display_name');
+			$t->timestamps();
+		});
+
+		// Creates the permission_role (Many-to-Many relation) table
+		Schema::create('permission_role', function (Blueprint $t) {
+			$t->increments('id')->unsigned();
+			$t->integer('permission_id')->unsigned();
+			$t->integer('role_id')->unsigned();
+			$t->foreign('permission_id')->references('id')->on('permissions'); // assumes a users table
 			$t->foreign('role_id')->references('id')->on('roles');
 		});
 
@@ -71,6 +91,7 @@ class CreateTables extends Migration {
 		Schema::create('tags', function (Blueprint $t) {
 			$t->increments('id');
 			$t->string('tagname')->unique();
+			$t->timestamps();
 		});
 
 		Schema::create('post_tags', function (Blueprint $t) {
@@ -120,6 +141,12 @@ class CreateTables extends Migration {
 			$t->string('token')->index();
 			$t->timestamp('created_at');
 		});
+
+		Schema::create('cache', function (Blueprint $t) {
+			$t->string('key')->unique();
+			$t->text('value');
+			$t->integer('expiration');
+		});
 	}
 
 	/**
@@ -128,9 +155,22 @@ class CreateTables extends Migration {
 	 * @return void
 	 */
 	public function down() {
+		Schema::table('assigned_roles', function (Blueprint $t) {
+			$t->dropForeign('assigned_roles_user_id_foreign');
+			$t->dropForeign('assigned_roles_role_id_foreign');
+		});
+
+		Schema::table('permission_role', function (Blueprint $t) {
+			$t->dropForeign('permission_role_permission_id_foreign');
+			$t->dropForeign('permission_role_role_id_foreign');
+		});
+
+
 		Schema::drop('users');
-		Schema::drop('roles');
 		Schema::drop('assigned_roles');
+		Schema::drop('permission_role');
+		Schema::drop('roles');
+		Schema::drop('permissions');
 		Schema::drop('posts');
 		Schema::drop('categories');
 		Schema::drop('post_category');

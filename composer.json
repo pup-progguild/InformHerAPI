@@ -23,11 +23,21 @@
             "role": "developer"
         }
     ],
+    "repositories": [{
+        "type": "vcs",
+        "url": "https://github.com/Zizaco/ardent.git"
+	}],
 	"require": {
 		"laravel/framework": "4.1.*",
 		"barryvdh/laravel-ide-helper": "1.*",
 		"artdarek/oauth-4-laravel": "dev-master",
-		"barryvdh/laravel-debugbar": "dev-master"
+		"barryvdh/laravel-debugbar": "dev-master",
+		"mockery/mockery": "dev-master@dev",
+		"laravelbook/ardent": "dev-has-session-fix",
+		"zizaco/confide": "3.1.x",
+		"zizaco/entrust": "dev-master",
+		"way/laravel-test-helpers": "dev-master",
+        "way/generators": "dev-master"
 	},
 	"autoload": {
 		"classmap": [
@@ -46,7 +56,7 @@
 		"post-update-cmd": [
 			"php artisan debugbar:publish",
 			"php artisan clear-compiled",
-			"php artisan optimize"
+			"php artisan optimize --force"
 		],
 		"post-create-project-cmd": [
 			"php artisan key:generate"

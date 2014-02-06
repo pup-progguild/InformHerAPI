@@ -110,6 +110,9 @@ return array(
 		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
 		'Artdarek\OAuth\OAuthServiceProvider',
 
+		'Zizaco\Confide\ConfideServiceProvider',
+		'Zizaco\Entrust\EntrustServiceProvider',
+
 		'Barryvdh\Debugbar\ServiceProvider', // debugs
 	),
 
@@ -176,6 +179,9 @@ return array(
 		'URL'         => 'Illuminate\Support\Facades\URL',
 		'Validator'   => 'Illuminate\Support\Facades\Validator',
 		'View'        => 'Illuminate\Support\Facades\View',
+
+		'Confide' => 'Zizaco\Confide\ConfideFacade',
+		'Entrust' => 'Zizaco\Entrust\EntrustFacade',
 
 		'OAuth'       => 'Artdarek\OAuth\Facade\OAuth',
 	),

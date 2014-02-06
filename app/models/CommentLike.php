@@ -15,4 +15,6 @@
 
 class CommentLike extends Eloquent {
 	protected $table = 'comment_likes';
+
+	public $timestamps = false;
 }

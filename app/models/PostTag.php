@@ -11,4 +11,6 @@
  */
 class PostTag extends Eloquent {
 	protected $table = 'post_tags';
+
+	public $timestamps = false;
 }

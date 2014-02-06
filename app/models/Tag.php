@@ -9,9 +9,12 @@
  *
  * @property integer $id
  * @property string $tagname
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Post[] $posts
  */
 class Tag extends Eloquent {
-	protected $hidden = array('pivot');
+	protected $hidden = array('id', 'pivot');
 
-
+	public function posts() {
+		return $this->belongsToMany('Post', 'post_tags');
+	}
 }

@@ -19,29 +19,54 @@ class PostController extends BaseController {
 		$data = Input::all();
 
 		$rules = [
-			'category' => 'alpha_num'
+			'category' => 'alpha_num',
+			'tagname' => 'alpha_num'
 		];
 
 		$isValid = Validator::make($data, $rules)->passes();
 
 		if ($isValid) {
 			$category = Input::get('category');
+			$tagname = Input::get('tagname');
 
-			if (is_null($category)) {
-				return Response::json(array(
+			// get all posts
+			if (is_null($category) && is_null($tagname)) {
+				return Response::json([
 						'status' => 'POST_SHOW_SUCCESSFUL',
 						'posts'  => $post->toArray()
-					), 200
+					], 200
 				);
-			} else {    // TODO : filter by ?category={a-z0-9}
+			} else {
+				// get posts from $category // TODO: implement search on tags too.
+				/*
 				$post = $this->post->whereHas('Category', function($q) use ($category) {
+					$q->where('name', '=', $category);
+				})->with('Tag')->whereHas('Tag', function($q) use ($tagname) {
+						$q->where('tagname', '=', $tagname);
+					})->get();  // TODO: What the fuck is this.
+				*/
+
+				$post = $this->post->whereHas('Category', function ($q) use ($category) {
 					$q->where('name', '=', $category);
 				})->get();
 
-				return $post;
+				if($post->count() != 0) {
+					return Response::json([
+							'status' => 'POST_SHOW_SUCCESSFUL',
+							'posts'  => $post->toArray()
+						], 200
+					);
+				}
+
+				return Response::json(array(
+						'status'      => 'POST_SHOW_FAILED',
+						'description' => "Returned empty result"
+					), 404
+				);
 			}
 		}
 
+		// F@iLZOR$$$$
 		return Response::json(array(
 				'status'      => 'POST_SHOW_FAILED',
 				'description' => "Returned empty result"
@@ -69,7 +94,7 @@ class PostController extends BaseController {
 		$post->title   = Request::get('title');
 		$post->content = Request::get('content');
 		$post->type    = Request::get('type');
-		$post->user_id = Auth::user()->getAuthIdentifier();
+		$post->user_id = Confide::user()->getAuthIdentifier();
 
 		$post->save();
 
@@ -132,11 +157,11 @@ class PostController extends BaseController {
 	/**
 	 * Update the specified resource in storage.
 	 *
-	 * @param  int $id
+	 * @param  Post $id
 	 * @return Response
 	 */
-	public function update($id) {
-		$post = $this->post->where('user_id', Auth::user()->getAuthIdentifier())->findOrFail($id);
+	public function update(Post $id) {
+		$post = $id;
 
 		$post->title   = Request::get('title');
 		$post->content = Request::get('content');
@@ -172,7 +197,10 @@ class PostController extends BaseController {
 			);
 		}
 
-		return Redirect::to('/');
+		return Response::json([
+			'status'    =>  'POST_DELETE_FAILED',
+		    'description'   =>  "Post {$id->id} deletion failed."
+		], 200);
 	}
 
 	public function comments(Post $id) {

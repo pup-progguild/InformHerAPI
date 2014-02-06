@@ -28,7 +28,7 @@ return array(
 	|
 	*/
 
-	'host'       => 'sandbox9089.mailgun.org',
+	'host'       => 'smtp.mailgun.org',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -80,7 +80,7 @@ return array(
 	|
 	*/
 
-	'username'   => 'markjayson.fuentes@pup.edu.ph',
+	'username'   => 'postmaster@sandbox9089.mailgun.org',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -93,7 +93,7 @@ return array(
 	|
 	*/
 
-	'password'   => 'key-54b2uwga-tc-ftz2iv4pc99fl0r9ueg9',
+	'password'   => '494km9idnbk3',
 
 	/*
 	|--------------------------------------------------------------------------

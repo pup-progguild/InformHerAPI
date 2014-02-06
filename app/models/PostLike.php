@@ -15,4 +15,6 @@
  */
 class PostLike extends Eloquent {
 	protected $table = 'post_likes';
+
+	public $timestamps = false;
 }

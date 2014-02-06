@@ -42,7 +42,7 @@ class CommentController extends BaseController {
 	 * @param  int $id
 	 * @return Response
 	 */
-	public function show(Post $id1,Comment $id2) {      //TODO - wrong logic
+	public function show(Post $id1, Comment $id2) {      //TODO - wrong logic
 		$comments = $id1->comments->lists($id2->id, 'id');
 
 		if (is_null($id2)) {

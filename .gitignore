@@ -1,7 +1,7 @@
 # Laravel stuff
 /bootstrap/compiled.php
 # /vendor
-composer.phar
+composer
 composer.lock
 .DS_Store
 Thumbs.db

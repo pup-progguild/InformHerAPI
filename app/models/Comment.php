@@ -19,6 +19,8 @@
  */
 class Comment extends Eloquent {
 
+	protected $hidden = ['deleted_at'];
+
 	/**
 	 * Get the comment's content.
 	 *

@@ -19,13 +19,14 @@
  * @property-read \User $author
  * @property-read \Illuminate\Database\Eloquent\Collection|\Comment[] $comments
  * @property-read \Illuminate\Database\Eloquent\Collection|\Tag[] $tags
- * @property-read mixed $post_category
  */
 class Post extends Eloquent {
 	protected $softDelete = true;
 
+	protected $hidden = ['deleted_at'];
+
 	protected $appends = array(
-		'post_category'//, 'author'
+		//'category'//, 'author'
 	);
 
 	/**
@@ -56,13 +57,17 @@ class Post extends Eloquent {
 		return $this->author;   //TODO: this doesn't work.
 	}
 
-	public function getPostCategoryAttribute() {
-		return $this->category; //TODO: Why does this return empty, while creating another attribute, returns right result? fuck.
+	public function getCategoryAttribute() {
+		return $this->category->name; //TODO: Why does this return empty, while creating another attribute, returns right result? fuck.
 	}
 
-	public function getTagsAttribute() {
-		return $this->tags; //TODO: this doesn't work.
-	}
+//	public function setCategoryAttribute() {
+//		$this->attributes['category'] = $this->category()->name;
+//	}
+
+//	public function getTagsAttribute() {
+//		return $this->tags; //TODO: this doesn't work.
+//	}
 
 	/**
 	 * Returns the date of the blog post creation,
@@ -108,7 +113,7 @@ class Post extends Eloquent {
 	 * @return Tag
 	 */
 	public function tags() {
-		return $this->belongsToMany("Tag", "post_tags", "post_id", "tag_id");
+		return $this->belongsToMany('Tag', 'post_tags', 'post_id', 'tag_id');
 	}
 
 	/**

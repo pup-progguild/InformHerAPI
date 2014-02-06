@@ -13,4 +13,6 @@
 
 class PostCategory extends Eloquent {
 	protected $table = 'post_category';
+
+	public $timestamps = false;
 }

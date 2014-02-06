@@ -17,13 +17,16 @@ Route::get('/', function () {
 	return View::make('home');
 });
 
+Route::get('/test', function () {
+	return View::make('test');
+});
+
 /*
  * InformHer API routes/ endpoints
  *
  */
 
 Route::model("post", "Post");
-Route::model("user", "User");
 Route::model("comment", "Comment");
 Route::model("tag", "Tag");
 
@@ -78,51 +81,18 @@ Route::group(["prefix" => "post"], function () {
 			"as"   => "DeletePost",
 			"uses" => "PostController@destroy"
 		]);
-
-		Route::get('/test', function () {
-			return View::make('test');
-		});
 	});
 });
 
-
-Route::group(["prefix" => "user"], function () {
-	Route::get("/login", [
-		"as"   => "UserLogin",
-		"uses" => "UserController@login"
+Route::group(['prefix' => 'tags'], function () {
+	Route::get("/", [
+		"as"    =>  "Tags",
+	    "uses"  =>  "TagController@index"
 	]);
-
-	Route::get("/logout", [
-		"as"   => "UserLogout",
-		"uses" => "UserController@logout"
-	]);
-
-	Route::post("/register", [
-		"as"   => "UserRegistration",
-		"uses" => "UserController@create"
-	]);
-
-	Route::group(["before" => "auth.basic"], function () {
-		Route::get("/profile", [
-			"as"   => "GetUserProfileInfo",
-			"uses" => "UserController@index"
-		]); // XXX this route isn't restful at all. >___>
-
-		Route::get("/{user}", [
-			"as"   => "GetUserInfo",
-			"uses" => "UserController@show"
-		]);
-
-		Route::put("/{user}", [
-			"as"   => "user/update",
-			"uses" => "UserController@update"
-		]);
-
-		Route::delete("/{user}", [
-			"as"   => "user/destroy",
-			"uses" => "UserController@destroy"
-		]);
-	});
 });
 
 
+// Confide RESTful route
+Route::get('user/confirm/{code}', 'UserController@getConfirm');
+Route::get('user/reset/{token}', 'UserController@getReset');
+Route::controller( 'user', 'UserController');

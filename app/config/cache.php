@@ -15,7 +15,7 @@ return array(
 	|
 	*/
 
-	'driver'     => 'file',
+	'driver'     => 'database',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -69,7 +69,7 @@ return array(
 
 	'memcached'  => array(
 
-		array('host' => '127.0.0.1', 'port' => 11211, 'weight' => 100),
+		array('host' => 'db-progguild.cloudapp.net', 'port' => 9128, 'weight' => 100),
 
 	),
 
@@ -84,6 +84,6 @@ return array(
 	|
 	*/
 
-	'prefix'     => 'laravel',
+	'prefix'     => 'informher',
 
 );
