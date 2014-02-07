@@ -13,7 +13,7 @@ return array(
 	|
 	*/
 
-	'debug'     => true,
+	'debug'     => true,        // TODO: Set to 'false' in prod.
 
 	/*
 	|--------------------------------------------------------------------------
@@ -107,12 +107,18 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 
-		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
+		/*
+		 *	SuperPOWERS!
+		 *
+		 */
+
+		'LucaDegasperi\OAuth2Server\OAuth2ServerServiceProvider',
 		'Artdarek\OAuth\OAuthServiceProvider',
 
 		'Zizaco\Confide\ConfideServiceProvider',
 		'Zizaco\Entrust\EntrustServiceProvider',
 
+		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider', // ide_helpers
 		'Barryvdh\Debugbar\ServiceProvider', // debugs
 	),
 
@@ -184,6 +190,9 @@ return array(
 		'Entrust' => 'Zizaco\Entrust\EntrustFacade',
 
 		'OAuth'       => 'Artdarek\OAuth\Facade\OAuth',
+
+		'AuthorizationServer' => 'LucaDegasperi\OAuth2Server\Facades\AuthorizationServerFacade',
+		'ResourceServer'      => 'LucaDegasperi\OAuth2Server\Facades\ResourceServerFacade',
 	),
 
 );

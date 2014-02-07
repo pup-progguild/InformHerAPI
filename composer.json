@@ -37,7 +37,8 @@
 		"zizaco/confide": "3.1.x",
 		"zizaco/entrust": "dev-master",
 		"way/laravel-test-helpers": "dev-master",
-        "way/generators": "dev-master"
+        "way/generators": "dev-master",
+        "lucadegasperi/oauth2-server-laravel": "1.0.x"
 	},
 	"autoload": {
 		"classmap": [
