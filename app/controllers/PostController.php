@@ -90,15 +90,6 @@ class PostController extends BaseController {
 	}
 
 	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create() {
-
-	}
-
-	/**
 	 * Store a newly created resource in storage.
 	 *
 	 * @return Response
@@ -114,23 +105,6 @@ class PostController extends BaseController {
 		$post->content = $input['content'];
 		$post->user_id = Confide::user()->getAuthIdentifier();
 		$post->category()->associate($category);
-
-		$post->save();
-
-		return Response::json(array(
-				'status' => 'POST_ADD_SUCCESSFUL',
-				'posts'  => $post->toArray()
-			), 200
-		);
-	}
-
-	public function storeShoutout() {
-		$post = $this->post;
-
-		$post->title   = Request::get('title');
-		$post->content = Request::get('content');
-		$post->type    = Request::get('type');
-		$post->user_id = Auth::user()->getAuthIdentifier();
 
 		$post->save();
 
@@ -158,20 +132,9 @@ class PostController extends BaseController {
 
 		return Response::json(array(
 				'status' => 'POST_SHOW_SUCCESSFUL',
-				'posts'  => $id->toArray(),
-				'cats'   => $id->category
+				'posts'  => $id->toArray()
 			), 200
 		);
-	}
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int $id
-	 * @return Response
-	 */
-	public function edit($id) {
-		//
 	}
 
 	/**
@@ -210,12 +173,13 @@ class PostController extends BaseController {
 	public function destroy(Post $id) {
 		$post = $id;
 
-		CommentLike::where('id', '=', $id->id)->delete();
+//		Like::where('user_id', '=', Auth::user()->getAuthIdentifier())->where('imageable_type', '=', 'post')->where('imageable_id', '=', $id->id)->delete();
+//
+//		Like::where('user_id', '=', Auth::user()->getAuthIdentifier())->where('imageable_type', '=', 'comment')->where('imageable_id', '=', $id->id)->delete();
 
-		foreach ($post->comments as $comments) {
+		foreach ($id->comments as $comments) {
 			$comments->delete();
 		}
-
 
 		if($id->delete()) {
 			return Response::json(array(

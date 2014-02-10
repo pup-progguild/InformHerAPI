@@ -20,9 +20,11 @@ Route::get('/', function () {
 Route::get('/test', function () {
 	//return View::make('test');
 
-	$post = Comment::find(1);
+	$post = Like::find(6);
 
-	echo $post->likes->count();
+	echo Response::json([
+		'posts' => $post->toArray()
+	]);
 }); //->before('auth.basic');
 
 /*
