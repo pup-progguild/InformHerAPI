@@ -7,19 +7,10 @@
  * Date: 1/13/14
  * Time: 12:37 AM
  *
- * @property integer $id
- * @property string $message
- * @property integer $user_id
- * @property integer $post_id
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @property \Carbon\Carbon $deleted_at
- * @property-read \User $author
- * @property-read \Post $post
  */
 class Comment extends Eloquent {
 
-	protected $hidden = ['deleted_at'];
+	protected $hidden = ['deleted_at', 'user_id', 'post_id'];
 
 	/**
 	 * Get the comment's content.
@@ -64,23 +55,15 @@ class Comment extends Eloquent {
 		return $this->date($this->updated_at);
 	}
 
-
-	/**
-	 * Get the comment's author.
-	 *
-	 * @return User
-	 */
 	public function author() {
 		return $this->belongsTo('User', 'user_id');
 	}
 
-	/**
-	 * Get the comment's post's.
-	 *
-	 * @return Post
-	 */
 	public function post() {
 		return $this->belongsTo('Post', 'post_id');
 	}
 
+	public function likes() {
+		return $this->morphMany('Like', 'imageable');
+	}
 }

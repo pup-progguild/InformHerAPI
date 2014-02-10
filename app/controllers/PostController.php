@@ -20,37 +20,31 @@ class PostController extends BaseController {
 
 		$rules = [
 			'category' => 'alpha_num',
-			'tagname' => 'alpha_num'
+			'tagname'  => 'alpha_num'
 		];
 
 		$isValid = Validator::make($data, $rules)->passes();
 
 		if ($isValid) {
 			$category = Input::get('category');
-			$tagname = Input::get('tagname');
+			$tagname  = Input::get('tagname');
 
 			// get all posts
 			if (is_null($category) && is_null($tagname)) {
-				return Response::json([
-						'status' => 'POST_SHOW_SUCCESSFUL',
-						'posts'  => $post->toArray()
-					], 200
-				);
-			} else {
-				// get posts from $category // TODO: implement search on tags too.
-				/*
-				$post = $this->post->whereHas('Category', function($q) use ($category) {
-					$q->where('name', '=', $category);
-				})->with('Tag')->whereHas('Tag', function($q) use ($tagname) {
-						$q->where('tagname', '=', $tagname);
-					})->get();  // TODO: What the fuck is this.
-				*/
-
+				if ($post->count() != 0) {
+					return Response::json([
+							'status' => 'POST_SHOW_SUCCESSFUL',
+							'posts'  => $post->toArray()
+						], 200
+					);
+				}
+				// get posts where category={a-z}
+			} elseif (is_null($tagname)) {
 				$post = $this->post->whereHas('Category', function ($q) use ($category) {
 					$q->where('name', '=', $category);
 				})->get();
 
-				if($post->count() != 0) {
+				if ($post->count() != 0) {
 					return Response::json([
 							'status' => 'POST_SHOW_SUCCESSFUL',
 							'posts'  => $post->toArray()
@@ -60,17 +54,38 @@ class PostController extends BaseController {
 
 				return Response::json(array(
 						'status'      => 'POST_SHOW_FAILED',
-						'description' => "Returned empty result"
+						'description' => 'No posts for query.',
+						'input'       => 'category?=' . $category
 					), 404
+				);
+				// get posts where tags={a-z}
+			} elseif (is_null($category)) { // TODO: Tag find not working
+				$post = $this->post->whereHas('Tag', function ($q) use ($tagname) {
+					$q->where('tagname', '=', $tagname);
+				})->get();
+
+				if ($post->count() != 0) {
+					return Response::json([
+							'status' => 'POST_SHOW_SUCCESSFUL',
+							'posts'  => $post->toArray()
+						], 200
+					);
+				}
+
+				return Response::json([
+						'status'      => 'POST_SHOW_FAILED',
+						'description' => 'No posts for query.',
+						'input'       => 'tagname?=' . $tagname
+					], 404
 				);
 			}
 		}
 
 		// F@iLZOR$$$$
-		return Response::json(array(
+		return Response::json([
 				'status'      => 'POST_SHOW_FAILED',
-				'description' => "Returned empty result"
-			), 404
+				'description' => 'Returned empty result'
+			], 404
 		);
 	}
 
@@ -91,10 +106,14 @@ class PostController extends BaseController {
 	public function store() {
 		$post = $this->post;
 
-		$post->title   = Request::get('title');
-		$post->content = Request::get('content');
-		$post->type    = Request::get('type');
+		$input = Input::all();
+
+		$category = Category::where('name', '=', $input['category'])->firstOrFail();
+
+		$post->title   = $input['title'];
+		$post->content = $input['content'];
 		$post->user_id = Confide::user()->getAuthIdentifier();
+		$post->category()->associate($category);
 
 		$post->save();
 
@@ -139,7 +158,8 @@ class PostController extends BaseController {
 
 		return Response::json(array(
 				'status' => 'POST_SHOW_SUCCESSFUL',
-				'posts'  => $id->toArray()
+				'posts'  => $id->toArray(),
+				'cats'   => $id->category
 			), 200
 		);
 	}
@@ -163,9 +183,14 @@ class PostController extends BaseController {
 	public function update(Post $id) {
 		$post = $id;
 
-		$post->title   = Request::get('title');
-		$post->content = Request::get('content');
-		$post->type    = Request::get('type');
+		$input = Input::all();
+
+		$category = Category::where('name', '=', $input['category'])->firstOrFail();
+
+		$post->title   = $input['title'];
+		$post->content = $input['content'];
+		$post->user_id = Confide::user()->getAuthIdentifier();
+		$post->category()->associate($category);
 
 		$post->save();
 
@@ -183,13 +208,16 @@ class PostController extends BaseController {
 	 * @return Response
 	 */
 	public function destroy(Post $id) {
-		//$post = $this->post->where('user_id', Auth::user()->getAuthIdentifier())->findOrFail($id);
+		$post = $id;
 
-		if (Auth::check()) {
-			$post = $id;
+		CommentLike::where('id', '=', $id->id)->delete();
 
-			$id->delete();
+		foreach ($post->comments as $comments) {
+			$comments->delete();
+		}
 
+
+		if($id->delete()) {
 			return Response::json(array(
 					'status' => 'POST_DELETE_SUCCESSFUL',
 					'posts'  => $post->toArray()
@@ -198,8 +226,8 @@ class PostController extends BaseController {
 		}
 
 		return Response::json([
-			'status'    =>  'POST_DELETE_FAILED',
-		    'description'   =>  "Post {$id->id} deletion failed."
+			'status'      => 'POST_DELETE_FAILED',
+			'description' => "Post {$id->id} deletion failed."
 		], 200);
 	}
 
@@ -217,8 +245,7 @@ class PostController extends BaseController {
 		return Response::json(array(
 				'status'   => 'POST_COMMENT_RETRIEVE_SUCCESSFUL',
 				'comments' => $comments->toArray()
-				, 200
-			)
+			), 200
 		);
 	}
 

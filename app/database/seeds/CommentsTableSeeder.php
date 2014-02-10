@@ -13,7 +13,7 @@ class CommentsTableSeeder extends Seeder {
 
 		$comments = array(
 			array(
-				'user_id' => $user_id,
+				'user_id' => $user_id + 1,
 				'post_id' => $post_id,
 				'message' => $this->content1
 			),
@@ -23,7 +23,7 @@ class CommentsTableSeeder extends Seeder {
 				'message' => $this->content2
 			),
 			array(
-				'user_id' => $user_id,
+				'user_id' => $user_id + 2,
 				'post_id' => $post_id,
 				'message' => $this->content3
 			),
@@ -34,6 +34,36 @@ class CommentsTableSeeder extends Seeder {
 			),
 			array(
 				'user_id' => $user_id,
+				'post_id' => $post_id + 1,
+				'message' => $this->content2
+			),
+			array(
+				'user_id' => $user_id + 1,
+				'post_id' => $post_id + 2,
+				'message' => $this->content1
+			),
+			array(
+				'user_id' => $user_id + 2,
+				'post_id' => $post_id + 1,
+				'message' => $this->content1
+			),
+			array(
+				'user_id' => $user_id,
+				'post_id' => $post_id + 2,
+				'message' => $this->content2
+			),
+			array(
+				'user_id' => $user_id + 3,
+				'post_id' => $post_id + 3,
+				'message' => $this->content3
+			),
+			array(
+				'user_id' => $user_id + 4,
+				'post_id' => $post_id + 1,
+				'message' => $this->content1
+			),
+			array(
+				'user_id' => $user_id + 1,
 				'post_id' => $post_id + 1,
 				'message' => $this->content2
 			),

@@ -37,14 +37,15 @@ Route::filter('auth', function () {
 			return Response::make('', 401, array('HTTP/1.1 401 Unauthorized'));
 		}
 
-		return Redirect::guest('login');
+		return Response::json([
+			'status'    => 'USER_NOT_LOGGED_IN'
+		], 401);
 	}
 });
 
 
 Route::filter('auth.basic', function () {
-
-	return Auth::oncebasic("username");
+	return Auth::onceBasic('username');
 });
 
 /*

@@ -1201,8 +1201,6 @@ return array(
     'Patchwork\\Utf8\\Bootup' => $vendorDir . '/patchwork/utf8/class/Patchwork/Utf8/Bootup.php',
     'Permission' => $baseDir . '/app/models/Permission.php',
     'Post' => $baseDir . '/app/models/Post.php',
-    'PostCategory' => $baseDir . '/app/models/PostCategory.php',
-    'PostCategoryTableSeeder' => $baseDir . '/app/database/seeds/PostCategoryTableSeeder.php',
     'PostController' => $baseDir . '/app/controllers/PostController.php',
     'PostLike' => $baseDir . '/app/models/PostLike.php',
     'PostLikeTableSeeder' => $baseDir . '/app/database/seeds/PostLikeTableSeeder.php',

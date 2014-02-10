@@ -1,5 +1,5 @@
 # Laravel stuff
-/bootstrap/compiled.php
+# /bootstrap/compiled.php
 # /vendor
 composer
 composer.lock

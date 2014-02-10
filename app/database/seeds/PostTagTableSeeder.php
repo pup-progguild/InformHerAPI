@@ -37,6 +37,5 @@ class PostTagTableSeeder extends Seeder {
 		foreach ($post_tags as $post_tag) {
 			PostTag::create($post_tag);
 		}
-
 	}
 }

@@ -7,27 +7,13 @@
  * Date: 1/2/14
  * Time: 1:41 AM
  *
- * @property integer $id
- * @property string $title
- * @property string $content
- * @property string $geolocation
- * @property string $srclink
- * @property integer $user_id
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @property \Carbon\Carbon $deleted_at
- * @property-read \User $author
- * @property-read \Illuminate\Database\Eloquent\Collection|\Comment[] $comments
- * @property-read \Illuminate\Database\Eloquent\Collection|\Tag[] $tags
  */
 class Post extends Eloquent {
 	protected $softDelete = true;
 
-	protected $hidden = ['deleted_at'];
+	protected $hidden = ['category_id', 'user_id', 'deleted_at'];
 
-	protected $appends = array(
-		//'category'//, 'author'
-	);
+	protected $with = ['category', 'tags', 'comments'];
 
 	/**
 	 * Returns a formatted post content entry,
@@ -57,18 +43,6 @@ class Post extends Eloquent {
 		return $this->author;   //TODO: this doesn't work.
 	}
 
-	public function getCategoryAttribute() {
-		return $this->category->name; //TODO: Why does this return empty, while creating another attribute, returns right result? fuck.
-	}
-
-//	public function setCategoryAttribute() {
-//		$this->attributes['category'] = $this->category()->name;
-//	}
-
-//	public function getTagsAttribute() {
-//		return $this->tags; //TODO: this doesn't work.
-//	}
-
 	/**
 	 * Returns the date of the blog post creation,
 	 * on a good and more readable format :)
@@ -89,39 +63,23 @@ class Post extends Eloquent {
 		return $this->date($this->updated_at);
 	}
 
-	/**
-	 * Get the post's author.
-	 *
-	 * @return User
-	 */
 	public function author() {
 		return $this->belongsTo('User', 'user_id');
 	}
 
-	/**
-	 * Get the post category.
-	 *
-	 * @return Category
-	 */
 	public function category() {
-		return $this->belongsToMany("Category", "post_category", "post_id", "category_id");
+		return $this->belongsTo('Category');
 	}
 
-	/**
-	 * Get the post's tags.
-	 *
-	 * @return Tag
-	 */
 	public function tags() {
 		return $this->belongsToMany('Tag', 'post_tags', 'post_id', 'tag_id');
 	}
 
-	/**
-	 * Get the post's comments.
-	 *
-	 * @return Comment
-	 */
 	public function comments() {
 		return $this->hasMany('Comment');
+	}
+
+	public function likes() {
+		return $this->morphMany('Like', 'imageable');
 	}
 }

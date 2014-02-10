@@ -22,13 +22,6 @@ class CreateTables extends Migration {
 			$t->timestamps();
 		});
 
-		Schema::create('auth_tokens', function (Blueprint $t) {
-			$t->string('token', 100)->unique();
-			$t->timestamps();
-			$t->integer('user_id')->unsigned();
-			$t->foreign('user_id')->references('id')->on('users');
-		});
-
 		Schema::create('roles', function (Blueprint $t) {
 			$t->increments('id')->unsigned();
 			$t->string('name')->unique();
@@ -61,6 +54,13 @@ class CreateTables extends Migration {
 			$t->foreign('role_id')->references('id')->on('roles');
 		});
 
+		Schema::create('categories', function (Blueprint $t) {
+			$t->increments('id');
+			$t->string('name');
+			$t->text('description');
+			$t->timestamps();
+		});
+
 		Schema::create('posts', function (Blueprint $t) {
 			$t->increments('id');
 			$t->string('title', 140);
@@ -69,23 +69,10 @@ class CreateTables extends Migration {
 			$t->string('srclink')->nullable();
 			$t->integer('user_id')->unsigned();
 			$t->foreign('user_id')->references('id')->on('users');
-			$t->timestamps();
-			$t->softDeletes();
-		});
-
-		Schema::create('categories', function (Blueprint $t) {
-			$t->increments('id');
-			$t->string('name');
-			$t->text('description');
-			$t->timestamps();
-		});
-
-		Schema::create('post_category', function (Blueprint $t) {
-			$t->increments('id');
-			$t->integer('post_id')->unsigned();
-			$t->foreign('post_id')->references('id')->on('posts');
 			$t->integer('category_id')->unsigned();
 			$t->foreign('category_id')->references('id')->on('categories');
+			$t->timestamps();
+			$t->softDeletes();
 		});
 
 		Schema::create('tags', function (Blueprint $t) {
@@ -113,20 +100,13 @@ class CreateTables extends Migration {
 			$t->softDeletes();
 		});
 
-		Schema::create('post_likes', function (Blueprint $t) {
+		Schema::create('likes', function (Blueprint $t) {
 			$t->increments('id');
-			$t->integer('post_id')->unsigned();
-			$t->foreign('post_id')->references('id')->on('posts');
 			$t->integer('user_id')->unsigned();
 			$t->foreign('user_id')->references('id')->on('users');
-		});
-
-		Schema::create('comment_likes', function (Blueprint $t) {
-			$t->increments('id');
-			$t->integer('comment_id')->unsigned();
-			$t->foreign('comment_id')->references('id')->on('comments');
-			$t->integer('user_id')->unsigned();
-			$t->foreign('user_id')->references('id')->on('users');
+			$t->integer('imageable_id');
+			$t->string('imageable_type');
+			$t->timestamps();
 		});
 
 		Schema::create('sessions', function (Blueprint $t) {
@@ -165,22 +145,39 @@ class CreateTables extends Migration {
 			$t->dropForeign('permission_role_role_id_foreign');
 		});
 
+		Schema::table('likes', function(Blueprint $t) {
+			$t->dropForeign('likes_user_id_foreign');
+		});
+
+		Schema::table('posts', function(Blueprint $t) {
+			$t->dropForeign('posts_user_id_foreign');
+		});
+
+		Schema::table('post_tags', function (Blueprint $t) {
+			$t->dropForeign('post_tags_post_id_foreign');
+			$t->dropForeign('post_tags_tag_id_foreign');
+		});
 
 		Schema::drop('users');
-		Schema::drop('assigned_roles');
-		Schema::drop('permission_role');
 		Schema::drop('roles');
 		Schema::drop('permissions');
 		Schema::drop('posts');
 		Schema::drop('categories');
-		Schema::drop('post_category');
 		Schema::drop('tags');
+		Schema::drop('comments');
+
 		Schema::drop('post_likes');
 		Schema::drop('comment_likes');
-		Schema::drop('post_tags');
-		Schema::drop('comments');
+
 		Schema::drop('likes');
+
+		Schema::drop('post_tags');
+
+		Schema::drop('assigned_roles');
+		Schema::drop('permission_role');
+
 		Schema::drop('sessions');
 		Schema::drop('password_reminders');
+		Schema::drop('cache');
 	}
 }

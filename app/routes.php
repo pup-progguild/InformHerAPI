@@ -18,8 +18,12 @@ Route::get('/', function () {
 });
 
 Route::get('/test', function () {
-	return View::make('test');
-});
+	//return View::make('test');
+
+	$post = Comment::find(1);
+
+	echo $post->likes->count();
+}); //->before('auth.basic');
 
 /*
  * InformHer API routes/ endpoints
@@ -35,12 +39,58 @@ Route::model("tag", "Tag");
 	"uses" => "CommentController@show"
 ]);*/
 
+Route::group(['prefix' => 'oauth'], function() {
+	Route::post('/access_token', function () {
+		return AuthorizationServer::performAccessTokenFlow();
+	});
+
+	Route::get('/authorize', array(
+		'before' => 'check-authorization-params|auth', function () {
+			// get the data from the check-authorization-params filter
+			$params = Session::get('authorize-params');
+
+			// get the user id
+			$params['user_id'] = Auth::user()->id;
+
+			// display the authorization form
+			return View::make('authorization-form', array('params' => $params));
+		}
+	));
+
+	Route::post('/authorize', array(
+		'before' => 'check-authorization-params|auth|csrf', function () {
+			// get the data from the check-authorization-params filter
+			$params = Session::get('authorize-params');
+
+			// get the user id
+			$params['user_id'] = Auth::user()->id;
+
+			// check if the user approved or denied the authorization request
+			if (Input::get('approve') !== null) {
+
+				$code = AuthorizationServer::newAuthorizeRequest('user', $params['user_id'], $params);
+
+				Session::forget('authorize-params');
+
+				return Redirect::to(AuthorizationServer::makeRedirectWithCode($code, $params));
+			}
+
+			if (Input::get('deny') !== null) {
+
+				Session::forget('authorize-params');
+
+				return Redirect::to(AuthorizationServer::makeRedirectWithError($params));
+			}
+		}
+	));
+});
 
 Route::group(["prefix" => "post"], function () {
 	Route::get("/", [
 		"as"   => "post/index",
 		"uses" => "PostController@index"
 	]);
+
 
 	Route::get("/{post}", [
 		"as"   => "GetPost",
@@ -58,18 +108,9 @@ Route::group(["prefix" => "post"], function () {
 	]);
 
 	Route::group(["before" => "auth.basic"], function () {
-		Route::post("/ask", [
-			"as"   => "PostInAsk",
+		Route::post("/", [
+			"as"   => "Post",
 			"uses" => "PostController@store"
-		]);
-		Route::post("/relate", [
-			"as"   => "PostInRelate",
-			"uses" => "PostController@store"
-		]);
-
-		Route::post("/shoutout", [
-			"as"   => "PostInShoutout",
-			"uses" => "PostController@storeShoutout"
 		]);
 
 		Route::put("/{post}/update", [

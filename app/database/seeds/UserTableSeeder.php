@@ -11,22 +11,28 @@ class UserTableSeeder extends Seeder {
 		$users = array(
 			[
 				'username'   => 'ichi-san',
-				'password'   => Hash::make('one'),
+				'password'   => 'one_one_one',
 				'email'      => 'ichi-san@informher.com',
 				'twt_handle' => 'ichi-san'
 			],
 			[
 				'username'   => 'ni-kun',
-				'password'   => Hash::make('two'),
+				'password'   => 'two_two_two',
 				'email'      => 'ni-kun@informher.com',
 				'twt_handle' => 'ni-kun'
 			],
 			[
 				'username'   => 'san-kun',
-				'password'   => Hash::make('three'),
+				'password'   => 'three_three_three',
 				'email'      => 'san-kun@informher.com',
 				'twt_handle' => 'san-kun'
-			]
+			],
+		    [
+			    'username'   => 'awkwardusername',
+		        'password'   => 'Password???',
+		        'email'      => 'markjayson.fuentes@outlook.com',
+		        'twt_handle' => 'the_dead_poetic'
+		    ]
 		);
 
 		foreach ($users as $user) {
