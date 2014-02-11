@@ -18,7 +18,6 @@ class UserController extends BaseController {
 	 */
 	public function getCreate() {
 		return View::make(Config::get('confide::signup_form'));
-
 	}
 
 	/**
@@ -42,15 +41,18 @@ class UserController extends BaseController {
 
 		if ($user->id) {
 			// Redirect with success message, You may replace "Lang::get(..." for your custom message.
-			return Redirect::to('user/login')
-				->with('notice', Lang::get('confide::confide.alerts.account_created'));
+			return Response::json([
+				'status' => 'USER_CREATE_SUCCESSFUL',
+			    'description' => Lang::get('confide::confide.alerts.account_created')
+			]);
 		} else {
 			// Get validation errors (see Ardent package)
 			$error = $user->errors()->all(':message');
 
-			return Redirect::to('user/create')
-				->withInput(Input::except('password'))
-				->with('error', $error);
+			return Response::json([
+				'status'      => 'USER_CREATE_SUCCESSFUL',
+				'description' => $error
+			]);
 		}
 	}
 
@@ -91,7 +93,7 @@ class UserController extends BaseController {
 			// Fix pull #145
 			return Response::json([
 				'status' => 'USER_LOGIN_SUCCESS'
-			]);
+			], 200);
 		} else {
 			$user = new User;
 
@@ -104,9 +106,10 @@ class UserController extends BaseController {
 				$err_msg = Lang::get('confide::confide.alerts.wrong_credentials');
 			}
 
-			return Redirect::to('user/login')
-				->withInput(Input::except('password'))
-				->with('error', $err_msg);
+			return Response::json([
+				'status' => 'USER_LOGIN_FAILED',
+			    'description'   => $err_msg
+			], 401);
 		}
 	}
 

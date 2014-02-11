@@ -19,13 +19,25 @@ Route::get('/', function () {
 
 Route::get('/test', function () {
 	//return View::make('test');
+	//Cache::remember('test', 15, function() {
+		$post = Post::all();
 
-	$post = Like::find(6);
+		echo Response::json([
+			'posts' => $post->toArray()
+		]);
+	//});
+})->before('auth.basic'); //->before('auth.basic');
+
+Route::get('/test2', function () {
+	//return View::make('test');
+	//Cache::remember('test', 15, function() {
+	$post = Post::all();
 
 	echo Response::json([
 		'posts' => $post->toArray()
 	]);
-}); //->before('auth.basic');
+	//});
+})->before('auth.standard'); //->before('auth.basic');
 
 /*
  * InformHer API routes/ endpoints
@@ -93,7 +105,6 @@ Route::group(["prefix" => "post"], function () {
 		"uses" => "PostController@index"
 	]);
 
-
 	Route::get("/{post}", [
 		"as"   => "GetPost",
 		"uses" => "PostController@show"
@@ -133,7 +144,6 @@ Route::group(['prefix' => 'tags'], function () {
 	    "uses"  =>  "TagController@index"
 	]);
 });
-
 
 // Confide RESTful route
 Route::get('user/confirm/{code}', 'UserController@getConfirm');
