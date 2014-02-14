@@ -113,7 +113,6 @@ class CreateTables extends Migration {
 			$t->string('id')->unique();
 			$t->text('payload');
 			$t->integer('last_activity');
-			$t->timestamps();
 		});
 
 		Schema::create('password_reminders', function (Blueprint $t) {
