@@ -16,6 +16,7 @@
  * @property \Carbon\Carbon $deleted_at
  * @property-read \User $author
  * @property-read \Post $post
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Like[] $likes
  */
 class Comment extends Eloquent {
 
@@ -23,7 +24,7 @@ class Comment extends Eloquent {
 
 	protected $hidden = ['deleted_at', 'user_id', 'post_id'];
 
-	protected $with = ['likes'];
+	protected $with = ['likes', 'author'];
 
 	/**
 	 * Get the comment's content.

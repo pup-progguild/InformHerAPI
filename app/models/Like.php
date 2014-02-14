@@ -10,11 +10,14 @@
  * @property integer $user_id
  * @property integer $imageable_id
  * @property string $imageable_type
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read \User $liker
  */
 
 class Like extends Eloquent {
 
-	protected $with = [ 'likers' ];
+	protected $with = [ 'liker' ];
 
 	protected $hidden = ['user_id','id', 'imageable_id', 'imageable_type'];
 
@@ -22,7 +25,7 @@ class Like extends Eloquent {
 		return $this->morphTo();
 	}
 
-	public function likers() {
+	public function liker() {
 		return $this->belongsTo('User', 'user_id');
 	}
 }

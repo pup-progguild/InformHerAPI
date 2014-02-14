@@ -21,6 +21,7 @@
  * @property-read \Category $category
  * @property-read \Illuminate\Database\Eloquent\Collection|\Tag[] $tags
  * @property-read \Illuminate\Database\Eloquent\Collection|\Comment[] $comments
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Like[] $likes
  */
 class Post extends Eloquent {
 	protected $softDelete = true;
