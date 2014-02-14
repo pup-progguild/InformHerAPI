@@ -29,9 +29,15 @@ class UserTableSeeder extends Seeder {
 			],
 		    [
 			    'username'   => 'awkwardusername',
-		        'password'   => 'Password???',
+		        'password'   => 'asduff',
 		        'email'      => 'markjayson.fuentes@outlook.com',
 		        'twt_handle' => 'the_dead_poetic'
+		    ],
+		    [
+			    'username'   => 'Temoto-kun',
+			    'password'   => 'asduff',
+			    'email'      => 'kiirofuriku@hotmail.com',
+			    'twt_handle' => 'temotoKun'
 		    ]
 		);
 
