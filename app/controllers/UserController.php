@@ -13,15 +13,6 @@
 class UserController extends BaseController {
 
 	/**
-	 * Displays the form for account creation
-	 
-	public function getCreate() {
-		return View::make(Config::get('confide::signup_form'));
-	}
-	*
-	*/
-
-	/**
 	 * Stores new account
 	 *
 	 */
@@ -56,20 +47,6 @@ class UserController extends BaseController {
 					'description' => $error
 				], 200, [ 'Content-Type' => 'application/javascript' ]
 			);
-		}
-	}
-
-	/**
-	 * Displays the login form
-	 *
-	 */
-	public function getLogin() {
-		if (Confide::user()) {
-			// If user is logged, redirect to internal
-			// page, change it to '/admin', '/dashboard' or something
-			return Redirect::to('/');
-		} else {
-			return View::make(Config::get('confide::login_form'));
 		}
 	}
 
@@ -137,14 +114,6 @@ class UserController extends BaseController {
 	}
 
 	/**
-	 * Displays the forgot password form
-	 *
-	 */
-	public function getForgot() {
-		return View::make(Config::get('confide::forgot_password_form'));
-	}
-
-	/**
 	 * Attempt to send change password link to the given email
 	 *
 	 */
@@ -205,7 +174,9 @@ class UserController extends BaseController {
 	public function getLogout() {
 		Confide::logout();
 
-		return Redirect::to('/');
+		return Response::json([
+			'status'    =>  'USER_LOGGED_OUT_SUCCESS'
+		]);
 	}
 
 }
