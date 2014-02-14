@@ -16,58 +16,20 @@ class TagController extends BaseController {
 	public function index() {
 		$tag = $this->tag->all();
 
-		$data = Input::all();
-
-		$rules = [
-
-			'tagname' => 'alpha_num'
-		];
-
-		$isValid = Validator::make($data, $rules)->passes();
-
-		if ($isValid) {
-			$tagname = Input::get('tagname');
-
-			if (is_null($tagname)) {
-				return Response::json([
-						"status" => "TAG_SHOW_SUCCESS",
-						"tags"   => $tag->toArray()
-					], 200
-				);
-			} else {
-				$tag = Tag::where('tagname', "=", $tagname)->get();
-
-				if($tag->count() != 0) {
-					return Response::json([
-							"status" => "TAG_SHOW_SUCCESS",
-							"tags"   => $tag->toArray()
-						], 200
-					);
-				}
-
-				return Response::json([
-					"status"      => "TAG_SHOW_FAILED",
-					"description" => "Returned empty result"
-				], 404);
-			}
+		if ($tag->count() != 0) {
+			return Response::json([
+					"status" => "TAG_SHOW_SUCCESS",
+					"tags"   => $tag->toArray()
+				], 200
+			);
 		}
 
-
 		return Response::json([
-			"status" => "TAG_SHOW_FAILED",
-			"description"   => "Returned empty result"
+			"status"      => "TAG_SHOW_FAILED",
+			"description" => "Tag list empty"
 		], 404);
 	}
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @param   Tag $id
-	 * @return Response
-	 */
-	public function create(Tag $id) {
-
-	}
 
 	/**
 	 * Store a newly created resource in storage.

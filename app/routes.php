@@ -101,7 +101,7 @@ Route::group(['prefix' => 'oauth'], function() {
 
 Route::group(["prefix" => "post"], function () {
 	Route::get("/", [
-		"as"   => "post/index",
+		"as"   => "Posts",
 		"uses" => "PostController@index"
 	]);
 
@@ -139,9 +139,36 @@ Route::group(["prefix" => "post"], function () {
 });
 
 Route::group(['prefix' => 'tags'], function () {
-	Route::get("/", [
-		"as"    =>  "Tags",
-	    "uses"  =>  "TagController@index"
+	Route::get('/', [
+		'as'    =>  'Tags',
+	    'uses'  =>  'TagController@index'
+	]);
+
+	Route::post('/', [
+		'as'   => 'AddTags',
+		'uses' => 'TagController@index'
+	]);
+
+	Route::delete('/', [
+		'as'   => 'DeleteTag',
+		'uses' => 'TagController@destroy'
+	]);
+});
+
+Route::group(['prefix' => 'category'], function () {
+	Route::get('/', [
+		'as'    =>  'Categories',
+	    'uses'  =>  'CategoryController@index'
+	]);
+
+	Route::post('/', [
+		'as'    =>  'AddCategory',
+	    'uses'  =>  'CategoryController@store'
+	]);
+
+	Route::delete('/', [
+		'as'    =>  'DeleteCategory',
+	    'uses'  =>  'CategoryController@destroy'
 	]);
 });
 

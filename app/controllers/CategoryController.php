@@ -1,11 +1,17 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: REDFOX Wizpad
+ * Date: 2/14/14
+ * Time: 3:24 PM
+ */
 
-class CommentController extends BaseController {
+class CategoryController extends BaseController {
 
-	protected $comment;
+	protected $category;
 
-	public function __construct(Comment $comment) {
-		$this->comment = $comment;
+	public function __construct(Category $category) {
+		$this->category = $category;
 	}
 
 	/**
@@ -14,7 +20,19 @@ class CommentController extends BaseController {
 	 * @return Response
 	 */
 	public function index() {
+		$category = $this->category->all();
 
+		if($category->count() != 0) {
+			return Response::json([
+				'status'        =>  'CATEGORY_SHOW_SUCCESS',
+			    'categories'    =>  $category->toArray()
+			], 200);
+		}
+
+		return Response::json([
+			'status'        =>  'CATEGORY_SHOW_FAILED',
+		    'description'   =>  'Category entry list empty'
+		]);
 	}
 
 	/**
@@ -42,24 +60,8 @@ class CommentController extends BaseController {
 	 * @param  int $id
 	 * @return Response
 	 */
-	public function show(Post $id1, Comment $id2) {      //TODO - wrong logic
-		$comments = $id1->comments->lists($id2->id, 'id');
+	public function show($id) { //TODO - wrong logic
 
-		if ($id2->count() == 0) {
-			return Response::json(array(
-					'status'      => 'COMMENT_SHOW_FAILED',
-					'description' => "Comment {$id2->id} not found."
-				), 404
-			);
-		}
-
-		var_dump($comments);
-
-		return Response::json(array(
-				'status' => 'COMMENT_SHOW_SUCCESSFUL',
-				'posts'  => 'asdasdas'
-			), 200
-		);
 	}
 
 	/**
@@ -91,5 +93,4 @@ class CommentController extends BaseController {
 	public function destroy($id) {
 		//
 	}
-
 }

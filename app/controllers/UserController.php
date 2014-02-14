@@ -95,8 +95,9 @@ class UserController extends BaseController {
 			// Otherwise fallback to '/'
 			// Fix pull #145
 			return Response::json([
-				'status' => 'USER_LOGIN_SUCCESS'
-			], 200, [ 'Content-Type' => 'application/javascript' ]);
+				'status' => 'USER_LOGIN_SUCCESS',
+			    'user'   => Confide::user()
+			], 200);
 		} else {
 			$user = new User;
 
@@ -112,7 +113,7 @@ class UserController extends BaseController {
 			return Response::json([
 				'status' => 'USER_LOGIN_FAILED',
 			    'description'   => $err_msg
-			], 401, [ 'Content-Type' => 'application/javascript' ]);
+			], 401);
 		}
 	}
 

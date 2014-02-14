@@ -150,6 +150,8 @@ class PostController extends BaseController {
 
 		$category = Category::where('name', '=', $input['category'])->firstOrFail();
 
+
+
 		$post->title   = $input['title'];
 		$post->content = $input['content'];
 		$post->user_id = Confide::user()->getAuthIdentifier();
@@ -160,7 +162,7 @@ class PostController extends BaseController {
 		return Response::json(array(
 				'status' => 'POST_UPDATE_SUCCESSFUL',
 				'posts'  => $post->toArray()
-			), 200
+			), 201
 		);
 	}
 
@@ -173,10 +175,6 @@ class PostController extends BaseController {
 	public function destroy(Post $id) {
 		$post = $id;
 
-//		Like::where('user_id', '=', Auth::user()->getAuthIdentifier())->where('imageable_type', '=', 'post')->where('imageable_id', '=', $id->id)->delete();
-//
-//		Like::where('user_id', '=', Auth::user()->getAuthIdentifier())->where('imageable_type', '=', 'comment')->where('imageable_id', '=', $id->id)->delete();
-
 		foreach ($id->comments as $comments) {
 			$comments->delete();
 		}
@@ -185,7 +183,7 @@ class PostController extends BaseController {
 			return Response::json(array(
 					'status' => 'POST_DELETE_SUCCESSFUL',
 					'posts'  => $post->toArray()
-				), 200
+				), 204
 			);
 		}
 
