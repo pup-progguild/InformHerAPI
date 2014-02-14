@@ -25,7 +25,7 @@ class ConfideUser extends Ardent implements UserInterface {
      *
      * @var array
      */
-    protected $hidden = array('password', 'deleted_at');
+    protected $hidden = array('password');
 
     /**
      * List of attribute names which should be hashed. (Ardent)

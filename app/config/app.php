@@ -117,9 +117,10 @@ return array(
 
 		'Zizaco\Confide\ConfideServiceProvider',
 		'Zizaco\Entrust\EntrustServiceProvider',
+		
+		'Barryvdh\Cors\CorsServiceProvider',
 
 		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider', // ide_helpers
-		'Barryvdh\Debugbar\ServiceProvider', // debugs
 	),
 
 	/*

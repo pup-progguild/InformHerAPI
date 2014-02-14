@@ -1,9 +1,4 @@
-#Ardent (DEPRECATED)
---------------------------------------------
-
-**Warning!** This is a fork created with the only purpose of fixing compatibility issues in order to make the legacy versions of [Confide](https://github.com/Zizaco/confide) work properly. "laravelbook" is no longer maintaining Ardent, so you should not use this package anymore.
-
---------------------------------------------
+#Ardent
 
 Self-validating smart models for Laravel Framework 4's Eloquent O/RM.
 
@@ -109,7 +104,7 @@ Route::post('register', function() {
 );
 ```
 
-**Enter Ardent!**
+**Enter Ardent!** 
 
 **Ardent** - the magic-dust-powered, wrist-friendly, one-stop solution to all your dreary input sanitization boilerplates!
 
@@ -218,7 +213,7 @@ You can create custom validation rules the [same way](http://four.laravel.com/do
 <a name="hydra"></a>
 ## Automatically Hydrate Ardent Entities
 
-Ardent is capable of hydrating your entity model class from the form input submission automatically!
+Ardent is capable of hydrating your entity model class from the form input submission automatically! 
 
 Let's see it action. Consider this snippet of code:
 
@@ -239,7 +234,7 @@ $user->save();
 
 That's it! All we've done is remove the boring stuff.
 
-Believe it or not, the code above performs essentially the same task as its older, albeit rather verbose sibling. Ardent populates the model object with attributes from user submitted form data. No more hair-pulling trying to find out which Eloquent property you've forgotten to populate. Let Ardent take care of the boring stuff, while you get on with the fun stuffs!
+Believe it or not, the code above performs essentially the same task as its older, albeit rather verbose sibling. Ardent populates the model object with attributes from user submitted form data. No more hair-pulling trying to find out which Eloquent property you've forgotten to populate. Let Ardent take care of the boring stuff, while you get on with the fun stuffs!  
 It follows the same [mass assignment rules](http://four.laravel.com/docs/eloquent#mass-assignment) internally, depending on the `$fillable`/`$guarded` properties.
 
 To enable the auto-hydration feature, simply set the `$autoHydrateEntityFromInput` instance variable to `true` in your model class. However, to prevent filling pre-existent properties, if you want auto-hydration also for update scenarios, you should use instead `$forceEntityHydrationFromInput`:
@@ -275,7 +270,7 @@ class User extends \LaravelBook\Ardent\Ardent {
     if($this->isDirty('password')) {
       $this->password = Hash::make($this->password);
     }
-
+    
     return true;
     //or don't return nothing, since only a boolean false will halt the operation
   }
@@ -336,7 +331,7 @@ or one of the related constants (`Ardent::HAS_MANY` or `Ardent::MORPH_ONE` for e
     - `foreignKey` [optional], valid for `hasOne`, `hasMany`, `belongsTo` and `belongsToMany`
     - `table`,`otherKey` [optional],`timestamps` [boolean, optional], and `pivotKeys` [array, optional], valid for `belongsToMany`
     - `name`, `type` and `id`, used by `morphTo`, `morphOne` and `morphMany` (the last two requires `name` to be defined)
-
+    
 > **Note:** This feature was based on the easy [relations on Yii 1.1 ActiveRecord](http://www.yiiframework.com/doc/guide/1.1/en/database.arr#declaring-relationship).
 
 <a name="purge"></a>
@@ -355,8 +350,8 @@ class User extends \LaravelBook\Ardent\Ardent {
 You can also purge additional fields. The attribute `Ardent::$purgeFilters` is an array of closures to which you can add your custom rules. Those closures receive the attribute key as argument and should return `false` for attributes that should be purged. Like this:
 
 ```php
-function __construct() {
-  parent::__construct();
+function __construct($attributes = array()) {
+  parent::__construct($attributes);
 
   $this->purgeFilters[] = function($key) {
     $purge = array('tempData', 'myAttribute');

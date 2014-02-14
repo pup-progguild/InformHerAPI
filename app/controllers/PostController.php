@@ -35,7 +35,7 @@ class PostController extends BaseController {
 					return Response::json([
 							'status' => 'POST_SHOW_SUCCESSFUL',
 							'posts'  => $post->toArray()
-						], 200
+						], 200, [ 'Content-Type' => 'application/javascript' ]
 					);
 				}
 				// get posts where category={a-z}
@@ -48,7 +48,7 @@ class PostController extends BaseController {
 					return Response::json([
 							'status' => 'POST_SHOW_SUCCESSFUL',
 							'posts'  => $post->toArray()
-						], 200
+						], 200, [ 'Content-Type' => 'application/javascript' ]
 					);
 				}
 
@@ -56,7 +56,7 @@ class PostController extends BaseController {
 						'status'      => 'POST_SHOW_FAILED',
 						'description' => 'No posts for query.',
 						'input'       => 'category?=' . $category
-					), 404
+					), 404, [ 'Content-Type' => 'application/javascript' ]
 				);
 				// get posts where tags={a-z}
 			} elseif (is_null($category)) { // TODO: Tag find not working
@@ -68,7 +68,7 @@ class PostController extends BaseController {
 					return Response::json([
 							'status' => 'POST_SHOW_SUCCESSFUL',
 							'posts'  => $post->toArray()
-						], 200
+						], 200, [ 'Content-Type' => 'application/javascript' ]
 					);
 				}
 
@@ -76,7 +76,7 @@ class PostController extends BaseController {
 						'status'      => 'POST_SHOW_FAILED',
 						'description' => 'No posts for query.',
 						'input'       => 'tagname?=' . $tagname
-					], 404
+					], 404, [ 'Content-Type' => 'application/javascript' ]
 				);
 			}
 		}
@@ -85,7 +85,7 @@ class PostController extends BaseController {
 		return Response::json([
 				'status'      => 'POST_SHOW_FAILED',
 				'description' => 'Returned empty result'
-			], 404
+			], 404, [ 'Content-Type' => 'application/javascript' ]
 		);
 	}
 
@@ -111,7 +111,7 @@ class PostController extends BaseController {
 		return Response::json(array(
 				'status' => 'POST_ADD_SUCCESSFUL',
 				'posts'  => $post->toArray()
-			), 200
+			), 200, [ 'Content-Type' => 'application/javascript' ]
 		);
 	}
 
@@ -126,7 +126,7 @@ class PostController extends BaseController {
 			return Response::json(array(
 					'status'      => 'POST_SHOW_FAILED',
 					'description' => "Post {$id} not found."
-				), 404
+				), 404, [ 'Content-Type' => 'application/javascript' ]
 			);
 		}
 
