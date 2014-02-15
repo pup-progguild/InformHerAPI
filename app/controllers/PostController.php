@@ -1,5 +1,7 @@
 <?php
 
+
+
 class PostController extends BaseController {
 
 	protected $post;
@@ -31,48 +33,69 @@ class PostController extends BaseController {
 
 			// get all posts
 			if (is_null($category) && is_null($tagname)) {
-				if ($post->count() != 0) {
+				$post_count = $post->count();
+
+				$posts_a = [
+					'count'  => $post_count,
+					'result' => $post->toArray()
+				];
+
+				if ($post_count != 0) {
 					return Response::json([
-							'status' => 'POST_SHOW_SUCCESSFUL',
-							'posts'  => $post->toArray()
-						], 200);
+						'status' => 'POST_SHOW_SUCCESSFUL',
+						'posts'  => $posts_a
+					], 200);
 				}
-				// get posts where category={a-z}
+			// get posts where category={a-z}
 			} elseif (is_null($tagname)) {
 				$post = $this->post->whereHas('Category', function ($q) use ($category) {
 					$q->where('name', '=', $category);
 				})->get();
 
-				if ($post->count() != 0) {
+				$post_count = $post->count();
+
+				if ($post_count != 0) {
+					$posts_a = [
+						'count'  => $post_count,
+						'result' => $post->toArray()
+					];
+
 					return Response::json([
-							'status' => 'POST_SHOW_SUCCESSFUL',
-							'posts'  => $post->toArray()
-						], 200);
+						'status' => 'POST_SHOW_SUCCESSFUL',
+						'posts'  => $posts_a
+					], 200);
 				}
 
 				return Response::json([
-						'status'      => 'POST_SHOW_FAILED',
-						'description' => 'No posts for query.',
-						'input'       => 'category?=' . $category
-					], 404);
-				// get posts where tags={a-z}
+					'status'      => 'POST_SHOW_FAILED',
+					'description' => 'No posts for query.',
+					'input'       => 'category?=' . $category
+				], 404);
+			// get posts where tags={a-z}
 			} elseif (is_null($category)) { // TODO: Tag find not working
 				$post = $this->post->whereHas('Tag', function ($q) use ($tagname) {
 					$q->where('tagname', '=', $tagname);
 				})->get();
 
-				if ($post->count() != 0) {
+				$post_count = $post->count();
+
+				if ($post_count != 0) {
+					$posts_a = [
+						'count'     => $post_count,
+					    'result'    => $post->toArray()
+					];
+
 					return Response::json([
-							'status' => 'POST_SHOW_SUCCESSFUL',
-							'posts'  => $post->toArray()
-						], 200);
+						'status' => 'POST_SHOW_SUCCESSFUL',
+						'posts'  => $posts_a
+					], 200);
 				}
 
 				return Response::json([
-						'status'      => 'POST_SHOW_FAILED',
-						'description' => 'No posts for query.',
-						'input'       => 'tagname?=' . $tagname
-					], 404);
+					'status'      => 'POST_SHOW_FAILED',
+					'description' => 'No posts for query.',
+					'input'       => 'tagname?=' . $tagname
+				], 404);
 			}
 		}
 
@@ -112,8 +135,8 @@ class PostController extends BaseController {
 	 * @return Response
 	 */
 	public function create_edit(Post $post = null) {
-		if(is_null($post)) {
-			$post = $this->post;
+		if (is_null($post)) {
+			$post   = $this->post;
 			$status = 'POST_ADD';
 		} else {
 			$status = 'POST_UPDATE';
@@ -131,7 +154,7 @@ class PostController extends BaseController {
 
 		$post->category()->associate($category);
 
-		if($post->save()) {
+		if ($post->save()) {
 			$post->tags()->sync($tags);
 
 			return Response::json([
@@ -157,7 +180,7 @@ class PostController extends BaseController {
 	public function destroy(Post $post) {
 		Comment::where('post_id', '=', $post->id)->delete();
 
-		if($post->delete()) {
+		if ($post->delete()) {
 			return Response::json([
 					'status' => 'POST_DELETE_SUCCESSFUL'
 				], 204
@@ -183,16 +206,21 @@ class PostController extends BaseController {
 
 		$comments = Comment::where('post_id', '=', $post->id)->findOrFail($comment->id);
 
+		$comments_a = [
+			'count'  => $comments->count(),
+			'result' => $comments->toArray()
+		];
+
 		return Response::json([
-			'status'    => 'POST_COMMENT_RETRIEVE_SUCCESSFUL',
-		    'comment'   => $comments->toArray()
+			'status'  => 'POST_COMMENT_RETRIEVE_SUCCESSFUL',
+			'comment' => $comments_a
 		], 200);
 	}
 
 	public function tags(Post $post) {
 		$tags = $post->tags;
 
-		if($tags->count() == 0) {
+		if ($tags->count() == 0) {
 			return Response::json([
 					'status'      => 'POST_TAGS_RETRIEVE_FAILED',
 					'description' => "Tags for Post {$post->id} not found."
@@ -200,23 +228,33 @@ class PostController extends BaseController {
 			);
 		}
 
+		$tags_a = [
+			'count'     =>  $tags->count(),
+		    'result'    =>  $tags->toArray()
+		];
+
 		return Response::json([
-			'status'  => 'POST_TAGS_RETRIEVE_SUCCESSFUL',
-			'tags' => $tags->toArray()
+			'status' => 'POST_TAGS_RETRIEVE_SUCCESSFUL',
+			'tags'   => $tags_a
 		], 200);
 	}
 
 	public function likes(Post $post) {
 		$likes = $post->likes;
 
+		$likes_a = [
+			'count'  => $likes->count(),
+			'result' => $likes->toArray()
+		];
+
 		return Response::json([
-			'status'    =>  'POST_LIKES_RETRIEVE_SUCCESSFUL',
-		    'likes'      =>  $likes->toArray()
+			'status' => 'POST_LIKES_RETRIEVE_SUCCESSFUL',
+			'likes'  => $likes_a
 		]);
 	}
 
 	public function create_update_comment(Post $post, Comment $comment = null) {
-		if(is_null($comment))
+		if (is_null($comment))
 			$comment = new Comment;
 
 		$comment->user_id = Confide::user()->getAuthIdentifier();
@@ -225,13 +263,13 @@ class PostController extends BaseController {
 		$comment = $post->comments()->save($comment);
 
 		return Response::json([
-			'status'    =>  'POST_COMMENT_CREATE_SUCCESS',
-		    'comment'   =>  $comment->toArray()
+			'status'  => 'POST_COMMENT_CREATE_SUCCESS',
+			'comment' => $comment->toArray()
 		], 201);
 	}
 
 	public function delete_comment(Post $post, Comment $comment = null) {
-		if(is_null($comment)) {
+		if (is_null($comment)) {
 			Comment::where('post_id', '=', $post->id)->delete();
 
 			return Response::json([
@@ -253,13 +291,30 @@ class PostController extends BaseController {
 		);
 	}
 
-	public function like(Post $post) { // TODO: This isn't the thing that this shit is supposed to do
-		$likes = $post->likes;
+	public function like(Post $post) {
+		$user_id = Confide::user()->getAuthIdentifier();
+		$post_id = $post->id;
+
+		$like = Like::where('user_id', '=', $user_id)->where('imageable_id', '=', $post_id)->first();
+
+		if(!is_null($like)) {
+			$like->delete();
+		} else {
+			$post->likes()->save(new Like([
+				'user_id' => $user_id
+			]));
+		}
+
+		$likes = Post::find($post->id)->likes;
+
+		$likes_a = [
+			'count' => $likes->count(),
+		    'result' => $likes->toArray()
+		];
 
 		return Response::json([
-			'status'        =>  'POST_LIKE_RETRIEVE_SUCCESS',
-		    'description'   =>  $likes->toArray()
-		]);
+			'status'    =>  'POST_CREATE_LIKE_SUCCESS',
+		    'likes'     =>  $likes_a
+		], 200);
 	}
-
 }

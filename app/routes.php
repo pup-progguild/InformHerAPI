@@ -18,7 +18,7 @@ Route::get('/', function () {
 });
 
 Route::post('/test', function () {
-	$post = new Post;
+/*	$post = new Post;
 
 	if (is_null($post)) {
 		$post   = $this->post;
@@ -52,7 +52,7 @@ Route::post('/test', function () {
 	    'user_id' => $post->user_id,
 	    'category' => $post->category->name,
 	    'tags' => $post->tags->toArray()
-	]);
+	]);*/
 });
 
 Route::get('/test', function () {
@@ -145,7 +145,7 @@ Route::group(["prefix" => "posts"], function () {
 
 	Route::get("/{post}/likes", [
 		"as"   => "GetAllLikesFromPost",
-	    "uses" => "PostController@like"
+	    "uses" => "PostController@likes"
 	]);
 
 	Route::group(["before" => "auth"], function () {
@@ -154,9 +154,14 @@ Route::group(["prefix" => "posts"], function () {
 			"uses" => "PostController@create_edit"
 		]);
 
-		Route::post("/{post}/comment/{comment?}", [
+		Route::post("/{post}/comments/{comment?}", [
 			"as"   => "CreateUpdateComment",
 			"uses" => "PostController@create_update_comment"
+		]);
+
+		Route::post("/{post}/like", [
+			"as"   => "LikePost",
+		    "uses" => "PostController@like"
 		]);
 
 		Route::delete("/{post}", [

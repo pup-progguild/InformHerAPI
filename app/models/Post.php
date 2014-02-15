@@ -42,7 +42,11 @@ class Post extends Eloquent {
 		return nl2br($this->content);
 	}
 
-	/**
+	public function isTheAuthor() {
+        return $this->user_id === Auth::user()->id ? true : false;
+    }
+
+/**
 	 * Get the date the post was created.
 	 *
 	 * @param \Carbon|null $date

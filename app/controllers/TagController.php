@@ -50,16 +50,6 @@ class TagController extends BaseController {
 	}
 
 	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  Tag $id
-	 * @return Response
-	 */
-	public function edit(Tag $id) {
-		//
-	}
-
-	/**
 	 * Update the specified resource in storage.
 	 *
 	 * @param  Tag $id

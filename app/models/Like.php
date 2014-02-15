@@ -19,6 +19,8 @@ class Like extends Eloquent {
 
 	protected $with = [ 'liker' ];
 
+	protected $fillable = [ 'user_id' ];
+
 	protected $hidden = ['user_id','id', 'imageable_id', 'imageable_type'];
 
 	public function imageable() {

@@ -176,7 +176,7 @@ class UserController extends BaseController {
 
 		return Response::json([
 			'status'    =>  'USER_LOGGED_OUT_SUCCESS'
-		]);
+		], 200);
 	}
 
 }
