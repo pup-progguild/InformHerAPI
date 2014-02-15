@@ -30,7 +30,6 @@ class TagController extends BaseController {
 		], 404);
 	}
 
-
 	/**
 	 * Store a newly created resource in storage.
 	 *

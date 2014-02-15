@@ -35,8 +35,7 @@ class PostController extends BaseController {
 					return Response::json([
 							'status' => 'POST_SHOW_SUCCESSFUL',
 							'posts'  => $post->toArray()
-						], 200, [ 'Content-Type' => 'application/javascript' ]
-					);
+						], 200);
 				}
 				// get posts where category={a-z}
 			} elseif (is_null($tagname)) {
@@ -48,16 +47,14 @@ class PostController extends BaseController {
 					return Response::json([
 							'status' => 'POST_SHOW_SUCCESSFUL',
 							'posts'  => $post->toArray()
-						], 200, [ 'Content-Type' => 'application/javascript' ]
-					);
+						], 200);
 				}
 
-				return Response::json(array(
+				return Response::json([
 						'status'      => 'POST_SHOW_FAILED',
 						'description' => 'No posts for query.',
 						'input'       => 'category?=' . $category
-					), 404, [ 'Content-Type' => 'application/javascript' ]
-				);
+					], 404);
 				// get posts where tags={a-z}
 			} elseif (is_null($category)) { // TODO: Tag find not working
 				$post = $this->post->whereHas('Tag', function ($q) use ($tagname) {
@@ -68,16 +65,14 @@ class PostController extends BaseController {
 					return Response::json([
 							'status' => 'POST_SHOW_SUCCESSFUL',
 							'posts'  => $post->toArray()
-						], 200, [ 'Content-Type' => 'application/javascript' ]
-					);
+						], 200);
 				}
 
 				return Response::json([
 						'status'      => 'POST_SHOW_FAILED',
 						'description' => 'No posts for query.',
 						'input'       => 'tagname?=' . $tagname
-					], 404, [ 'Content-Type' => 'application/javascript' ]
-				);
+					], 404);
 			}
 		}
 
@@ -85,7 +80,29 @@ class PostController extends BaseController {
 		return Response::json([
 				'status'      => 'POST_SHOW_FAILED',
 				'description' => 'Returned empty result'
-			], 404, [ 'Content-Type' => 'application/javascript' ]
+			], 404
+		);
+	}
+
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  Post $post
+	 * @return Response
+	 */
+	public function show(Post $post) {
+		if ($post->count() == 0) {
+			return Response::json([
+					'status'      => 'POST_SHOW_FAILED',
+					'description' => "Post {$post} not found."
+				], 404
+			);
+		}
+
+		return Response::json([
+				'status' => 'POST_SHOW_SUCCESSFUL',
+				'posts'  => $post->toArray()
+			], 200
 		);
 	}
 
@@ -94,143 +111,155 @@ class PostController extends BaseController {
 	 *
 	 * @return Response
 	 */
-	public function store() {
-		$post = $this->post;
+	public function create_edit(Post $post = null) {
+		if(is_null($post)) {
+			$post = $this->post;
+			$status = 'POST_ADD';
+		} else {
+			$status = 'POST_UPDATE';
+		}
 
 		$input = Input::all();
 
 		$category = Category::where('name', '=', $input['category'])->firstOrFail();
 
+		$tags = Tag::whereIn('tagname', $input['tags'])->lists('id');
+
 		$post->title   = $input['title'];
 		$post->content = $input['content'];
 		$post->user_id = Confide::user()->getAuthIdentifier();
+
 		$post->category()->associate($category);
 
-		$post->save();
+		if($post->save()) {
+			$post->tags()->sync($tags);
 
-		return Response::json(array(
-				'status' => 'POST_ADD_SUCCESSFUL',
-				'posts'  => $post->toArray()
-			), 200, [ 'Content-Type' => 'application/javascript' ]
-		);
-	}
-
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  Post $id
-	 * @return Response
-	 */
-	public function show(Post $id) {
-		if (is_null($id)) {
-			return Response::json(array(
-					'status'      => 'POST_SHOW_FAILED',
-					'description' => "Post {$id} not found."
-				), 404, [ 'Content-Type' => 'application/javascript' ]
+			return Response::json([
+					'status' => $status . '_SUCCESSFUL',
+					'posts'  => $post->toArray()
+				], 201
 			);
 		}
 
-		return Response::json(array(
-				'status' => 'POST_SHOW_SUCCESSFUL',
-				'posts'  => $id->toArray()
-			), 200
-		);
-	}
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  Post $id
-	 * @return Response
-	 */
-	public function update(Post $id) {
-		$post = $id;
-
-		$input = Input::all();
-
-		$category = Category::where('name', '=', $input['category'])->firstOrFail();
-
-
-
-		$post->title   = $input['title'];
-		$post->content = $input['content'];
-		$post->user_id = Confide::user()->getAuthIdentifier();
-		$post->category()->associate($category);
-
-		$post->save();
-
-		return Response::json(array(
-				'status' => 'POST_UPDATE_SUCCESSFUL',
+		return Response::json([
+				'status' => $status . '_FAILED',
 				'posts'  => $post->toArray()
-			), 201
+			], 500
 		);
 	}
 
 	/**
 	 * Remove the specified resource from storage.
 	 *
-	 * @param  int $id
+	 * @param  int $post
 	 * @return Response
 	 */
-	public function destroy(Post $id) {
-		$post = $id;
+	public function destroy(Post $post) {
+		Comment::where('post_id', '=', $post->id)->delete();
 
-		foreach ($id->comments as $comments) {
-			$comments->delete();
-		}
-
-		if($id->delete()) {
-			return Response::json(array(
-					'status' => 'POST_DELETE_SUCCESSFUL',
-					'posts'  => $post->toArray()
-				), 204
+		if($post->delete()) {
+			return Response::json([
+					'status' => 'POST_DELETE_SUCCESSFUL'
+				], 204
 			);
 		}
 
 		return Response::json([
 			'status'      => 'POST_DELETE_FAILED',
-			'description' => "Post {$id->id} deletion failed."
+			'description' => "Post {$post->id} deletion failed."
+		], 500);
+	}
+
+	public function comments(Post $post, Comment $comment = null) {
+		$comments = $post->comments;
+
+		if (is_null($comment)) {
+			return Response::json([
+					'status'   => 'POST_COMMENT_RETRIEVE_SUCCESSFUL',
+					'comments' => $comments->toArray()
+				], 200
+			);
+		}
+
+		$comments = Comment::where('post_id', '=', $post->id)->findOrFail($comment->id);
+
+		return Response::json([
+			'status'    => 'POST_COMMENT_RETRIEVE_SUCCESSFUL',
+		    'comment'   => $comments->toArray()
 		], 200);
 	}
 
-	public function comments(Post $id) {
-		$comments = $id->comments;
+	public function tags(Post $post) {
+		$tags = $post->tags;
 
-		if (is_null($comments)) {
-			return Response::json(array(
-					'status'      => 'POST_COMMENT_RETRIEVE_FAILED',
-					'description' => "Comments for Post {$id->id} not found."
-				), 404
+		if($tags->count() == 0) {
+			return Response::json([
+					'status'      => 'POST_TAGS_RETRIEVE_FAILED',
+					'description' => "Tags for Post {$post->id} not found."
+				], 200
 			);
 		}
 
-		return Response::json(array(
-				'status'   => 'POST_COMMENT_RETRIEVE_SUCCESSFUL',
-				'comments' => $comments->toArray()
-			), 200
-		);
+		return Response::json([
+			'status'  => 'POST_TAGS_RETRIEVE_SUCCESSFUL',
+			'tags' => $tags->toArray()
+		], 200);
 	}
 
-	public function tags(Post $id) {
-		$tags = $id->tags;
+	public function likes(Post $post) {
+		$likes = $post->likes;
 
-		if (is_null($tags)) {
-			return Response::json(array(
-					'status'      => 'POST_COMMENT_RETRIEVE_FAILED',
-					'description' => "Tags for Post {$id->id} not found."
-				), 404
+		return Response::json([
+			'status'    =>  'POST_LIKES_RETRIEVE_SUCCESSFUL',
+		    'likes'      =>  $likes->toArray()
+		]);
+	}
+
+	public function create_update_comment(Post $post, Comment $comment = null) {
+		if(is_null($comment))
+			$comment = new Comment;
+
+		$comment->user_id = Confide::user()->getAuthIdentifier();
+		$comment->message = Input::get('message');
+
+		$comment = $post->comments()->save($comment);
+
+		return Response::json([
+			'status'    =>  'POST_COMMENT_CREATE_SUCCESS',
+		    'comment'   =>  $comment->toArray()
+		], 201);
+	}
+
+	public function delete_comment(Post $post, Comment $comment = null) {
+		if(is_null($comment)) {
+			Comment::where('post_id', '=', $post->id)->delete();
+
+			return Response::json([
+					'status' => 'POST_COMMENT_DELETE_SUCCESSFUL'
+				], 204
 			);
 		}
 
-		return Response::json(array(
-				'status' => 'POST_TAG_RETRIEVE_SUCCESSFUL',
-				'tags'   => $tags->toArray()
-			), 200
+		if ($comment->delete()) {
+			return Response::json([
+					'status' => 'POST_COMMENT_DELETE_SUCCESSFUL'
+				], 204
+			);
+		}
+
+		return Response::json([
+				'status' => 'POST_COMMENT_DELETE_FAILED'
+			], 500
 		);
 	}
 
-	public function like() {
+	public function like(Post $post) { // TODO: This isn't the thing that this shit is supposed to do
+		$likes = $post->likes;
 
+		return Response::json([
+			'status'        =>  'POST_LIKE_RETRIEVE_SUCCESS',
+		    'description'   =>  $likes->toArray()
+		]);
 	}
 
 }

@@ -14,7 +14,7 @@
  * @property-read \Illuminate\Database\Eloquent\Collection|\Post[] $posts
  */
 class Tag extends Eloquent {
-	protected $hidden = ['id', 'created_at', 'updated_at', 'pivot'];
+	protected $hidden = ['created_at', 'updated_at', 'pivot'];
 
 	public function posts() {
 		return $this->belongsToMany('Post', 'post_tags');

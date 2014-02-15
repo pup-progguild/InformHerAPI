@@ -1,26 +1,37 @@
-+--------+--------------------------+------------------------+------------------------------+----------------+---------------+
-| Domain | URI                      | Name                   | Action                       | Before Filters | After Filters |
-+--------+--------------------------+------------------------+------------------------------+----------------+---------------+
-|        | GET _debugbar/open       | debugbar.openhandler   | Closure                      |                |               |
-|        | GET /                    |                        | Closure                      |                |               |
-|        | GET post                 | post/index             | PostController@index         |                |               |
-|        | GET post/{post}          | GetPost                | PostController@show          |                |               |
-|        | GET post/{post}/comments | GetAllCommentsFromPost | PostController@comments      |                |               |
-|        | GET post/{post}/tags     | GetAllTagsFromPost     | PostController@tags          |                |               |
-|        | POST post/ask            | PostInAsk              | PostController@store         | auth.basic     |               |
-|        | POST post/relate         | PostInRelate           | PostController@store         | auth.basic     |               |
-|        | POST post/shoutout       | PostInShoutout         | PostController@storeShoutout | auth.basic     |               |
-|        | PUT post/{post}/update   | UpdatePost             | PostController@update        | auth.basic     |               |
-|        | DELETE post/{post}       | DeletePost             | PostController@destroy       | auth.basic     |               |
-|        | GET post/test            |                        | Closure                      | auth.basic     |               |
-|        | GET tags                 | Tags                   | TagController@index          |                |               |
-|        | GET user/login           | UserLogin              | UserController@login         |                |               |
-|        | GET user/logout          | UserLogout             | UserController@logout        |                |               |
-|        | POST user/register       | UserRegistration       | UserController@create        |                |               |
-|        | GET user/profile         | GetUserProfileInfo     | UserController@index         | auth.basic     |               |
-|        | GET user/{user}          | GetUserInfo            | UserController@show          | auth.basic     |               |
-|        | PUT user/{user}          | user/update            | UserController@update        | auth.basic     |               |
-|        | DELETE user/{user}       | user/destroy           | UserController@destroy       | auth.basic     |               |
-+--------+--------------------------+------------------------+------------------------------+----------------+---------------+
++--------+---------------------------------------------------------+---------------------+--------------------------------------+----------------+---------------+
+| Domain | URI                                                     | Name                | Action                               | Before Filters | After Filters |
++--------+---------------------------------------------------------+---------------------+--------------------------------------+----------------+---------------+
+|        | GET /                                                   |                     | Closure                              |                |               |
+|        | POST test                                               |                     | Closure                              |                |               |
+|        | GET test                                                |                     | Closure                              | auth           |               |
+|        | GET posts                                               | Posts               | PostController@index                 |                |               |
+|        | GET posts/{post}                                        | GetPost             | PostController@show                  |                |               |
+|        | GET posts/{post}/comments/{comment?}                    | GetCommentsFromPost | PostController@comments              |                |               |
+|        | GET posts/{post}/tags                                   | GetAllTagsFromPost  | PostController@tags                  |                |               |
+|        | GET posts/{post}/likes                                  | GetAllLikesFromPost | PostController@like                  |                |               |
+|        | POST posts/{post?}                                      | CreateEditPost      | PostController@create_edit           | auth           |               |
+|        | POST posts/{post}/comment/{comment?}                    | CreateUpdateComment | PostController@create_update_comment | auth           |               |
+|        | DELETE posts/{post}                                     | DeletePost          | PostController@destroy               | auth           |               |
+|        | DELETE posts/{post}/comments/{comment?}                 | DeletePostComment   | PostController@delete_comment        | auth           |               |
+|        | GET tags                                                | Tags                | TagController@index                  |                |               |
+|        | POST tags                                               | AddTags             | TagController@store                  | auth           |               |
+|        | PUT tags/{tag}                                          | UpdateTags          | TagController@update                 | auth           |               |
+|        | DELETE tags/{tag}                                       | DeleteTag           | TagController@destroy                | auth           |               |
+|        | GET category                                            | Categories          | CategoryController@index             |                |               |
+|        | POST category                                           | AddCategory         | CategoryController@store             | auth           |               |
+|        | PUT category/{category}                                 | UpdateCategory      | CategoryController@update            | auth           |               |
+|        | DELETE category/{category}                              | DeleteCategory      | CategoryController@destroy           | auth           |               |
+|        | GET user/confirm/{code}                                 |                     | UserController@getConfirm            |                |               |
+|        | GET user/reset/{token}                                  |                     | UserController@getReset              |                |               |
+|        | POST user/index/{one?}/{two?}/{three?}/{four?}/{five?}  |                     | UserController@postIndex             |                |               |
+|        | POST user                                               |                     | UserController@postIndex             |                |               |
+|        | POST user/login/{one?}/{two?}/{three?}/{four?}/{five?}  |                     | UserController@postLogin             |                |               |
+|        | GET user/confirm/{one?}/{two?}/{three?}/{four?}/{five?} |                     | UserController@getConfirm            |                |               |
+|        | POST user/forgot/{one?}/{two?}/{three?}/{four?}/{five?} |                     | UserController@postForgot            |                |               |
+|        | GET user/reset/{one?}/{two?}/{three?}/{four?}/{five?}   |                     | UserController@getReset              |                |               |
+|        | POST user/reset/{one?}/{two?}/{three?}/{four?}/{five?}  |                     | UserController@postReset             |                |               |
+|        | GET user/logout/{one?}/{two?}/{three?}/{four?}/{five?}  |                     | UserController@getLogout             |                |               |
+|        | GET user/{_missing}                                     |                     | UserController@missingMethod         |                |               |
++--------+---------------------------------------------------------+---------------------+--------------------------------------+----------------+---------------+
 
-* Updated, 7:05 PM GMT+8 2/4/2014
+08:16 GMT+8 2-15-2014
