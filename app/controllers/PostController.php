@@ -103,8 +103,7 @@ class PostController extends BaseController {
 		return Response::json([
 				'status'      => 'POST_SHOW_FAILED',
 				'description' => 'Returned empty result'
-			], 404
-		);
+		], 404);
 	}
 
 	/**
@@ -118,15 +117,13 @@ class PostController extends BaseController {
 			return Response::json([
 					'status'      => 'POST_SHOW_FAILED',
 					'description' => "Post {$post} not found."
-				], 404
-			);
+			], 404);
 		}
 
 		return Response::json([
 				'status' => 'POST_SHOW_SUCCESSFUL',
 				'posts'  => $post->toArray()
-			], 200
-		);
+		], 200);
 	}
 
 	/**
@@ -158,17 +155,15 @@ class PostController extends BaseController {
 			$post->tags()->sync($tags);
 
 			return Response::json([
-					'status' => $status . '_SUCCESSFUL',
-					'posts'  => $post->toArray()
-				], 201
-			);
+				'status' => $status . '_SUCCESSFUL',
+				'posts'  => $post->toArray()
+			], 201);
 		}
 
 		return Response::json([
-				'status' => $status . '_FAILED',
-				'posts'  => $post->toArray()
-			], 500
-		);
+			'status' => $status . '_FAILED',
+			'posts'  => $post->toArray()
+		], 500);
 	}
 
 	/**
@@ -183,8 +178,7 @@ class PostController extends BaseController {
 		if ($post->delete()) {
 			return Response::json([
 					'status' => 'POST_DELETE_SUCCESSFUL'
-				], 204
-			);
+			], 204);
 		}
 
 		return Response::json([
@@ -198,10 +192,9 @@ class PostController extends BaseController {
 
 		if (is_null($comment)) {
 			return Response::json([
-					'status'   => 'POST_COMMENT_RETRIEVE_SUCCESSFUL',
-					'comments' => $comments->toArray()
-				], 200
-			);
+				'status'   => 'POST_COMMENT_RETRIEVE_SUCCESSFUL',
+				'comments' => $comments->toArray()
+			], 200);
 		}
 
 		$comments = Comment::where('post_id', '=', $post->id)->findOrFail($comment->id);
@@ -222,10 +215,9 @@ class PostController extends BaseController {
 
 		if ($tags->count() == 0) {
 			return Response::json([
-					'status'      => 'POST_TAGS_RETRIEVE_FAILED',
-					'description' => "Tags for Post {$post->id} not found."
-				], 200
-			);
+				'status'      => 'POST_TAGS_RETRIEVE_FAILED',
+				'description' => "Tags for Post {$post->id} not found."
+			], 200);
 		}
 
 		$tags_a = [
@@ -239,8 +231,12 @@ class PostController extends BaseController {
 		], 200);
 	}
 
-	public function likes(Post $post) {
-		$likes = $post->likes;
+	public function likes($post, $comment = null) {
+		$item = is_null($post) ? $comment : $post;
+
+		$likes = $item->likes;
+
+		$type = get_class($item);
 
 		$likes_a = [
 			'count'  => $likes->count(),
@@ -248,7 +244,7 @@ class PostController extends BaseController {
 		];
 
 		return Response::json([
-			'status' => 'POST_LIKES_RETRIEVE_SUCCESSFUL',
+			'status' => strtoupper($type). '_LIKES_RETRIEVE_SUCCESSFUL',
 			'likes'  => $likes_a
 		]);
 	}
@@ -274,38 +270,39 @@ class PostController extends BaseController {
 
 			return Response::json([
 					'status' => 'POST_COMMENT_DELETE_SUCCESSFUL'
-				], 204
-			);
+			], 204);
 		}
 
 		if ($comment->delete()) {
 			return Response::json([
 					'status' => 'POST_COMMENT_DELETE_SUCCESSFUL'
-				], 204
-			);
+			], 204);
 		}
 
 		return Response::json([
 				'status' => 'POST_COMMENT_DELETE_FAILED'
-			], 500
-		);
+		], 500);
 	}
 
-	public function like(Post $post) {
-		$user_id = Confide::user()->getAuthIdentifier();
-		$post_id = $post->id;
+	public function like($post, $comment = null) {
+		$item = is_null($post) ? $comment : $post;
 
-		$like = Like::where('user_id', '=', $user_id)->where('imageable_id', '=', $post_id)->first();
+		$user_id = Confide::user()->getAuthIdentifier();
+		$item_id = $item->id;
+
+		$type = get_class($item);
+
+		$like = Like::where('user_id', '=', $user_id)->where('likeable_id', '=', $item_id)->where('likeable_type', '=', $type)->first();
 
 		if(!is_null($like)) {
 			$like->delete();
 		} else {
-			$post->likes()->save(new Like([
+			$item->likes()->save(new Like([
 				'user_id' => $user_id
 			]));
 		}
 
-		$likes = Post::find($post->id)->likes;
+		$likes = $item::find($item->id)->likes;
 
 		$likes_a = [
 			'count' => $likes->count(),
@@ -313,7 +310,7 @@ class PostController extends BaseController {
 		];
 
 		return Response::json([
-			'status'    =>  'POST_CREATE_LIKE_SUCCESS',
+			'status'    =>  strtoupper($type) .'_CREATE_LIKE_SUCCESS',
 		    'likes'     =>  $likes_a
 		], 200);
 	}

@@ -59,13 +59,11 @@ Route::get('/test', function () {
 	//return View::make('test');
 	//Cache::remember('test', 15, function() {
 
-	$serializethis = ['one', 'two', 'three'];
+	$post = new Post;
 
-	$tags = serialize($serializethis);
-
-	echo $tags;
+	echo $type = get_class($post);
 	//});
-})->before('auth'); //->before('auth.basic');
+}); //->before('auth.basic');
 
 /* InformHer API routes & endpoints */
 Route::model("post", "Post");
@@ -124,7 +122,7 @@ Route::group(['prefix' => 'oauth'], function() {
 
 Route::group(["prefix" => "posts"], function () {
 	Route::get("/", [
-		"as"   => "Posts",
+		"as"   => "GetAllPosts",
 		"uses" => "PostController@index"
 	]);
 
@@ -145,6 +143,11 @@ Route::group(["prefix" => "posts"], function () {
 
 	Route::get("/{post}/likes", [
 		"as"   => "GetAllLikesFromPost",
+	    "uses" => "PostController@likes",
+	]);
+
+	Route::get("/{post}/comments/{comment}/likes", [
+		"as"   => "GetAllLikesFromComment",
 	    "uses" => "PostController@likes"
 	]);
 
@@ -161,17 +164,22 @@ Route::group(["prefix" => "posts"], function () {
 
 		Route::post("/{post}/like", [
 			"as"   => "LikePost",
-		    "uses" => "PostController@like"
+		    "uses" => "PostController@like",
 		]);
 
-		Route::delete("/{post}", [
-			"as"   => "DeletePost",
-			"uses" => "PostController@destroy"
+		Route::post("/{post}/comments/{comment}/like", [
+			"as"   => "LikeComment",
+		    "uses" => "PostController@like"
 		]);
 
 		Route::delete("/{post}/comments/{comment?}", [
 			"as"   => "DeletePostComment",
 			"uses" => "PostController@delete_comment"
+		]);
+
+		Route::delete("/{post}", [
+			"as"   => "DeletePost",
+			"uses" => "PostController@destroy"
 		]);
 	});
 });

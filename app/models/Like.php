@@ -21,9 +21,9 @@ class Like extends Eloquent {
 
 	protected $fillable = [ 'user_id' ];
 
-	protected $hidden = ['user_id','id', 'imageable_id', 'imageable_type'];
+	protected $hidden = ['user_id','id', 'likeable_id', 'likeable_type'];
 
-	public function imageable() {
+	public function likeable() {
 		return $this->morphTo();
 	}
 

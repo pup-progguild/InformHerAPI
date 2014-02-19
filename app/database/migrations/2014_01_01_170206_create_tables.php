@@ -104,8 +104,8 @@ class CreateTables extends Migration {
 			$t->increments('id');
 			$t->integer('user_id')->unsigned();
 			$t->foreign('user_id')->references('id')->on('users');
-			$t->integer('imageable_id');
-			$t->string('imageable_type');
+			$t->integer('likeable_id');
+			$t->string('likeable_type');
 			$t->timestamps();
 		});
 

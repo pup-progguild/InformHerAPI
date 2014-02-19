@@ -97,6 +97,6 @@ class Post extends Eloquent {
 	}
 
 	public function likes() {
-		return $this->morphMany('Like', 'imageable');
+		return $this->morphMany('Like', 'likeable');
 	}
 }

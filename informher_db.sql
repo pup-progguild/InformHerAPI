@@ -11,7 +11,7 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 -- Dumping database structure for informher_db
-CREATE DATABASE IF NOT EXISTS `informher_db` /*!40100 DEFAULT CHARACTER SET utf8 */;
+CREATE DATABASE IF NOT EXISTS `informher_db` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `informher_db`;
 
 
@@ -115,19 +115,19 @@ INSERT INTO `comments` (`id`, `message`, `user_id`, `post_id`, `created_at`, `up
 CREATE TABLE IF NOT EXISTS `likes` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
-  `imageable_id` int(11) NOT NULL,
-  `imageable_type` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `likeable_id` int(11) NOT NULL,
+  `likeable_type` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
   KEY `likes_user_id_foreign` (`user_id`),
   CONSTRAINT `likes_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Dumping data for table informher_db.likes: ~9 rows (approximately)
+-- Dumping data for table informher_db.likes: ~11 rows (approximately)
 DELETE FROM `likes`;
 /*!40000 ALTER TABLE `likes` DISABLE KEYS */;
-INSERT INTO `likes` (`id`, `user_id`, `imageable_id`, `imageable_type`, `created_at`, `updated_at`) VALUES
+INSERT INTO `likes` (`id`, `user_id`, `likeable_id`, `likeable_type`, `created_at`, `updated_at`) VALUES
 	(1, 1, 1, 'post', '2014-02-14 19:14:21', '2014-02-14 19:14:21'),
 	(2, 1, 2, 'post', '2014-02-14 19:14:21', '2014-02-14 19:14:21'),
 	(3, 1, 1, 'comment', '2014-02-14 19:14:21', '2014-02-14 19:14:21'),
@@ -136,7 +136,9 @@ INSERT INTO `likes` (`id`, `user_id`, `imageable_id`, `imageable_type`, `created
 	(6, 2, 3, 'comment', '2014-02-14 19:14:21', '2014-02-14 19:14:21'),
 	(7, 3, 1, 'comment', '2014-02-14 19:14:21', '2014-02-14 19:14:21'),
 	(8, 3, 2, 'post', '2014-02-14 19:14:21', '2014-02-14 19:14:21'),
-	(9, 3, 3, 'post', '2014-02-14 19:14:22', '2014-02-14 19:14:22');
+	(9, 3, 3, 'post', '2014-02-14 19:14:22', '2014-02-14 19:14:22'),
+	(11, 1, 3, 'Post', '2014-02-17 02:06:15', '2014-02-17 02:06:15'),
+	(14, 1, 6, 'Comment', '2014-02-17 02:43:48', '2014-02-17 02:43:48');
 /*!40000 ALTER TABLE `likes` ENABLE KEYS */;
 
 
@@ -193,8 +195,8 @@ CREATE TABLE IF NOT EXISTS `permission_role` (
   PRIMARY KEY (`id`),
   KEY `permission_role_permission_id_foreign` (`permission_id`),
   KEY `permission_role_role_id_foreign` (`role_id`),
-  CONSTRAINT `permission_role_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`),
-  CONSTRAINT `permission_role_permission_id_foreign` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`)
+  CONSTRAINT `permission_role_permission_id_foreign` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`),
+  CONSTRAINT `permission_role_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table informher_db.permission_role: ~0 rows (approximately)
@@ -243,8 +245,8 @@ CREATE TABLE IF NOT EXISTS `post_tags` (
   PRIMARY KEY (`id`),
   KEY `post_tags_post_id_foreign` (`post_id`),
   KEY `post_tags_tag_id_foreign` (`tag_id`),
-  CONSTRAINT `post_tags_tag_id_foreign` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`),
-  CONSTRAINT `post_tags_post_id_foreign` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`)
+  CONSTRAINT `post_tags_post_id_foreign` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`),
+  CONSTRAINT `post_tags_tag_id_foreign` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table informher_db.post_tags: ~6 rows (approximately)
@@ -284,11 +286,15 @@ CREATE TABLE IF NOT EXISTS `sessions` (
   UNIQUE KEY `sessions_id_unique` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Dumping data for table informher_db.sessions: ~1 rows (approximately)
+-- Dumping data for table informher_db.sessions: ~4 rows (approximately)
 DELETE FROM `sessions`;
 /*!40000 ALTER TABLE `sessions` DISABLE KEYS */;
 INSERT INTO `sessions` (`id`, `payload`, `last_activity`) VALUES
-	('3d6a73bb4ac79391d1a0812e16866e7f1c6a5f51', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiMzlOQkY4TzBJWUtNSTI4UlQ0Q3k3N1BvaXZFSDN5TG54aldRSnB3dSI7czo1OiJmbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjM4OiJsb2dpbl84MmU1ZDJjNTZiZGQwODExMzE4ZjBjZjA3OGI3OGJmYyI7aToxO3M6OToiX3NmMl9tZXRhIjthOjM6e3M6MToidSI7aToxMzkyNDA3MTgxO3M6MToiYyI7aToxMzkyMzg4Njc3O3M6MToibCI7czoxOiIwIjt9fQ==', 1392407181);
+	('3d6a73bb4ac79391d1a0812e16866e7f1c6a5f51', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiMzlOQkY4TzBJWUtNSTI4UlQ0Q3k3N1BvaXZFSDN5TG54aldRSnB3dSI7czo1OiJmbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjM4OiJsb2dpbl84MmU1ZDJjNTZiZGQwODExMzE4ZjBjZjA3OGI3OGJmYyI7aToxO3M6OToiX3NmMl9tZXRhIjthOjM6e3M6MToidSI7aToxMzkyNDA3MTgxO3M6MToiYyI7aToxMzkyMzg4Njc3O3M6MToibCI7czoxOiIwIjt9fQ==', 1392407181),
+	('3fb51ab1fb147f1aa2e6ee41ec23bd12ff4faf2e', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiTmlCV3J4RGk5enpLWVZBc05kNnFYQVowcjg1bTVlVkprTGJmOVVDMSI7czo5OiJfc2YyX21ldGEiO2E6Mzp7czoxOiJ1IjtpOjEzOTI1NzM4MTE7czoxOiJjIjtpOjEzOTI1NzM4MTE7czoxOiJsIjtzOjE6IjAiO31zOjU6ImZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1392573811),
+	('5f3d0f38e90ed8fce0e845fa748e919d9215c287', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiVTlQNENxNk1iOWRySTR3TjJESHJLYzcwY29wa3Y3dG5qT21nd1V0cCI7czo1OiJmbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjM4OiJsb2dpbl84MmU1ZDJjNTZiZGQwODExMzE4ZjBjZjA3OGI3OGJmYyI7aToxO3M6OToiX3NmMl9tZXRhIjthOjM6e3M6MToidSI7aToxMzkyNTc2MzAxO3M6MToiYyI7aToxMzkyNTczOTU1O3M6MToibCI7czoxOiIwIjt9fQ==', 1392576301),
+	('ab86fe5b7b715674a739c361a15164158cc0b62c', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiVjVrMXNkU01yMzk3WnBvYmJpQWFrZ2tlb3FIY29ZSUFjZ09idkFFSyI7czo1OiJmbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjk6Il9zZjJfbWV0YSI7YTozOntzOjE6InUiO2k6MTM5MjU4OTk1ODtzOjE6ImMiO2k6MTM5MjU4OTUxMDtzOjE6ImwiO3M6MToiMCI7fX0=', 1392589958),
+	('cd1b39cddff4185b4d44f63433c3d1dd6747e930', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiSFJkakxLVGsxR3Q0Rms2aHJsbWdaNmxBZVRMcGNOOGVrQk5kUUdPVyI7czo1OiJmbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjk6Il9zZjJfbWV0YSI7YTozOntzOjE6InUiO2k6MTM5MjgwNjA4MTtzOjE6ImMiO2k6MTM5MjgwMzU5MDtzOjE6ImwiO3M6MToiMCI7fX0=', 1392806082);
 /*!40000 ALTER TABLE `sessions` ENABLE KEYS */;
 
 
