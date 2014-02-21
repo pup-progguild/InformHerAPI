@@ -64,12 +64,12 @@ CREATE TABLE IF NOT EXISTS `cache` (
 DELETE FROM `cache`;
 /*!40000 ALTER TABLE `cache` DISABLE KEYS */;
 INSERT INTO `cache` (`key`, `value`, `expiration`) VALUES
-	('informherconfirmation_email_1', 'eyJpdiI6Inh3UVFNNkJ5TDNCN0xHMk4rN3NrWnFud3hVOHlvbDF0aDZRVHR1QlhHMk09IiwidmFsdWUiOiJhcURMSVhsWm1uQ2EyTWxxNTJ2ZlV3UEs5SjNjRDF0bjVuWUZ2Sm1pS0MwPSIsIm1hYyI6ImQ1ZWFlYmI0Yjg3MjI5YjM2Njg1OTZmMjhiZGQ3YjBlN2M3NGM5YjhjNWUzNTVlMGUwNmJhZGQ3ZDNlZTdjODIifQ==', 1392935716),
-	('informherconfirmation_email_2', 'eyJpdiI6IkNXejVEbUxpOUR4bWduQW5ibXhvZXdhcW9BaDYwbStWT0gzYnowbGpwZ0E9IiwidmFsdWUiOiJzVEp1STRQV3Y0QStYaFNxTmYyd0hxR0JnTkl1VU1OOWhYTUN2bXVSS0hRPSIsIm1hYyI6IjkzZmNkYTI1M2QxNDIzMmU2YzFkMDQ2ZDE0YTM0NGFhN2U2OTY2ZTE2ZWRhZjNhYjQ2MDM3Mjc5ZDg4NDc2YmQifQ==', 1392935716),
-	('informherconfirmation_email_3', 'eyJpdiI6Im9idysyeHdvajJGYVQyNVZsZFNjaTRrZzdabmpLVUVodnY5K2Vwc0VqNkU9IiwidmFsdWUiOiJBZGI0MkZRU0tMa0lPUCtYdW9YVFZKQnZcLzhcL2JSckl4cDZrb2tsbmlzeWs9IiwibWFjIjoiMDU0N2QyYTNkMGFkYjlhZGZhNTU1NjQyZjI1ODdjMzQ1ZTM2YmYyOTE0ODVmZjdlMDhiODk5NzUwY2YxNjNjNCJ9', 1392935716),
-	('informherconfirmation_email_4', 'eyJpdiI6IkRtR2EyRThNdk1ubG5ZbEtTZnc2RDh1QnpzT0x2ZkxtV2FWdFlVXC9sQUdJPSIsInZhbHVlIjoiamhGQitVZndNR09BRFBSUmFKOUtrUjdhXC8rOXhlK1RFM1lvSzl6cUkrM2c9IiwibWFjIjoiMWUzZjJlMzdkMmUxZTdhNDkyYTE3NjExODIwMWY1YTM2YjU0ZDYzY2IyYWQ5MjNmNjJjMzQzZDg4ZWIwMTcxMCJ9', 1392935717),
-	('informherconfirmation_email_5', 'eyJpdiI6IllcL1g0YnN2cFhEc0t6ektIWDN3Ulg2bjRFOHZqbGsyR01heU51d3NoWHVvPSIsInZhbHVlIjoidVN4U0dYQURCSWRhV1FSSys0MXU2d1lTU2Y3cGxuZnFtbSthZGZuK3ZoOD0iLCJtYWMiOiIzYmU0MGU4YjA1YmI5YWZmNDQzN2FiMTgzNmYxMmFjMzFmNDJjZDMwNGVjYjhmNzg5NTMzYzQ0YWMyYjBlMGZlIn0=', 1392935717),
-	('informherconfirmation_email_6', 'eyJpdiI6ImdZZTNrRkxhN0ZxZnI0RFZObndIR0MzZEZSY0ZMcFk1MTRcLzExRHRnb084PSIsInZhbHVlIjoiTGxrazlPc3FEWitNXC9kZGZIN1phY1YxVnJZNlRjS3Z6WUdEWHNFMDNleDg9IiwibWFjIjoiNjJkZDVjMTc5NGYxODhkMTcyNGMzZDI0ZmZkNjIzMzg1Y2RiZWM3ZjZiODY3YmQ3NDgwYzg4NWEyNWIzNjEyOSJ9', 1392935717);
+	('informherconfirmation_email_1', 'eyJpdiI6Ilc1U1VFU0w5MGd5MW9KdWtuZEx2SjBcL3hIbk5JamUrM29RV2ZUcnhPbnk4PSIsInZhbHVlIjoiZlUycDBlSDJCTGE3T2J2ZXpzZ1dkcEFFbGRERURlY0l0V3dhUUVUOWNyST0iLCJtYWMiOiI0NDU4YjM2MTRjMGM2MDc3YjdlNzhlMzNjMTg4MGVjYTUyNWM0ZGFiZmYxM2NjOTRjYzI0ZTBjMDIxZDE4NDRkIn0=', 1392943934),
+	('informherconfirmation_email_2', 'eyJpdiI6ImpcL2dkamhtR3FYSGJ0UDcrNlRxQVd3UDVCODJxSGdvTzRvNWIzRjJpbTZ3PSIsInZhbHVlIjoiVWhaTDNsd1ZLRGJsZ0ViSXpaWFhMc2w1b2pGeG4rTE13MjArYUc5a0I3ND0iLCJtYWMiOiI5NTlkYjQyYmZhYzI1OTI1MWUyNWNlMjczYTcwZWU1MjdiODY2MGZhNzY2OTBjZGNmZTYyMjFkNDY3ZDYxNDIxIn0=', 1392943934),
+	('informherconfirmation_email_3', 'eyJpdiI6InQzWHI0aXR0ekNXZitUamx4YXZPMFwvaDdhdWs4RGE0Z0JTYnFSVDNsQ1ZVPSIsInZhbHVlIjoicm1cL2ZLcTVvN3MyaDBTNFRBUWFcL2xHM0haVTFhdmhQdlhYcmp2NHhOdEFrPSIsIm1hYyI6IjI4OGJkOTNlMmY3NGM3ZWNjMTM2ODc2NDY2ODFjNzk5MmQyOWE0NWE5OTAzMGUwZDVmYWQ1YTI0ZDU3NmY1ODMifQ==', 1392943934),
+	('informherconfirmation_email_4', 'eyJpdiI6InZJb0xHNVd1WlwvK0p6SUo5dEQ2eTRwK3VhMFNOb2FHaUg1SGJSR1cySlBVPSIsInZhbHVlIjoiMUQyZlFudE90elpKR0JBYWtaZ0JLa3FFbkF6V0dMZGo3akVSTUJGekNQVT0iLCJtYWMiOiJjMDQ2OWFmNzEzMjQxZDZhNzU0NDQxNDY5YmRkNmIxNzkwNDRiOWNmYTQ1ODliYWE4NTJjZTg3NWU0ZmNiNTE0In0=', 1392943935),
+	('informherconfirmation_email_5', 'eyJpdiI6Ind6M0RaS21zaWdkOHhLTmx5b1V1UnZoWEVJNFVcL3VMblhKSk96bW5WdlNRPSIsInZhbHVlIjoiYzZJVHRBanNKdnUxSlVHNUpDRWI3eXNXakx2Nis3SVBCZWZCdUc4R01pbz0iLCJtYWMiOiI4NmJlM2EyNmRhZTg5MGUxZjBmZDFkMTMyYTIxYjZmNzZiNjQwYTFjYTc1MjUzZDk0NWU0N2Q0YTc2ODVlYTk0In0=', 1392943935),
+	('informherconfirmation_email_6', 'eyJpdiI6InQ3TFVSUWNySk9vZjMxUXZzcjRtVkRXQnRQaDNtejl4T3N2aVE4bTVPYmc9IiwidmFsdWUiOiIrXC9hUTNFNXR0S0VicndsRk1SMkc2eVVJekNtMnlBU1N3NmtvbEE2dDI5QT0iLCJtYWMiOiI2YjI0YmUyYzY3ZmQ3M2IzZjQ1YzVmNzBkM2I5Njk1MmI4YTVjYjYyMWI0NGEwOThlZDI1NDJiOGI1NzkxNjE1In0=', 1392943935);
 /*!40000 ALTER TABLE `cache` ENABLE KEYS */;
 
 
@@ -87,9 +87,9 @@ CREATE TABLE IF NOT EXISTS `categories` (
 DELETE FROM `categories`;
 /*!40000 ALTER TABLE `categories` DISABLE KEYS */;
 INSERT INTO `categories` (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES
-	(1, 'ask', 'Something to ask? Want to be asked? Do it here!', '2014-02-21 04:35:17', '2014-02-21 04:35:17'),
-	(2, 'relate', 'Want to share something? Want to let them know about it? Post it!', '2014-02-21 04:35:17', '2014-02-21 04:35:17'),
-	(3, 'shoutout', 'Abused? In pain? You think you are being left out at work? Report it.', '2014-02-21 04:35:17', '2014-02-21 04:35:17');
+	(1, 'ask', 'Something to ask? Want to be asked? Do it here!', '2014-02-21 06:52:15', '2014-02-21 06:52:15'),
+	(2, 'relate', 'Want to share something? Want to let them know about it? Post it!', '2014-02-21 06:52:15', '2014-02-21 06:52:15'),
+	(3, 'shoutout', 'Abused? In pain? You think you are being left out at work? Report it.', '2014-02-21 06:52:15', '2014-02-21 06:52:15');
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 
 
@@ -113,18 +113,18 @@ CREATE TABLE IF NOT EXISTS `comments` (
 DELETE FROM `comments`;
 /*!40000 ALTER TABLE `comments` DISABLE KEYS */;
 INSERT INTO `comments` (`id`, `message`, `user_id`, `post_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 'Lorem ipsum dolor sit amet, mutat utinam nonumy ea mel.', 2, 1, '2014-02-21 04:35:18', '2014-02-21 04:35:18', NULL),
-	(2, 'Lorem ipsum dolor sit amet, sale ceteros liberavisse duo ex, nam mazim maiestatis dissentiunt no. Iusto nominavi cu sed, has.', 1, 1, '2014-02-21 04:35:18', '2014-02-21 04:35:18', NULL),
-	(3, 'Et consul eirmod feugait mel! Te vix iuvaret feugiat repudiandae. Solet dolore lobortis mei te, saepe habemus imperdiet ex vim. Consequat signiferumque per no, ne pri erant vocibus invidunt te.', 3, 1, '2014-02-21 04:35:18', '2014-02-21 04:35:18', NULL),
-	(4, 'Lorem ipsum dolor sit amet, mutat utinam nonumy ea mel.', 1, 2, '2014-02-21 04:35:18', '2014-02-21 04:35:18', NULL),
-	(5, 'Lorem ipsum dolor sit amet, sale ceteros liberavisse duo ex, nam mazim maiestatis dissentiunt no. Iusto nominavi cu sed, has.', 1, 2, '2014-02-21 04:35:18', '2014-02-21 04:35:18', NULL),
-	(6, 'Lorem ipsum dolor sit amet, mutat utinam nonumy ea mel.', 2, 3, '2014-02-21 04:35:18', '2014-02-21 04:35:18', NULL),
-	(7, 'Lorem ipsum dolor sit amet, mutat utinam nonumy ea mel.', 3, 2, '2014-02-21 04:35:18', '2014-02-21 04:35:18', NULL),
-	(8, 'Lorem ipsum dolor sit amet, sale ceteros liberavisse duo ex, nam mazim maiestatis dissentiunt no. Iusto nominavi cu sed, has.', 1, 3, '2014-02-21 04:35:18', '2014-02-21 04:35:18', NULL),
-	(9, 'Et consul eirmod feugait mel! Te vix iuvaret feugiat repudiandae. Solet dolore lobortis mei te, saepe habemus imperdiet ex vim. Consequat signiferumque per no, ne pri erant vocibus invidunt te.', 4, 4, '2014-02-21 04:35:18', '2014-02-21 04:35:18', NULL),
-	(10, 'Lorem ipsum dolor sit amet, mutat utinam nonumy ea mel.', 5, 2, '2014-02-21 04:35:18', '2014-02-21 04:35:18', NULL),
-	(11, 'Lorem ipsum dolor sit amet, sale ceteros liberavisse duo ex, nam mazim maiestatis dissentiunt no. Iusto nominavi cu sed, has.', 2, 2, '2014-02-21 04:35:18', '2014-02-21 04:35:18', NULL),
-	(12, 'Lorem ipsum dolor sit amet, mutat utinam nonumy ea mel.', 1, 3, '2014-02-21 04:35:18', '2014-02-21 04:35:18', NULL);
+	(1, 'Lorem ipsum dolor sit amet, mutat utinam nonumy ea mel.', 2, 1, '2014-02-21 06:52:16', '2014-02-21 06:52:16', NULL),
+	(2, 'Lorem ipsum dolor sit amet, sale ceteros liberavisse duo ex, nam mazim maiestatis dissentiunt no. Iusto nominavi cu sed, has.', 1, 1, '2014-02-21 06:52:16', '2014-02-21 06:52:16', NULL),
+	(3, 'Et consul eirmod feugait mel! Te vix iuvaret feugiat repudiandae. Solet dolore lobortis mei te, saepe habemus imperdiet ex vim. Consequat signiferumque per no, ne pri erant vocibus invidunt te.', 3, 1, '2014-02-21 06:52:16', '2014-02-21 06:52:16', NULL),
+	(4, 'Lorem ipsum dolor sit amet, mutat utinam nonumy ea mel.', 1, 2, '2014-02-21 06:52:16', '2014-02-21 06:52:16', NULL),
+	(5, 'Lorem ipsum dolor sit amet, sale ceteros liberavisse duo ex, nam mazim maiestatis dissentiunt no. Iusto nominavi cu sed, has.', 1, 2, '2014-02-21 06:52:16', '2014-02-21 06:52:16', NULL),
+	(6, 'Lorem ipsum dolor sit amet, mutat utinam nonumy ea mel.', 2, 3, '2014-02-21 06:52:16', '2014-02-21 06:52:16', NULL),
+	(7, 'Lorem ipsum dolor sit amet, mutat utinam nonumy ea mel.', 3, 2, '2014-02-21 06:52:16', '2014-02-21 06:52:16', NULL),
+	(8, 'Lorem ipsum dolor sit amet, sale ceteros liberavisse duo ex, nam mazim maiestatis dissentiunt no. Iusto nominavi cu sed, has.', 1, 3, '2014-02-21 06:52:16', '2014-02-21 06:52:16', NULL),
+	(9, 'Et consul eirmod feugait mel! Te vix iuvaret feugiat repudiandae. Solet dolore lobortis mei te, saepe habemus imperdiet ex vim. Consequat signiferumque per no, ne pri erant vocibus invidunt te.', 4, 4, '2014-02-21 06:52:16', '2014-02-21 06:52:16', NULL),
+	(10, 'Lorem ipsum dolor sit amet, mutat utinam nonumy ea mel.', 5, 2, '2014-02-21 06:52:16', '2014-02-21 06:52:16', NULL),
+	(11, 'Lorem ipsum dolor sit amet, sale ceteros liberavisse duo ex, nam mazim maiestatis dissentiunt no. Iusto nominavi cu sed, has.', 2, 2, '2014-02-21 06:52:16', '2014-02-21 06:52:16', NULL),
+	(12, 'Lorem ipsum dolor sit amet, mutat utinam nonumy ea mel.', 1, 3, '2014-02-21 06:52:16', '2014-02-21 06:52:16', NULL);
 /*!40000 ALTER TABLE `comments` ENABLE KEYS */;
 
 
@@ -139,21 +139,22 @@ CREATE TABLE IF NOT EXISTS `likes` (
   PRIMARY KEY (`id`),
   KEY `likes_user_id_foreign` (`user_id`),
   CONSTRAINT `likes_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Dumping data for table informher_db.likes: ~9 rows (approximately)
+-- Dumping data for table informher_db.likes: ~10 rows (approximately)
 DELETE FROM `likes`;
 /*!40000 ALTER TABLE `likes` DISABLE KEYS */;
 INSERT INTO `likes` (`id`, `user_id`, `likeable_id`, `likeable_type`, `created_at`, `updated_at`) VALUES
-	(1, 1, 1, 'post', '2014-02-21 04:35:18', '2014-02-21 04:35:18'),
-	(2, 1, 2, 'post', '2014-02-21 04:35:18', '2014-02-21 04:35:18'),
-	(3, 1, 1, 'comment', '2014-02-21 04:35:18', '2014-02-21 04:35:18'),
-	(4, 2, 1, 'post', '2014-02-21 04:35:18', '2014-02-21 04:35:18'),
-	(5, 2, 3, 'post', '2014-02-21 04:35:18', '2014-02-21 04:35:18'),
-	(6, 2, 3, 'comment', '2014-02-21 04:35:18', '2014-02-21 04:35:18'),
-	(7, 3, 1, 'comment', '2014-02-21 04:35:18', '2014-02-21 04:35:18'),
-	(8, 3, 2, 'post', '2014-02-21 04:35:18', '2014-02-21 04:35:18'),
-	(9, 3, 3, 'post', '2014-02-21 04:35:18', '2014-02-21 04:35:18');
+	(1, 1, 1, 'post', '2014-02-21 06:52:16', '2014-02-21 06:52:16'),
+	(2, 1, 2, 'post', '2014-02-21 06:52:17', '2014-02-21 06:52:17'),
+	(3, 1, 1, 'comment', '2014-02-21 06:52:17', '2014-02-21 06:52:17'),
+	(4, 2, 1, 'post', '2014-02-21 06:52:17', '2014-02-21 06:52:17'),
+	(5, 2, 3, 'post', '2014-02-21 06:52:17', '2014-02-21 06:52:17'),
+	(6, 2, 3, 'comment', '2014-02-21 06:52:17', '2014-02-21 06:52:17'),
+	(7, 3, 1, 'comment', '2014-02-21 06:52:17', '2014-02-21 06:52:17'),
+	(8, 3, 2, 'post', '2014-02-21 06:52:17', '2014-02-21 06:52:17'),
+	(9, 3, 3, 'post', '2014-02-21 06:52:17', '2014-02-21 06:52:17'),
+	(12, 4, 3, 'Post', '2014-02-21 08:04:35', '2014-02-21 08:04:35');
 /*!40000 ALTER TABLE `likes` ENABLE KEYS */;
 
 
@@ -210,8 +211,8 @@ CREATE TABLE IF NOT EXISTS `permission_role` (
   PRIMARY KEY (`id`),
   KEY `permission_role_permission_id_foreign` (`permission_id`),
   KEY `permission_role_role_id_foreign` (`role_id`),
-  CONSTRAINT `permission_role_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`),
-  CONSTRAINT `permission_role_permission_id_foreign` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`)
+  CONSTRAINT `permission_role_permission_id_foreign` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`),
+  CONSTRAINT `permission_role_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table informher_db.permission_role: ~0 rows (approximately)
@@ -227,7 +228,6 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `content` text COLLATE utf8_unicode_ci NOT NULL,
   `geolocation` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `srclink` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `is_shown` tinyint(4) NOT NULL,
   `user_id` int(10) unsigned NOT NULL,
   `category_id` int(10) unsigned NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -243,12 +243,12 @@ CREATE TABLE IF NOT EXISTS `posts` (
 -- Dumping data for table informher_db.posts: ~5 rows (approximately)
 DELETE FROM `posts`;
 /*!40000 ALTER TABLE `posts` DISABLE KEYS */;
-INSERT INTO `posts` (`id`, `title`, `content`, `geolocation`, `srclink`, `is_shown`, `user_id`, `category_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 'Is it normal for women to submit to men?', 'To make your document look professionally produced, Word provides header, footer, cover page, and text box designs that complement each other. For example, you can add a matching cover page, header, and sidebar.', NULL, NULL, 1, 1, 1, '2014-02-21 04:35:17', '2014-02-21 04:35:17', NULL),
-	(2, 'Is it alright to ask a question here?', 'To make your document look professionally produced, Word provides header, footer, cover page, and text box designs that complement each other. For example, you can add a matching cover page, header, and sidebar.', NULL, NULL, 1, 2, 1, '2014-02-21 04:35:17', '2014-02-21 04:35:17', NULL),
-	(3, 'I am a Doctor. Ask me anything', 'To make your document look professionally produced, Word provides header, footer, cover page, and text box designs that complement each other. For example, you can add a matching cover page, header, and sidebar.', NULL, NULL, 1, 1, 1, '2014-02-21 04:35:17', '2014-02-21 04:35:17', NULL),
-	(4, 'I am a Teacher. Ask me anything', 'To make your document look professionally produced, Word provides header, footer, cover page, and text box designs that complement each other. For example, you can add a matching cover page, header, and sidebar.', NULL, NULL, 1, 2, 2, '2014-02-21 04:35:17', '2014-02-21 04:35:17', NULL),
-	(5, 'I am a Soldier. Ask me anything', 'To make your document look professionally produced, Word provides header, footer, cover page, and text box designs that complement each other. For example, you can add a matching cover page, header, and sidebar.', NULL, NULL, 1, 3, 2, '2014-02-21 04:35:17', '2014-02-21 04:35:17', NULL);
+INSERT INTO `posts` (`id`, `title`, `content`, `geolocation`, `srclink`, `user_id`, `category_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 'Is it normal for women to submit to men?', 'To make your document look professionally produced, Word provides header, footer, cover page, and text box designs that complement each other. For example, you can add a matching cover page, header, and sidebar.', NULL, NULL, 1, 1, '2014-02-21 06:52:16', '2014-02-21 06:52:16', NULL),
+	(2, 'Is it alright to ask a question here?', 'To make your document look professionally produced, Word provides header, footer, cover page, and text box designs that complement each other. For example, you can add a matching cover page, header, and sidebar.', NULL, NULL, 2, 1, '2014-02-21 06:52:16', '2014-02-21 06:52:16', NULL),
+	(3, 'I am a Doctor. Ask me anything', 'To make your document look professionally produced, Word provides header, footer, cover page, and text box designs that complement each other. For example, you can add a matching cover page, header, and sidebar.', NULL, NULL, 1, 1, '2014-02-21 06:52:16', '2014-02-21 06:52:16', NULL),
+	(4, 'I am a Teacher. Ask me anything', 'To make your document look professionally produced, Word provides header, footer, cover page, and text box designs that complement each other. For example, you can add a matching cover page, header, and sidebar.', NULL, NULL, 2, 2, '2014-02-21 06:52:16', '2014-02-21 06:52:16', NULL),
+	(5, 'I am a Soldier. Ask me anything', 'To make your document look professionally produced, Word provides header, footer, cover page, and text box designs that complement each other. For example, you can add a matching cover page, header, and sidebar.', NULL, NULL, 3, 2, '2014-02-21 06:52:16', '2014-02-21 06:52:16', NULL);
 /*!40000 ALTER TABLE `posts` ENABLE KEYS */;
 
 
@@ -260,8 +260,8 @@ CREATE TABLE IF NOT EXISTS `post_tags` (
   PRIMARY KEY (`id`),
   KEY `post_tags_post_id_foreign` (`post_id`),
   KEY `post_tags_tag_id_foreign` (`tag_id`),
-  CONSTRAINT `post_tags_tag_id_foreign` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`),
-  CONSTRAINT `post_tags_post_id_foreign` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`)
+  CONSTRAINT `post_tags_post_id_foreign` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`),
+  CONSTRAINT `post_tags_tag_id_foreign` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table informher_db.post_tags: ~6 rows (approximately)
@@ -286,6 +286,8 @@ CREATE TABLE IF NOT EXISTS `profiles` (
   `bio` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `hompage_url` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `user_id` int(10) unsigned NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
   KEY `profiles_user_id_foreign` (`user_id`),
   CONSTRAINT `profiles_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
@@ -295,6 +297,41 @@ CREATE TABLE IF NOT EXISTS `profiles` (
 DELETE FROM `profiles`;
 /*!40000 ALTER TABLE `profiles` DISABLE KEYS */;
 /*!40000 ALTER TABLE `profiles` ENABLE KEYS */;
+
+
+-- Dumping structure for table informher_db.properties
+CREATE TABLE IF NOT EXISTS `properties` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `is_shown` tinyint(4) NOT NULL,
+  `is_featured` tinyint(4) NOT NULL,
+  `approved_by` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `properties_id` int(10) unsigned NOT NULL,
+  `properties_type` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Dumping data for table informher_db.properties: ~17 rows (approximately)
+DELETE FROM `properties`;
+/*!40000 ALTER TABLE `properties` DISABLE KEYS */;
+INSERT INTO `properties` (`id`, `is_shown`, `is_featured`, `approved_by`, `properties_id`, `properties_type`) VALUES
+	(1, 1, 1, 'awkwardusername', 1, 'post'),
+	(2, 1, 0, 'awkwardusername', 2, 'post'),
+	(3, 1, 0, 'awkwardusername', 3, 'post'),
+	(4, 1, 1, 'awkwardusername', 4, 'Post'),
+	(5, 1, 0, 'awkwardusername', 5, 'post'),
+	(6, 1, 0, 'awkwardusername', 1, 'comment'),
+	(7, 1, 0, 'awkwardusername', 2, 'comment'),
+	(8, 1, 0, 'awkwardusername', 3, 'comment'),
+	(9, 1, 0, 'awkwardusername', 4, 'comment'),
+	(10, 1, 0, 'awkwardusername', 5, 'comment'),
+	(11, 1, 0, 'awkwardusername', 6, 'comment'),
+	(12, 1, 1, 'awkwardusername', 7, 'comment'),
+	(13, 1, 0, 'awkwardusername', 8, 'comment'),
+	(14, 1, 0, 'awkwardusername', 9, 'comment'),
+	(15, 1, 0, 'awkwardusername', 10, 'comment'),
+	(16, 1, 1, 'awkwardusername', 11, 'comment'),
+	(17, 1, 0, 'awkwardusername', 12, 'comment');
+/*!40000 ALTER TABLE `properties` ENABLE KEYS */;
 
 
 -- Dumping structure for table informher_db.roles
@@ -312,11 +349,11 @@ CREATE TABLE IF NOT EXISTS `roles` (
 DELETE FROM `roles`;
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
 INSERT INTO `roles` (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES
-	(1, 'User', 'Ordinary User', '2014-02-21 04:35:18', '2014-02-21 04:35:18'),
-	(2, 'Expert', 'Able to post in #Relate', '2014-02-21 04:35:18', '2014-02-21 04:35:18'),
-	(3, 'Response', 'Able to see posts in #Shoutout', '2014-02-21 04:35:18', '2014-02-21 04:35:18'),
-	(4, 'Moderator', 'Can approve of posts in #Ask.', '2014-02-21 04:35:18', '2014-02-21 04:35:18'),
-	(5, 'Administrator', 'The administrator who can do everything.', '2014-02-21 04:35:18', '2014-02-21 04:35:18');
+	(1, 'User', 'Ordinary User', '2014-02-21 06:52:17', '2014-02-21 06:52:17'),
+	(2, 'Expert', 'Able to post in #Relate', '2014-02-21 06:52:17', '2014-02-21 06:52:17'),
+	(3, 'Response', 'Able to see posts in #Shoutout', '2014-02-21 06:52:17', '2014-02-21 06:52:17'),
+	(4, 'Moderator', 'Can approve of posts in #Ask.', '2014-02-21 06:52:17', '2014-02-21 06:52:17'),
+	(5, 'Administrator', 'The administrator who can do everything.', '2014-02-21 06:52:17', '2014-02-21 06:52:17');
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 
 
@@ -328,9 +365,14 @@ CREATE TABLE IF NOT EXISTS `sessions` (
   UNIQUE KEY `sessions_id_unique` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Dumping data for table informher_db.sessions: ~0 rows (approximately)
+-- Dumping data for table informher_db.sessions: ~4 rows (approximately)
 DELETE FROM `sessions`;
 /*!40000 ALTER TABLE `sessions` DISABLE KEYS */;
+INSERT INTO `sessions` (`id`, `payload`, `last_activity`) VALUES
+	('55d6b67b7180d6a255619a7b094ac3a1f91e8562', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoibHdoMVdnMjhiT2hFTVVHdmNpY3RuWnlwalV5ckpZOFdLV2dwb1FWSCI7czo1OiJmbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjk6Il9zZjJfbWV0YSI7YTozOntzOjE6InUiO2k6MTM5Mjk1NzA1NztzOjE6ImMiO2k6MTM5Mjk1NzA0MTtzOjE6ImwiO3M6MToiMCI7fX0=', 1392957062),
+	('973ded5b3eddabd00276265d3b2fd8c261796729', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoia0NxR0Y5Szg5SmMzc1JHemtnbUY3ZFR2WDNxUjVSUWUwUHJHeFNjcyI7czo5OiJfc2YyX21ldGEiO2E6Mzp7czoxOiJ1IjtpOjEzOTI5NTY5OTI7czoxOiJjIjtpOjEzOTI5NTY5OTI7czoxOiJsIjtzOjE6IjAiO31zOjU6ImZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1392956995),
+	('cc591c49530e5c57960903e90eee545ddb6dadc9', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiVXBnMkdCd0ZsZWdOczZYYUxuekVuUUc2dHdubWpzSnhiUUl4ZkpLcCI7czo1OiJmbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjM4OiJsb2dpbl84MmU1ZDJjNTZiZGQwODExMzE4ZjBjZjA3OGI3OGJmYyI7aTo0O3M6OToiX3NmMl9tZXRhIjthOjM6e3M6MToidSI7aToxMzkyOTQxNDUwO3M6MToiYyI7aToxMzkyOTM2NzYwO3M6MToibCI7czoxOiIwIjt9fQ==', 1392941454),
+	('cd0082e7f950aa9df205ea47f610b7803b5268cf', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiNVFxeWJCdFpYeDRpOWxoNXRDclhKSUhydWJNV2FwcWNUb1FrcFN1TCI7czo5OiJfc2YyX21ldGEiO2E6Mzp7czoxOiJ1IjtpOjEzOTI5NTg1Mzg7czoxOiJjIjtpOjEzOTI5NTg1Mzg7czoxOiJsIjtzOjE6IjAiO31zOjU6ImZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1392958540);
 /*!40000 ALTER TABLE `sessions` ENABLE KEYS */;
 
 
@@ -348,12 +390,12 @@ CREATE TABLE IF NOT EXISTS `tags` (
 DELETE FROM `tags`;
 /*!40000 ALTER TABLE `tags` DISABLE KEYS */;
 INSERT INTO `tags` (`id`, `tagname`, `created_at`, `updated_at`) VALUES
-	(1, 'education', '2014-02-21 04:35:17', '2014-02-21 04:35:17'),
-	(2, 'health', '2014-02-21 04:35:17', '2014-02-21 04:35:17'),
-	(3, 'abuse', '2014-02-21 04:35:17', '2014-02-21 04:35:17'),
-	(4, 'government', '2014-02-21 04:35:17', '2014-02-21 04:35:17'),
-	(5, 'news', '2014-02-21 04:35:17', '2014-02-21 04:35:17'),
-	(6, 'InformHer: Bug', '2014-02-21 04:35:17', '2014-02-21 04:35:17');
+	(1, 'education', '2014-02-21 06:52:15', '2014-02-21 06:52:15'),
+	(2, 'health', '2014-02-21 06:52:16', '2014-02-21 06:52:16'),
+	(3, 'abuse', '2014-02-21 06:52:16', '2014-02-21 06:52:16'),
+	(4, 'government', '2014-02-21 06:52:16', '2014-02-21 06:52:16'),
+	(5, 'news', '2014-02-21 06:52:16', '2014-02-21 06:52:16'),
+	(6, 'InformHer: Bug', '2014-02-21 06:52:16', '2014-02-21 06:52:16');
 /*!40000 ALTER TABLE `tags` ENABLE KEYS */;
 
 
@@ -375,12 +417,12 @@ CREATE TABLE IF NOT EXISTS `users` (
 DELETE FROM `users`;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `confirmation_code`, `confirmed`, `created_at`, `updated_at`) VALUES
-	(1, 'ichi-san', '$2y$10$PXaZYv.8EXwoXVymugjm3eoIHPKj3c1iUcZgBhcmYqCnD6Flk/R5O', 'ichi-san@informher.com', 'b76cc8e7fdb40c4a83fdbf5b8b821329', 0, '2014-02-21 04:35:16', '2014-02-21 04:35:16'),
-	(2, 'ni-kun', '$2y$10$9lKHKSfe872G2dCKy6Nn/ev4WJXruwE.ckAxTGygldb57Ni7mO0ym', 'ni-kun@informher.com', 'f011ebeae15804afba073e09a9b6b799', 0, '2014-02-21 04:35:16', '2014-02-21 04:35:16'),
-	(3, 'san-kun', '$2y$10$RbMoqdvNCwLYu4MVGkeuSupXmPXPAgMXhMHbxedJZoFOGYjLx27kW', 'san-kun@informher.com', '4d45fb29050e1ea68e599cbd39f14b19', 0, '2014-02-21 04:35:16', '2014-02-21 04:35:16'),
-	(4, 'awkwardusername', '$2y$10$mJlAKiPtkhYjWT23Talg7O95MWisZ1SAyd8wgtSIXFN5Qq0aVulmG', 'markjayson.fuentes@outlook.com', '49495bd520e9d6ca15a07779d2b3b0df', 0, '2014-02-21 04:35:17', '2014-02-21 04:35:17'),
-	(5, 'Temoto-kun', '$2y$10$2CM5RKAkRnxN.KJFyR6Dy.0mnwjm3HC/n6tVLOtQm/3F6ClWILiJa', 'kiirofuriku@hotmail.com', '8bf1dc53b234f6829974b6945192461c', 0, '2014-02-21 04:35:17', '2014-02-21 04:35:17'),
-	(6, 'engJEHneer', '$2y$10$alFtTLGKnmUfIonAvADAzOnYmz78gS.JqoWSqmCmXHLxadvWt8E0G', 'tabing.jeremiah@gmail.com', '00200ad90683bae6c537c627876bf713', 0, '2014-02-21 04:35:17', '2014-02-21 04:35:17');
+	(1, 'ichi-san', '$2y$10$LPqXkdFpbZ.U6ORFSjjX5.GUJOThCw1EZ2XF1rdkwRZ3waWT/yRv6', 'ichi-san@informher.com', '4ff7622ed2432fe1175dc52976e3630b', 0, '2014-02-21 06:52:14', '2014-02-21 06:52:14'),
+	(2, 'ni-kun', '$2y$10$XK9zUZPFbDicpLm8GFOymuBOiNuCwIkH8owC.PXp8PzlAxGwTBiyi', 'ni-kun@informher.com', 'e988695905b4183e88d259978844548c', 0, '2014-02-21 06:52:14', '2014-02-21 06:52:14'),
+	(3, 'san-kun', '$2y$10$S1FfzGG18Ek4WNsflhGkYeZTHpQTo.AJxMgkPMSjfEnSEQy2zAc3G', 'san-kun@informher.com', 'eb0fd01c028968077c7610b1fd3b24c5', 0, '2014-02-21 06:52:14', '2014-02-21 06:52:14'),
+	(4, 'awkwardusername', '$2y$10$AuWQ.LFRVwzjk6erjcv23e5/1mSe0ZiEbwzyH67GW7AYPZMdgmwXG', 'markjayson.fuentes@outlook.com', 'a786b937f27dacabc39d87626bd2796d', 0, '2014-02-21 06:52:15', '2014-02-21 06:52:15'),
+	(5, 'Temoto-kun', '$2y$10$wBDsCWdX7f09Xy3I/qooyO3NUZlfX6BAsQ/vNfBsr7kSBDFVyILSa', 'kiirofuriku@hotmail.com', 'b5b0eb10c39205ce1319006ed4d8b3b9', 0, '2014-02-21 06:52:15', '2014-02-21 06:52:15'),
+	(6, 'engJEHneer', '$2y$10$9OeNLeD2d3KLYCfDkzNB8OjTuDOGmrWnEKk2DVTigV5Whb0n4mEAC', 'tabing.jeremiah@gmail.com', '2169427e3fa93fddddc7c4855657e663', 0, '2014-02-21 06:52:15', '2014-02-21 06:52:15');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
