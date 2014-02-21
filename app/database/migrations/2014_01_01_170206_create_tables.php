@@ -16,15 +16,36 @@ class CreateTables extends Migration {
 			$t->string('username', 35)->unique();
 			$t->string('password');
 			$t->string('email', 100);
-			$t->string('twt_handle', 15);
 			$t->string('confirmation_code');
 			$t->boolean('confirmed')->default(false);
+			$t->timestamps();
+		});
+
+		Schema::create('profiles', function (Blueprint $t) {
+			$t->increments('id');
+			$t->string('badge');
+			$t->string('twt_handle');
+			$t->string('facebook_username');
+			$t->string('bio');
+			$t->string('hompage_url');
+			$t->integer('user_id')->unsigned();
+			$t->foreign('user_id')->references('id')->on('users');
+			$t->timestamps();
+		});
+
+		Schema::create('properties', function (Blueprint $t) {
+			$t->increments('id');
+			$t->tinyInteger('is_shown');
+			$t->tinyInteger('is_featured');
+			$t->string('approved_by');
+			$t->morphs('properties');
 			$t->timestamps();
 		});
 
 		Schema::create('roles', function (Blueprint $t) {
 			$t->increments('id')->unsigned();
 			$t->string('name')->unique();
+			$t->string('description');
 			$t->timestamps();
 		});
 
@@ -104,8 +125,7 @@ class CreateTables extends Migration {
 			$t->increments('id');
 			$t->integer('user_id')->unsigned();
 			$t->foreign('user_id')->references('id')->on('users');
-			$t->integer('likeable_id');
-			$t->string('likeable_type');
+			$t->morphs('likeable');
 			$t->timestamps();
 		});
 
@@ -142,6 +162,10 @@ class CreateTables extends Migration {
 		Schema::table('permission_role', function (Blueprint $t) {
 			$t->dropForeign('permission_role_permission_id_foreign');
 			$t->dropForeign('permission_role_role_id_foreign');
+		});
+
+		Schema::table('profiles', function (Blueprint $t) {
+			$t->dropForeign('profiles_user_id_foreign');
 		});
 
 		Schema::table('likes', function(Blueprint $t) {

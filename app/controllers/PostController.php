@@ -1,7 +1,4 @@
 <?php
-
-
-
 class PostController extends BaseController {
 
 	protected $post;
@@ -16,13 +13,12 @@ class PostController extends BaseController {
 	 * @return Response
 	 */
 	public function index() {
-		$post = $this->post->all();
+		$post = $this->post->shown();
 
 		$data = Input::all();
 
 		$rules = [
-			'category' => 'alpha_num',
-			'tagname'  => 'alpha_num'
+			'category' => 'alpha_num' // , 'tagname'  => 'alpha_num'
 		];
 
 		$isValid = Validator::make($data, $rules)->passes();
@@ -34,6 +30,8 @@ class PostController extends BaseController {
 			// get all posts
 			if (is_null($category) && is_null($tagname)) {
 				$post_count = $post->count();
+
+				$post = $post->get();
 
 				$posts_a = [
 					'count'  => $post_count,
@@ -48,7 +46,7 @@ class PostController extends BaseController {
 				}
 			// get posts where category={a-z}
 			} elseif (is_null($tagname)) {
-				$post = $this->post->whereHas('Category', function ($q) use ($category) {
+				$post = $post->whereHas('Category', function ($q) use ($category) {
 					$q->where('name', '=', $category);
 				})->get();
 
@@ -71,9 +69,9 @@ class PostController extends BaseController {
 					'description' => 'No posts for query.',
 					'input'       => 'category?=' . $category
 				], 404);
-			// get posts where tags={a-z}
-			} elseif (is_null($category)) { // TODO: Tag find not working
-				$post = $this->post->whereHas('Tag', function ($q) use ($tagname) {
+			// get posts where tags={a-z} // TODO: Tag find not working
+			} /*elseif (is_null($category)) {
+				$post = $post->whereHas('Tag', function ($q) use ($tagname) {
 					$q->where('tagname', '=', $tagname);
 				})->get();
 
@@ -96,7 +94,7 @@ class PostController extends BaseController {
 					'description' => 'No posts for query.',
 					'input'       => 'tagname?=' . $tagname
 				], 404);
-			}
+			}*/
 		}
 
 		// F@iLZOR$$$$
@@ -113,7 +111,7 @@ class PostController extends BaseController {
 	 * @return Response
 	 */
 	public function show(Post $post) {
-		if ($post->count() == 0) {
+		if ($post->count() == 0 and $post->is_shown) {
 			return Response::json([
 					'status'      => 'POST_SHOW_FAILED',
 					'description' => "Post {$post} not found."
@@ -126,17 +124,46 @@ class PostController extends BaseController {
 		], 200);
 	}
 
+	public function show_unapproved() {
+		$post = $this->post->not_shown()->get();
+
+		$post_count = $post->count();
+
+		if ($post_count != 0) {
+			$posts_a = [
+				'count'  => $post_count,
+				'result' => $post->toArray()
+			];
+
+			return Response::json([
+				'status' => 'POST_SHOW_UNAPPROVED_SUCCESSFUL',
+				'posts'  => $posts_a
+			], 200);
+		}
+
+		return Response::json([
+			'status'      => 'POST_SHOW_UNAPPROVED_FAILED',
+			'description' => 'Returned empty result'
+		], 404);
+	}
+
 	/**
 	 * Store a newly created resource in storage.
 	 *
+	 * @param Post $post
 	 * @return Response
 	 */
 	public function create_edit(Post $post = null) {
 		if (is_null($post)) {
 			$post   = $this->post;
 			$status = 'POST_ADD';
-		} else {
+		} elseif ($post->isTheAuthor() or Entrust::hasRole('Moderator')){
 			$status = 'POST_UPDATE';
+		} else {
+			return Response::json([
+				'status'        =>  'POST_UPDATE_FAILED',
+			    'description'   =>  'You are forbidden to modify this resource'
+			], 403);
 		}
 
 		$input = Input::all();
@@ -169,16 +196,17 @@ class PostController extends BaseController {
 	/**
 	 * Remove the specified resource from storage.
 	 *
-	 * @param  int $post
+	 * @param  Post $post
 	 * @return Response
 	 */
 	public function destroy(Post $post) {
 		Comment::where('post_id', '=', $post->id)->delete();
+		Like::where('likeable_id', '=', $post->id)->where('likeable_type', '=', 'Post')->delete();
 
 		if ($post->delete()) {
 			return Response::json([
 					'status' => 'POST_DELETE_SUCCESSFUL'
-			], 204);
+			], 200);
 		}
 
 		return Response::json([
@@ -187,6 +215,13 @@ class PostController extends BaseController {
 		], 500);
 	}
 
+	/**
+	 * Show all comments [or comment if $comment not null] for post
+	 *
+	 * @param  Post $post
+	 * @param  Comment $comment = null
+	 * @return Response
+	 */
 	public function comments(Post $post, Comment $comment = null) {
 		$comments = $post->comments;
 
@@ -210,6 +245,12 @@ class PostController extends BaseController {
 		], 200);
 	}
 
+	/**
+	 * Show all tags for post
+	 *
+	 * @param Post $post
+	 * @return Response
+	 */
 	public function tags(Post $post) {
 		$tags = $post->tags;
 
@@ -231,7 +272,14 @@ class PostController extends BaseController {
 		], 200);
 	}
 
-	public function likes($post, $comment = null) {
+	/**
+	 * Show all likes for post/comment
+	 *
+	 * @param Post $post
+	 * @param Comment $comment
+	 * @return \Illuminate\Http\JsonResponse
+	 */
+	public function likes(Post $post, Comment $comment = null) {
 		$item = is_null($post) ? $comment : $post;
 
 		$likes = $item->likes;
@@ -249,6 +297,13 @@ class PostController extends BaseController {
 		]);
 	}
 
+	/**
+	 * Create or Update Comment for Post
+	 *
+	 * @param Post $post
+	 * @param Comment $comment
+	 * @return \Illuminate\Http\JsonResponse
+	 */
 	public function create_update_comment(Post $post, Comment $comment = null) {
 		if (is_null($comment))
 			$comment = new Comment;
@@ -264,6 +319,13 @@ class PostController extends BaseController {
 		], 201);
 	}
 
+	/**
+	 * Delete comment from post
+	 *
+	 * @param Post $post
+	 * @param Comment $comment
+	 * @return \Illuminate\Http\JsonResponse
+	 */
 	public function delete_comment(Post $post, Comment $comment = null) {
 		if (is_null($comment)) {
 			Comment::where('post_id', '=', $post->id)->delete();
@@ -276,7 +338,7 @@ class PostController extends BaseController {
 		if ($comment->delete()) {
 			return Response::json([
 					'status' => 'POST_COMMENT_DELETE_SUCCESSFUL'
-			], 204);
+			], 200);
 		}
 
 		return Response::json([
@@ -284,7 +346,14 @@ class PostController extends BaseController {
 		], 500);
 	}
 
-	public function like($post, $comment = null) {
+	/**
+	 * Like/unlike Post/Comment
+	 *
+	 * @param Post $post
+	 * @param Comment $comment
+	 * @return \Illuminate\Http\JsonResponse
+	 */
+	public function like(Post $post, Comment $comment = null) {
 		$item = is_null($post) ? $comment : $post;
 
 		$user_id = Confide::user()->getAuthIdentifier();

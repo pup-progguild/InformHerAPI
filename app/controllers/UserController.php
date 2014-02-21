@@ -33,11 +33,15 @@ class UserController extends BaseController {
 
 		if ($user->id) {
 			// Redirect with success message, You may replace "Lang::get(..." for your custom message.
+
+			$role = DB::table('roles')->where('name', '=', 'User')->first();
+
+			$user->roles()->attach($role->id);
+
 			return Response::json([
-					'status' => 'USER_CREATE_SUCCESSFUL',
-					'description' => Lang::get('confide::confide.alerts.account_created')
-				], 200, [ 'Content-Type' => 'application/javascript' ]
-			);
+				'status' => 'USER_CREATE_SUCCESSFUL',
+				'description' => Lang::get('confide::confide.alerts.account_created')
+			], 200);
 		} else {
 			// Get validation errors (see Ardent package)
 			$error = $user->errors()->all(':message');
@@ -45,8 +49,7 @@ class UserController extends BaseController {
 			return Response::json([
 					'status'      => 'USER_CREATE_FAILED',
 					'description' => $error
-				], 200, [ 'Content-Type' => 'application/javascript' ]
-			);
+			], 200);
 		}
 	}
 
@@ -67,13 +70,9 @@ class UserController extends BaseController {
 		// logAttempt will check if the 'email' perhaps is the username.
 		// Get the value from the config file instead of changing the controller
 		if (Confide::logAttempt($input)) {
-			// Redirect the user to the URL they were trying to access before
-			// caught by the authentication filter IE Redirect::guest('user/login').
-			// Otherwise fallback to '/'
-			// Fix pull #145
 			return Response::json([
 				'status' => 'USER_LOGIN_SUCCESS',
-			    'user'   => Confide::user()
+			    'user'   => Confide::user()->toArray()
 			], 200);
 		} else {
 			$user = new User;
@@ -103,13 +102,17 @@ class UserController extends BaseController {
 		if (Confide::confirm($code)) {
 			$notice_msg = Lang::get('confide::confide.alerts.confirmation');
 
-			return Redirect::to('user/login')
-				->with('notice', $notice_msg);
+			return Response::json([
+				'status'        =>  '_SUCCESSFUL',
+			    'description'   =>  $notice_msg
+			], 200);
 		} else {
 			$error_msg = Lang::get('confide::confide.alerts.wrong_confirmation');
 
-			return Redirect::to('user/login')
-				->with('error', $error_msg);
+			return Response::json([
+				'status'      => '_FAILED',
+				'description' => $error_msg
+			], 200);
 		}
 	}
 
@@ -121,24 +124,18 @@ class UserController extends BaseController {
 		if (Confide::forgotPassword(Input::get('email'))) {
 			$notice_msg = Lang::get('confide::confide.alerts.password_forgot');
 
-			return Redirect::to('user/login')
-				->with('notice', $notice_msg);
+			return Response::json([
+				'status'        =>  'USER_FORGOT_PASSWORD_EMAIL_SUCCESSFUL',
+				'description'   => $notice_msg
+			], 200);
 		} else {
 			$error_msg = Lang::get('confide::confide.alerts.wrong_password_forgot');
 
-			return Redirect::to('user/forgot')
-				->withInput()
-				->with('error', $error_msg);
+			return Response::json([
+				'status'        =>  'USER_FORGOT_PASSWORD_EMAIL_FAILED',
+			    'description'   =>  $error_msg
+			], 200);
 		}
-	}
-
-	/**
-	 * Shows the change password form with the given token
-	 *
-	 */
-	public function getReset($token) {
-		return View::make(Config::get('confide::reset_password_form'))
-			->with('token', $token);
 	}
 
 	/**
@@ -156,14 +153,17 @@ class UserController extends BaseController {
 		if (Confide::resetPassword($input)) {
 			$notice_msg = Lang::get('confide::confide.alerts.password_reset');
 
-			return Redirect::to('user/login')
-				->with('notice', $notice_msg);
+			return Response::json([
+				'status'        =>  'USER_PASSWORD_RESET_SUCCESSFUL',
+				'description'   =>  $notice_msg
+			], 200);
 		} else {
 			$error_msg = Lang::get('confide::confide.alerts.wrong_password_reset');
 
-			return Redirect::to('user/reset/' . $input['token'])
-				->withInput()
-				->with('error', $error_msg);
+			return Response::json([
+				'status'      => 'USER_PASSWORD_RESET_FAILED',
+				'description' => $error_msg
+			], 200);
 		}
 	}
 

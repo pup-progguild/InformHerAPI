@@ -1,11 +1,6 @@
 <?php
-
 /**
- * Created by PhpStorm.
- * 
- * User: hoshi~
- * Date: 1/2/14
- * Time: 1:41 AM
+ * An Eloquent Model: 'Post'
  *
  * @property integer $id
  * @property string $title
@@ -17,20 +12,20 @@
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property \Carbon\Carbon $deleted_at
+ * @property-read int $likers
  * @property-read \User $author
  * @property-read \Category $category
  * @property-read \Illuminate\Database\Eloquent\Collection|\Tag[] $tags
  * @property-read \Illuminate\Database\Eloquent\Collection|\Comment[] $comments
- * @property-read \Illuminate\Database\Eloquent\Collection|\Like[] $likes
  */
 class Post extends Eloquent {
 	protected $softDelete = true;
 
-	protected $hidden = ['category_id', 'user_id', 'deleted_at'];
+	protected $hidden = [ 'category_id', 'user_id', 'deleted_at' ];
 
-	protected $with = ['category', 'tags', 'comments', 'likes', 'author'];
+	protected $with = [ 'tags', 'comments', 'author', 'category' ];
 
-	//protected $appends = ['likers'];    // TODO: this attribute feels very,very weird. Lol.
+	protected $appends = [ 'likers' ];
 
 	/**
 	 * Returns a formatted post content entry,
@@ -43,7 +38,7 @@ class Post extends Eloquent {
 	}
 
 	public function isTheAuthor() {
-        return $this->user_id === Auth::user()->id ? true : false;
+        return $this->user_id === Confide::user()->id ? true : false;
     }
 
 /**
@@ -58,6 +53,12 @@ class Post extends Eloquent {
 		}
 
 		return $date->toDateTimeString();
+	}
+
+	public function getLikersAttribute() {
+		$like_count = $this->like_count();
+
+		return is_null($like_count) ? 0 : $like_count;
 	}
 
 	/**
@@ -93,10 +94,57 @@ class Post extends Eloquent {
 	}
 
 	public function comments() {
-		return $this->hasMany('Comment');
+		return $this->hasMany('Comment')->orderBy('created_at', 'desc');
 	}
 
 	public function likes() {
 		return $this->morphMany('Like', 'likeable');
+	}
+
+	public function like_count() {
+		return $this->morphMany('Like', 'likeable')->count();
+	}
+
+	public function properties() {
+		return $this->morphMany('Property', 'properties');
+	}
+
+	public function shown() {
+		$shown_ids = Property::where('is_shown', '=', 1)->where('properties_type', '=', 'post');
+
+		$haha = $shown_ids->get(['properties_id']);
+
+		$haha = array_flatten($haha->toArray());
+
+		if (count($haha) != 0)
+			return Post::whereIn('id', $haha);
+
+		return null;
+	}
+
+	public function not_shown() {
+		$shown_ids = Property::where('is_shown', '=', 0)->where('properties_type', '=', 'post');
+
+		$haha = $shown_ids->get(['properties_id']);
+
+		$haha = array_flatten($haha->toArray());
+
+		if(count($haha) != 0)
+			return Post::whereIn('id', $haha);
+
+		return null;
+	}
+
+	public function featured() {
+		$shown_ids = Property::where('is_featured', '=', 1)->where('properties_type', '=', 'post');
+
+		$haha = $shown_ids->get(['properties_id']);
+
+		$haha = array_flatten($haha->toArray());
+
+		if (count($haha) != 0)
+			return Post::whereIn('id', $haha);
+
+		return null;
 	}
 }

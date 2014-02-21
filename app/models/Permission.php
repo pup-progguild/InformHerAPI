@@ -1,10 +1,8 @@
 <?php
+use Zizaco\Entrust\EntrustPermission;
+
 /**
- * Created by PhpStorm.
- * 
- * User: REDFOX Wizpad
- * Date: 2/7/14
- * Time: 3:32 AM
+ * An Eloquent Model: 'Permission'
  *
  * @property integer $id
  * @property string $name
@@ -13,9 +11,6 @@
  * @property \Carbon\Carbon $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\Role[] $roles
  */
-
-use Zizaco\Entrust\EntrustPermission;
-
 class Permission extends EntrustPermission {
 
 }

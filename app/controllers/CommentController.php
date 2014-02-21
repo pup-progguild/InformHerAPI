@@ -14,82 +14,67 @@ class CommentController extends BaseController {
 	 * @return Response
 	 */
 	public function index() {
+		$comments = $this->comment;
 
-	}
+		$post_count = $comments->count();
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @param   id $id
-	 * @return Response
-	 */
-	public function create($id) {
+		$comments = $comments->get();
 
-	}
+		$comments_a = [
+			'count'  => $post_count,
+			'result' => $comments->toArray()
+		];
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store() {
-		//
+		if ($post_count != 0) {
+			return Response::json([
+				'status' => 'COMMENTS_SHOW_SUCCESSFUL',
+				'posts'  => $comments_a
+			], 200);
+		}
 	}
 
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param  int $id
+	 * @param  Comment $comment
 	 * @return Response
 	 */
-	public function show(Post $id1, Comment $id2) {      //TODO - wrong logic
-		$comments = $id1->comments->lists($id2->id, 'id');
+	public function show(Comment $comment) {      //TODO - wrong logic
 
-		if ($id2->count() == 0) {
+		if ($comment->count() == 0) {
 			return Response::json(array(
 					'status'      => 'COMMENT_SHOW_FAILED',
-					'description' => "Comment {$id2->id} not found."
+					'description' => "Comment {$comment->id} not found."
 				), 404
 			);
 		}
 
-		var_dump($comments);
-
 		return Response::json(array(
 				'status' => 'COMMENT_SHOW_SUCCESSFUL',
-				'posts'  => 'asdasdas'
+				'posts'  => $comment->toArray()
 			), 200
 		);
 	}
 
 	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int $id
-	 * @return Response
-	 */
-	public function edit($id) {
-		//
-	}
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int $id
-	 * @return Response
-	 */
-	public function update($id) {
-		//
-	}
-
-	/**
 	 * Remove the specified resource from storage.
 	 *
-	 * @param  int $id
+	 * @param  Comment $comment
 	 * @return Response
 	 */
-	public function destroy($id) {
-		//
+	public function destroy(Comment $comment) {
+		if($comment->isTheAuthor() or Entrust::hasRole('Moderator')) {
+			if ($comment->delete()) {
+				return Response::json([
+					'status' => 'POST_COMMENT_DELETE_SUCCESSFUL'
+				], 200);
+			}
+		}
+
+		return Response::json([
+			'status' => 'POST_COMMENT_DELETE_FAILED',
+		    'description'   =>  'Either you don\'t have enough permissions, or the resource you are accessing isn\'t available.'
+		], 500);
 	}
 
 }

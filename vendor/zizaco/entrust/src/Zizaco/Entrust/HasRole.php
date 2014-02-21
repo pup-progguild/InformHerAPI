@@ -125,7 +125,6 @@ trait HasRole
         } else {
             return array($validateAll, array('roles' => $checkedRoles, 'permissions' => $checkedPermissions));
         }
-
     }
 
     /**

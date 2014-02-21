@@ -10,15 +10,16 @@ use Zizaco\Entrust\HasRole;
  * @property string $username
  * @property string $password
  * @property string $email
- * @property string $twt_handle
  * @property string $confirmation_code
  * @property boolean $confirmed
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\Post[] $posts
  * @property-read \Illuminate\Database\Eloquent\Collection|\Comment[] $comments
- * @property-read \Illuminate\Database\Eloquent\Collection|\Role[] $roles
  * @property-read \Illuminate\Database\Eloquent\Collection|\Like[] $likes
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Like[] $like_count
+ * @property-read \Profile $profile
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Role[] $roles
  */
 class User extends ConfideUser {
 
@@ -34,18 +35,22 @@ class User extends ConfideUser {
 	);
 
 	public function posts() {
-		return $this->hasMany('Post');
+		return $this->hasMany('Post')->orderBy('created_at', 'desc');
 	}
 
 	public function comments() {
-		return $this->hasMany('Comment');
-	}
-
-	public function roles() {
-		return $this->hasMany('Role');
+		return $this->hasMany('Comment')->orderBy('created_at', 'desc');
 	}
 
 	public function likes() {
-		return $this->hasMany('Like');
+		return $this->hasMany('Like')->orderBy('created_at', 'desc');
+	}
+
+	public function like_count() {
+		return $this->hasMany('Like')->count();
+	}
+
+	public function profile() {
+		return $this->hasOne('Profile');
 	}
 }

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * An Eloquent Model: 'PostTag'
  *

@@ -11,50 +11,50 @@ class LikeTableSeeder extends Seeder {
 		$likes = [
 			[
 				'user_id'           =>  1,
-			    'imageable_id'      =>  1,
-			    'imageable_type'    =>  'post'
+			    'likeable_id'      =>  1,
+			    'likeable_type'    =>  'post'
 			],
 			[
 				'user_id'        => 1,
-				'imageable_id'   => 2,
-				'imageable_type' => 'post'
+				'likeable_id'   => 2,
+				'likeable_type' => 'post'
 			],
 			[
 				'user_id'        => 1,
-				'imageable_id'   => 1,
-				'imageable_type' => 'comment'
+				'likeable_id'   => 1,
+				'likeable_type' => 'comment'
 			],
 
 			[
 				'user_id'        => 2,
-				'imageable_id'   => 1,
-				'imageable_type' => 'post'
+				'likeable_id'   => 1,
+				'likeable_type' => 'post'
 			],
 			[
 				'user_id'        => 2,
-				'imageable_id'   => 3,
-				'imageable_type' => 'post'
+				'likeable_id'   => 3,
+				'likeable_type' => 'post'
 			],
 			[
 				'user_id'        => 2,
-				'imageable_id'   => 3,
-				'imageable_type' => 'comment'
+				'likeable_id'   => 3,
+				'likeable_type' => 'comment'
 			],
 
 			[
 				'user_id'        => 3,
-				'imageable_id'   => 1,
-				'imageable_type' => 'comment'
+				'likeable_id'   => 1,
+				'likeable_type' => 'comment'
 			],
 			[
 				'user_id'        => 3,
-				'imageable_id'   => 2,
-				'imageable_type' => 'post'
+				'likeable_id'   => 2,
+				'likeable_type' => 'post'
 			],
 			[
 				'user_id'        => 3,
-				'imageable_id'   => 3,
-				'imageable_type' => 'post'
+				'likeable_id'   => 3,
+				'likeable_type' => 'post'
 			],
 		];
 

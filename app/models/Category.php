@@ -1,11 +1,6 @@
 <?php
-
 /**
- * Created by PhpStorm.
- * 
- * User: REDFOX Wizpad
- * Date: 1/31/14
- * Time: 10:57 AM
+ * An Eloquent Model: 'Category'
  *
  * @property integer $id
  * @property string $name

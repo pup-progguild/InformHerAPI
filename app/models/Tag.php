@@ -1,11 +1,6 @@
 <?php
-
 /**
- * Created by PhpStorm.
- * 
- * User: hoshi~
- * Date: 1/13/14
- * Time: 12:38 AM
+ * An Eloquent Model: 'Tag'
  *
  * @property integer $id
  * @property string $tagname

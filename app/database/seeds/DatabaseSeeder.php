@@ -22,5 +22,11 @@ class DatabaseSeeder extends Seeder {
 		$this->call('CommentsTableSeeder');
 
 		$this->call('LikeTableSeeder');
+
+		$this->call('RoleTableSeeder');
+
+		$this->call('AssignedRoleTableSeeder');
+
+		$this->call('PropertiesTableSeeder');
 	}
 }

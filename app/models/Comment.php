@@ -1,11 +1,6 @@
 <?php
-
 /**
- * Created by PhpStorm.
- * 
- * User: hoshi~
- * Date: 1/13/14
- * Time: 12:37 AM
+ * An Eloquent Model: 'Comment'
  *
  * @property integer $id
  * @property string $message
@@ -14,9 +9,9 @@
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property \Carbon\Carbon $deleted_at
+ * @property-read mixed $likers
  * @property-read \User $author
  * @property-read \Post $post
- * @property-read \Illuminate\Database\Eloquent\Collection|\Like[] $likes
  */
 class Comment extends Eloquent {
 
@@ -24,7 +19,9 @@ class Comment extends Eloquent {
 
 	protected $hidden = ['deleted_at', 'user_id', 'post_id'];
 
-	protected $with = ['likes', 'author'];
+	protected $with = ['author'];
+
+	protected $appends = ['likers'];
 
 	/**
 	 * Get the comment's content.
@@ -33,6 +30,16 @@ class Comment extends Eloquent {
 	 */
 	public function content() {
 		return nl2br($this->content);
+	}
+
+	public function isTheAuthor() {
+		return $this->user_id === Confide::user()->id ? true : false;
+	}
+
+	public function getLikersAttribute() {
+		$like_count = $this->like_count();
+
+		return is_null($like_count) ? 0 : $like_count;
 	}
 
 	/**
@@ -79,5 +86,43 @@ class Comment extends Eloquent {
 
 	public function likes() {
 		return $this->morphMany('Like', 'likeable');
+	}
+
+	public function like_count() {
+		return $this->morphMany('Like', 'likeable')->count();
+	}
+
+	public function properties() {
+		return $this->morphMany('Property', 'properties');
+	}
+
+	public function shown() {
+		$shown_ids = Property::where('is_shown', '=', 1)->where('properties_type', '=', 'comment');
+
+		$haha = $shown_ids->get(['properties_id']);
+
+		$haha = array_flatten($haha->toArray());
+
+		return Comment::whereIn('id', $haha);
+	}
+
+	public function not_shown() {
+		$shown_ids = Property::where('is_shown', '=', 0)->where('properties_type', '=', 'comment');
+
+		$haha = $shown_ids->get(['properties_id']);
+
+		$haha = array_flatten($haha->toArray());
+
+		return Comment::whereIn('id', $haha);
+	}
+
+	public function featured() {
+		$shown_ids = Property::where('is_featured', '=', 1)->where('properties_type', '=', 'comment');
+
+		$haha = $shown_ids->get(['properties_id']);
+
+		$haha = array_flatten($haha->toArray());
+
+		return Comment::whereIn('id', $haha);
 	}
 }

@@ -59,9 +59,13 @@ Route::get('/test', function () {
 	//return View::make('test');
 	//Cache::remember('test', 15, function() {
 
-	$post = new Post;
+	$post = Post::find(1);
 
-	echo $type = get_class($post);
+	return Response::json([
+		$post->properties->filter(function($post) {
+			return $post->is_shown;
+		})->toArray()
+	]);
 	//});
 }); //->before('auth.basic');
 
@@ -69,6 +73,7 @@ Route::get('/test', function () {
 Route::model("post", "Post");
 Route::model("comment", "Comment");
 Route::model("tag", "Tag");
+Route::model("user", "User");
 
 /*
 
@@ -168,7 +173,7 @@ Route::group(["prefix" => "posts"], function () {
 		]);
 
 		Route::post("/{post}/comments/{comment}/like", [
-			"as"   => "LikeComment",
+			"as"   => "LikePostComment",
 		    "uses" => "PostController@like"
 		]);
 
@@ -186,14 +191,19 @@ Route::group(["prefix" => "posts"], function () {
 
 //Route::group(["prefix" => "comments"], function () {
 //	Route::get('/', [
-//		'as'    =>  'Comments',
+//		'as'    =>  'GetComments',
 //	    'uses'  =>  'CommentController@index'
 //	]);
 //
+//	Route::get('/{comment}', [
+//		'as'    =>  'GetComment',
+//		'uses'  =>	'CommentController@show'
+//	]);
+//
 //	Route::group(["before" => "auth"], function () {
-//		Route::put('/{comment}', [
-//			'as'   => 'UpdateComment',
-//		    'uses' => 'CommentController@update'
+//		Route::post("/{comment}/like", [
+//			"as"   => "LikeUnlikeComment",
+//			"uses" => "PostController@like"
 //		]);
 //
 //		Route::delete('/{comment}', [
@@ -210,20 +220,7 @@ Route::group(['prefix' => 'tags'], function () {
 	]);
 
 	Route::group(["before" => "auth"], function () {
-		Route::post('/', [
-			'as'   => 'AddTags',
-			'uses' => 'TagController@store'
-		]);
 
-		Route::put('/{tag}', [
-			'as'   => 'UpdateTags',
-			'uses' => 'TagController@update'
-		]);
-
-		Route::delete('/{tag}', [
-			'as'   => 'DeleteTag',
-			'uses' => 'TagController@destroy'
-		]);
 	});
 });
 
@@ -255,3 +252,54 @@ Route::group(['prefix' => 'category'], function () {
 Route::get('user/confirm/{code}', 'UserController@getConfirm');
 Route::get('user/reset/{token}', 'UserController@getReset');
 Route::controller( 'user', 'UserController');
+
+Route::group(['prefix' => 'admin', 'before' => 'auth'], function () {
+	Route::group(['prefix' => 'users'], function () {
+		Route::get('/{user}/delete', [
+			'as'   => 'DeleteUser',
+			'uses' => 'AdminController@delete_user'
+		]);
+
+		Route::post('/{user}/promote', [
+			'as'   => 'PromoteUser',
+			'uses' => 'AdminController@promote'
+		]);
+
+		Route::post('/{user}/demote', [
+			'as'   => 'PromoteUser',
+			'uses' => 'AdminController@demote'
+		]);
+	});
+
+	Route::group(['prefix' => 'posts'], function () {
+		Route::get('/unapproved', [
+			'as'   => 'ShowUnapprovedPosts',
+		    'uses' => 'AdminController@show_unapproved'
+		]);
+
+		Route::get('/{post}/approve', [
+			'as'   => 'ApprovePost',
+		    'uses' => 'AdminController@approve_post'
+		]);
+	});
+
+	Route::group(['prefix' => 'tags'], function () {
+		Route::post('/', [
+			'as'   => 'AddTags',
+			'uses' => 'TagController@store'
+		]);
+
+		Route::put('/{tag}', [
+			'as'   => 'UpdateTags',
+			'uses' => 'TagController@update'
+		]);
+
+		Route::delete('/{tag}', [
+			'as'   => 'DeleteTag',
+			'uses' => 'TagController@destroy'
+		]);
+	});
+});
+
+Entrust::routeNeedsRole('admin/*', ['Administrator', 'Moderator', 'Response', 'Expert'], null, false);
+Entrust::routeNeedsRole('admin/posts*', 'Moderator');
