@@ -77,3 +77,8 @@ App::down(function () {
 */
 
 require app_path() . '/filters.php';
+
+/*
+ * Error Handling
+ */
+require app_path() . '/errors.php';

@@ -35,8 +35,40 @@ class TagController extends BaseController {
 	 *
 	 * @return Response
 	 */
-	public function store() {
-		//
+	public function create_edit(Tag $tag = null) {
+		if (is_null($tag)) {
+			$tag = $this->tag;
+			$status = 'TAG_ADD';
+		} else {
+			$status = 'TAG_UPDATE';
+		}
+
+		$input = Input::all();
+
+		$tagname = $input['tagname'];
+
+		$isTagExist = Tag::where('name', '=', $tagname)->exists();
+
+		if($isTagExist) {
+			return Response::json([
+				'status'        => $status . '_FAILED',
+			    'description'   => 'Tag, ' . $tagname . ' already exist in InformHer'
+			], 200);
+		}
+
+		$tag->tagname = $tagname;
+
+		if($tag->save()) {
+			return Response::json([
+				'status'        => $status . '_SUCCESSFUL',
+			    'description'   => 'Tag, ' . $tagname . ' added to InformHer'
+			], 201);
+		}
+
+		return Response::json([
+			'status'        =>  $status . '_FAILED',
+		    'description'   =>  'Unknown error'
+		], 200);
 	}
 
 	/**
@@ -50,23 +82,30 @@ class TagController extends BaseController {
 	}
 
 	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  Tag $id
-	 * @return Response
-	 */
-	public function update(Tag $id) {
-		//
-	}
-
-	/**
 	 * Remove the specified resource from storage.
 	 *
-	 * @param  Tag $id
-	 * @return Response
+	 * @param  Tag $tag
+	 *
+*@return Response
 	 */
-	public function destroy(Tag $id) {
-		//
+	public function destroy(Tag $tag) {
+		$tagname = $tag->tagname;
+
+		$posts = Post::whereHas('Tags', function ($q) use ($tagname) {
+			$q->where('tagname', '=', $tagname);
+		})->get();
+
+		foreach ($posts as $post) {
+			$post->tags()->detach($tag->id);
+		}
+
+		if($tag->delete()) {
+			return Response::json([
+				'status'    =>  'TAG_DELETE_SUCCESSFUL',
+			    'description'   => 'Tag, ' . $tagname . ' detached from associated posts, and deleted.'
+			], 200);
+		}
+
 	}
 
 }

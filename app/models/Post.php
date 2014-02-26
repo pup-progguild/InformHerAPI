@@ -25,7 +25,7 @@ class Post extends Eloquent {
 
 	protected $with = [ 'tags', 'comments', 'author', 'category' ];
 
-	protected $appends = [ 'likers' ];
+	protected $appends = [ 'likers' , 'is_featured' ];
 
 	/**
 	 * Returns a formatted post content entry,
@@ -41,7 +41,15 @@ class Post extends Eloquent {
         return $this->user_id === Confide::user()->id ? true : false;
     }
 
-/**
+	public function isShown() {
+		return Property::where('properties_id', '=', $this->id)->where('properties_type', '=', get_class())->where('is_shown', '=', 1)->exists();
+	}
+
+	public function isFeatured() {
+		return Property::where('properties_id', '=', $this->id)->where('properties_type', '=', get_class())->where('is_featured', '=', 1)->exists();
+	}
+
+	/**
 	 * Get the date the post was created.
 	 *
 	 * @param \Carbon|null $date
@@ -59,6 +67,10 @@ class Post extends Eloquent {
 		$like_count = $this->like_count();
 
 		return is_null($like_count) ? 0 : $like_count;
+	}
+
+	public function getIsFeaturedAttribute() {
+		return $this->isFeatured();
 	}
 
 	/**
@@ -109,42 +121,78 @@ class Post extends Eloquent {
 		return $this->morphMany('Property', 'properties');
 	}
 
+	public function ask() {
+		return $this::whereHas('Category', function ($q) {
+			$q->where('name', '=', 'ask');
+		});
+	}
+
+	public function relate() {
+		return $this::whereHas('Category', function ($q) {
+			$q->where('name', '=', 'relate');
+		});
+	}
+
+	public function shoutout() {
+		return $this::whereHas('Category', function ($q) {
+			$q->where('name', '=', 'shoutout');
+		});
+	}
+
+	/**
+	 * Show shown post
+	 *
+	 * @return \Illuminate\Database\Query\Builder|null|static
+	 */
 	public function shown() {
-		$shown_ids = Property::where('is_shown', '=', 1)->where('properties_type', '=', 'post');
+		$shown_ids = Property::where('is_shown', '=', 1)->where('properties_type', '=', get_class());
 
-		$haha = $shown_ids->get(['properties_id']);
+		$shown_a = array_flatten($shown_ids->get(['properties_id'])->toArray());
 
-		$haha = array_flatten($haha->toArray());
-
-		if (count($haha) != 0)
-			return Post::whereIn('id', $haha);
-
-		return null;
+		return (count($shown_a) != 0) ? $this::whereIn('id', $shown_a) : null;
 	}
 
+	/**
+	 * Show not shown posts
+	 *
+	 * @return \Illuminate\Database\Query\Builder|null|static
+	 */
 	public function not_shown() {
-		$shown_ids = Property::where('is_shown', '=', 0)->where('properties_type', '=', 'post');
+		$not_shown_ids = Property::where('is_shown', '=', 0)->where('properties_type', '=', get_class());
 
-		$haha = $shown_ids->get(['properties_id']);
+		$not_shown_a = array_flatten($not_shown_ids->get(['properties_id'])->toArray());
 
-		$haha = array_flatten($haha->toArray());
-
-		if(count($haha) != 0)
-			return Post::whereIn('id', $haha);
-
-		return null;
+		return (count($not_shown_a) != 0) ? $this::whereIn('id', $not_shown_a) : null;
 	}
 
+	/**
+	 * Show EE. Except ShoutOut posts
+	 *
+	 * @return \Illuminate\Database\Eloquent\Builder|null|static
+	 */
+	public function everything_else() {
+		$shown_ids = Property::where('is_shown', '=', 1)->where('properties_type', '=', get_class());
+
+		$everything_else = array_flatten($shown_ids->get(['properties_id'])->toArray());
+
+		return (count($everything_else) != 0) ? $this::whereIn('id', $everything_else)->whereHas('Category', function($q) {
+				$q->where('name', '!=', 'shoutout');}) : null;
+	}
+
+	/**
+	 * Show featured posts
+	 *
+	 * @return \Illuminate\Database\Query\Builder|null|static
+	 */
 	public function featured() {
-		$shown_ids = Property::where('is_featured', '=', 1)->where('properties_type', '=', 'post');
+		$featured_ids = Property::where('is_featured', '=', 1)->where('properties_type', '=', get_class());
 
-		$haha = $shown_ids->get(['properties_id']);
+		$featured_a = array_flatten($featured_ids->get(['properties_id'])->toArray());
 
-		$haha = array_flatten($haha->toArray());
+		return (count($featured_a) != 0) ? $this::whereIn('id', $featured_a) : null;
+	}
 
-		if (count($haha) != 0)
-			return Post::whereIn('id', $haha);
+	public function set_property(User $user, $category = null) {
 
-		return null;
 	}
 }

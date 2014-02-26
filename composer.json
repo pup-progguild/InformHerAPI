@@ -31,7 +31,8 @@
         "zizaco/entrust": "dev-master",
 		"way/laravel-test-helpers" : "dev-master",
 		"way/generators" : "dev-master",
-		"lucadegasperi/oauth2-server-laravel" : "1.0.x"
+		"lucadegasperi/oauth2-server-laravel" : "1.0.x",
+		"toin0u/geocoder-laravel": "0.2.*@dev"
 	},
 	"autoload" : {
 		"classmap" : [

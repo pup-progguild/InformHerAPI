@@ -38,12 +38,32 @@ class User extends ConfideUser {
 		return $this->hasMany('Post')->orderBy('created_at', 'desc');
 	}
 
+	public function posts_ask() {
+
+	}
+
+	public function posts_relate() {
+
+	}
+
+	public function posts_shoutout() {
+
+	}
+
 	public function comments() {
 		return $this->hasMany('Comment')->orderBy('created_at', 'desc');
 	}
 
 	public function likes() {
 		return $this->hasMany('Like')->orderBy('created_at', 'desc');
+	}
+
+	public function post_count() {
+		return $this->posts()->count();
+	}
+
+	public function comment_count() {
+		return $this->comments()->count();
 	}
 
 	public function like_count() {

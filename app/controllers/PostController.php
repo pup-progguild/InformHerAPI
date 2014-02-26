@@ -1,8 +1,12 @@
 <?php
+
 class PostController extends BaseController {
 
 	protected $post;
 
+	/**
+	 * @param Post $post
+	 */
 	public function __construct(Post $post) {
 		$this->post = $post;
 	}
@@ -13,7 +17,10 @@ class PostController extends BaseController {
 	 * @return Response
 	 */
 	public function index() {
-		$post = $this->post->shown();
+		if (Entrust::hasRole('Response'))
+			$post = $this->post->shown();
+		else
+			$post = $this->post->everything_else();
 
 		$data = Input::all();
 
@@ -27,7 +34,7 @@ class PostController extends BaseController {
 			$category = Input::get('category');
 			$tagname  = Input::get('tagname');
 
-			// get all posts
+
 			if (is_null($category) && is_null($tagname)) {
 				$post_count = $post->count();
 
@@ -44,11 +51,12 @@ class PostController extends BaseController {
 						'posts'  => $posts_a
 					], 200);
 				}
-			// get posts where category={a-z}
+				// get posts where category={a-z}
 			} elseif (is_null($tagname)) {
 				$post = $post->whereHas('Category', function ($q) use ($category) {
 					$q->where('name', '=', $category);
 				})->get();
+
 
 				$post_count = $post->count();
 
@@ -68,8 +76,8 @@ class PostController extends BaseController {
 					'status'      => 'POST_SHOW_FAILED',
 					'description' => 'No posts for query.',
 					'input'       => 'category?=' . $category
-				], 404);
-			// get posts where tags={a-z} // TODO: Tag find not working
+				], 200);
+				// get posts where tags={a-z} // TODO: Tag find not working
 			} /*elseif (is_null($category)) {
 				$post = $post->whereHas('Tag', function ($q) use ($tagname) {
 					$q->where('tagname', '=', $tagname);
@@ -99,28 +107,29 @@ class PostController extends BaseController {
 
 		// F@iLZOR$$$$
 		return Response::json([
-				'status'      => 'POST_SHOW_FAILED',
-				'description' => 'Returned empty result'
-		], 404);
+			'status'      => 'POST_SHOW_FAILED',
+			'description' => 'Returned empty result'
+		], 200);
 	}
 
 	/**
 	 * Display the specified resource.
 	 *
 	 * @param  Post $post
+	 *
 	 * @return Response
 	 */
 	public function show(Post $post) {
-		if ($post->count() == 0 and $post->is_shown) {
+		if ($post->count() == 0 or !($post->isShown())) {
 			return Response::json([
-					'status'      => 'POST_SHOW_FAILED',
-					'description' => "Post {$post} not found."
-			], 404);
+				'status'      => 'POST_SHOW_FAILED',
+				'description' => "Post not found."
+			], 200);
 		}
 
 		return Response::json([
-				'status' => 'POST_SHOW_SUCCESSFUL',
-				'posts'  => $post->toArray()
+			'status' => 'POST_SHOW_SUCCESSFUL',
+			'posts'  => $post->toArray()
 		], 200);
 	}
 
@@ -144,25 +153,32 @@ class PostController extends BaseController {
 		return Response::json([
 			'status'      => 'POST_SHOW_UNAPPROVED_FAILED',
 			'description' => 'Returned empty result'
-		], 404);
+		], 200);
 	}
 
 	/**
 	 * Store a newly created resource in storage.
 	 *
 	 * @param Post $post
+	 *
 	 * @return Response
 	 */
 	public function create_edit(Post $post = null) {
+		$isNewPost = false;
+
 		if (is_null($post)) {
 			$post   = $this->post;
 			$status = 'POST_ADD';
-		} elseif ($post->isTheAuthor() or Entrust::hasRole('Moderator')){
+			$isNewPost = true;
+
+		} elseif ($post->isTheAuthor() or Entrust::hasRole('Moderator')) {
 			$status = 'POST_UPDATE';
+			$isNewPost = false;
+
 		} else {
 			return Response::json([
-				'status'        =>  'POST_UPDATE_FAILED',
-			    'description'   =>  'You are forbidden to modify this resource'
+				'status'      => 'POST_UPDATE_FAILED',
+				'description' => 'You are forbidden to modify this resource'
 			], 403);
 		}
 
@@ -181,6 +197,13 @@ class PostController extends BaseController {
 		if ($post->save()) {
 			$post->tags()->sync($tags);
 
+			if ($isNewPost) {
+				$post->properties()->save(new Property([
+					'is_shown'      =>  0,
+					'is_featured'   =>  0
+				]));
+			}
+
 			return Response::json([
 				'status' => $status . '_SUCCESSFUL',
 				'posts'  => $post->toArray()
@@ -197,29 +220,40 @@ class PostController extends BaseController {
 	 * Remove the specified resource from storage.
 	 *
 	 * @param  Post $post
+	 *
 	 * @return Response
 	 */
 	public function destroy(Post $post) {
-		Comment::where('post_id', '=', $post->id)->delete();
-		Like::where('likeable_id', '=', $post->id)->where('likeable_type', '=', 'Post')->delete();
+		if ($post->isTheAuthor() or Entrust::hasRole('Moderator')) {
+			Comment::where('post_id', '=', $post->id)->delete();
+			Like::where('likeable_id', '=', $post->id)->where('likeable_type', '=', 'Post')->delete();
+			Property::where('properties_id', '=', $post->id)->where('properties_type', '=', 'Post')->delete();
 
-		if ($post->delete()) {
+			if ($post->delete()) {
+				return Response::json([
+					'status'      => 'POST_DELETE_SUCCESSFUL',
+					'description' => 'Post deleted, along with comments, properties, and likes'
+				], 200);
+			}
+
 			return Response::json([
-					'status' => 'POST_DELETE_SUCCESSFUL'
-			], 200);
+				'status'      => 'POST_DELETE_FAILED',
+				'description' => "Post {$post->id} deletion failed."
+			], 500);
 		}
 
 		return Response::json([
 			'status'      => 'POST_DELETE_FAILED',
-			'description' => "Post {$post->id} deletion failed."
-		], 500);
+			'description' => 'You are forbidden to delete this resource'
+		], 403);
 	}
 
 	/**
 	 * Show all comments [or comment if $comment not null] for post
 	 *
-	 * @param  Post $post
+	 * @param  Post    $post
 	 * @param  Comment $comment = null
+	 *
 	 * @return Response
 	 */
 	public function comments(Post $post, Comment $comment = null) {
@@ -249,6 +283,7 @@ class PostController extends BaseController {
 	 * Show all tags for post
 	 *
 	 * @param Post $post
+	 *
 	 * @return Response
 	 */
 	public function tags(Post $post) {
@@ -262,8 +297,8 @@ class PostController extends BaseController {
 		}
 
 		$tags_a = [
-			'count'     =>  $tags->count(),
-		    'result'    =>  $tags->toArray()
+			'count'  => $tags->count(),
+			'result' => $tags->toArray()
 		];
 
 		return Response::json([
@@ -275,12 +310,13 @@ class PostController extends BaseController {
 	/**
 	 * Show all likes for post/comment
 	 *
-	 * @param Post $post
+	 * @param Post    $post
 	 * @param Comment $comment
+	 *
 	 * @return \Illuminate\Http\JsonResponse
 	 */
 	public function likes(Post $post, Comment $comment = null) {
-		$item = is_null($post) ? $comment : $post;
+		$item = is_null($comment) ? $post : $comment;
 
 		$likes = $item->likes;
 
@@ -292,69 +328,111 @@ class PostController extends BaseController {
 		];
 
 		return Response::json([
-			'status' => strtoupper($type). '_LIKES_RETRIEVE_SUCCESSFUL',
+			'status' => strtoupper($type) . '_LIKES_RETRIEVE_SUCCESSFUL',
 			'likes'  => $likes_a
-		]);
+		], 200);
 	}
 
 	/**
 	 * Create or Update Comment for Post
 	 *
-	 * @param Post $post
+	 * @param Post    $post
 	 * @param Comment $comment
+	 *
 	 * @return \Illuminate\Http\JsonResponse
 	 */
 	public function create_update_comment(Post $post, Comment $comment = null) {
-		if (is_null($comment))
+		$isNewComment = false;
+
+		if (is_null($comment)) {
 			$comment = new Comment;
+			$status  = 'POST_COMMENT_CREATE';
+			$isNewComment = true;
+
+		} elseif ($comment->isTheAuthor() or Entrust::hasRole('Moderator')) {
+			$status = 'POST_COMMENT_EDIT';
+			$isNewComment = false;
+		} else {
+			return Response::json([
+				'status'      => 'POST_COMMENT_EDIT_FAILED',
+				'description' => 'You are forbidden to edit this resource'
+			], 403);
+		}
 
 		$comment->user_id = Confide::user()->getAuthIdentifier();
 		$comment->message = Input::get('message');
 
-		$comment = $post->comments()->save($comment);
+		if ($comment = $post->comments()->save($comment)) {
+			if ($isNewComment) {
+				$comment->properties()->save(new Property([
+					'is_shown'    => 1,
+					'is_featured' => 0
+				]));
+			}
 
-		return Response::json([
-			'status'  => 'POST_COMMENT_CREATE_SUCCESS',
-			'comment' => $comment->toArray()
-		], 201);
+			return Response::json([
+				'status'  => $status . '_SUCCESS',
+				'comment' => $comment->toArray()
+			], 201);
+		} else {
+			return Response::json([
+				'status'      => $status . '_FAILED',
+				'description' => 'Comment edit failed.'
+			], 200);
+		}
 	}
 
 	/**
 	 * Delete comment from post
 	 *
-	 * @param Post $post
+	 * @param Post    $post
 	 * @param Comment $comment
+	 *
 	 * @return \Illuminate\Http\JsonResponse
 	 */
 	public function delete_comment(Post $post, Comment $comment = null) {
 		if (is_null($comment)) {
-			Comment::where('post_id', '=', $post->id)->delete();
+			if($post->isTheAuthor() or Entrust::hasRole('Moderator')) {
+				Comment::where('post_id', '=', $post->id)->delete();
 
-			return Response::json([
+				return Response::json([
 					'status' => 'POST_COMMENT_DELETE_SUCCESSFUL'
-			], 204);
+				], 204);
+			}
 		}
 
-		if ($comment->delete()) {
-			return Response::json([
+		if($comment->isTheAuthor() or Entrust::hasRole('Moderator')) {
+			Like::where('likeable_id', '=', $comment->id)->where('likeable_type', '=', 'Comment')->delete();
+			Property::where('properties_id', '=', $comment->id)->where('properties_type', '=', 'Comment')->delete();
+
+			if ($comment->delete()) {
+				return Response::json([
 					'status' => 'POST_COMMENT_DELETE_SUCCESSFUL'
-			], 200);
+				], 200);
+			}
+		} else {
+			return Response::json([
+				'status'      => 'POST_COMMENT_DELETE_FAILED',
+				'description' => 'You are forbidden to delete this resource'
+			], 403);
 		}
 
 		return Response::json([
-				'status' => 'POST_COMMENT_DELETE_FAILED'
+			'status'      => 'POST_COMMENT_DELETE_FAILED',
+			'description' => 'Unknown error occured.'
 		], 500);
 	}
 
 	/**
 	 * Like/unlike Post/Comment
 	 *
-	 * @param Post $post
+	 * @param Post    $post
 	 * @param Comment $comment
+	 *
 	 * @return \Illuminate\Http\JsonResponse
 	 */
 	public function like(Post $post, Comment $comment = null) {
-		$item = is_null($post) ? $comment : $post;
+		$item = is_null($comment) ? $post : $comment;
 
 		$user_id = Confide::user()->getAuthIdentifier();
 		$item_id = $item->id;
@@ -363,7 +441,7 @@ class PostController extends BaseController {
 
 		$like = Like::where('user_id', '=', $user_id)->where('likeable_id', '=', $item_id)->where('likeable_type', '=', $type)->first();
 
-		if(!is_null($like)) {
+		if (!is_null($like)) {
 			$like->delete();
 		} else {
 			$item->likes()->save(new Like([
@@ -374,13 +452,13 @@ class PostController extends BaseController {
 		$likes = $item::find($item->id)->likes;
 
 		$likes_a = [
-			'count' => $likes->count(),
-		    'result' => $likes->toArray()
+			'count'  => $likes->count(),
+			'result' => $likes->toArray()
 		];
 
 		return Response::json([
-			'status'    =>  strtoupper($type) .'_CREATE_LIKE_SUCCESS',
-		    'likes'     =>  $likes_a
+			'status' => strtoupper($type) . '_CREATE_LIKE_SUCCESS',
+			'likes'  => $likes_a
 		], 200);
 	}
 }

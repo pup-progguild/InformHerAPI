@@ -14,6 +14,9 @@ class Category extends Eloquent {
 
 	protected $hidden = ['id', 'description', 'created_at', 'updated_at'];
 
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
 	public function posts() {
 		return $this->hasMany('Post');
 	}

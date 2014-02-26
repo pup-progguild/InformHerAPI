@@ -13,7 +13,9 @@ class AdminController extends BaseController {
 		foreach($roles as $role) {
 			$role_a = DB::table('roles')->where('name', '=', $role)->first();
 
-			$user->roles()->attach($role_a->id);
+			if(!(DB::table('assigned_roles')->where('user_id', '=', $user->id)->where('role_id', '=', $role_a->id)->exists())) {
+				$user->roles()->attach($role_a->id);
+			}
 		}
 
 		return Response::json([
@@ -28,7 +30,9 @@ class AdminController extends BaseController {
 		foreach ($roles as $role) {
 			$role_a = DB::table('roles')->where('name', '=', $role)->first();
 
-			$user->roles()->detach($role_a->id);
+			if(DB::table('assigned_roles')->where('user_id', '=', $user->id)->where('role_id', '=', $role_a->id)->exists()) {
+				$user->roles()->detach($role_a->id);
+			}
 		}
 
 		return Response::json([
@@ -80,29 +84,84 @@ class AdminController extends BaseController {
 		], 404);
 	}
 
-	public function approve_post(Post $post) {
+	public function show_post(Post $post) {
 		$property = Property::where('properties_id', '=', $post->id)->where('properties_type', '=', 'post')->first();
 
-		if($property->is_shown == 0) {
+		if($property->is_shown === 0) {
 			$property->is_shown    = 1;
-			$property->approved_by = Confide::user()->username;
+			$property->last_modified_by = Confide::user()->username;
 
 			$post->properties()->save($property);
 
 			if ($post->save()) {
 				return Response::json([
-					'status' => 'POST_APPROVAL_FOR_STREAM_SUCCESSFUL'
+					'status' => 'POST_APPROVAL_FOR_STREAM_SUCCESSFUL',
+				    'description'   => 'Post approved by ' . $property->last_modified_by
 				], 200);
 			}
 		} else {
 			return Response::json([
 				'status' => 'POST_APPROVAL_FOR_STREAM_FAILED',
-			    'description' => 'Post already approved by ' . $property->approved_by
-			]);
+			    'description' => 'Post already approved by ' . $property->last_modified_by
+			], 200);
 		}
 
 		return Response::json([
-			'status' => 'POST_APPROVAL_FOR_STREAM_FAILED'
-		]);
+			'status' => 'POST_APPROVAL_FOR_STREAM_FAILED',
+		    'description' => 'Details of error unknown'
+		], 200);
+	}
+
+	public function hide(Post $post) {
+		$property = Property::where('properties_id', '=', $post->id)->where('properties_type', '=', 'post')->first();
+
+		if($property->is_shown === 1) {
+			$property->is_shown    = 0;
+			$property->last_modified_by = Confide::user()->username;
+
+			$post->properties()->save($property);
+
+			if ($post->save()) {
+				return Response::json([
+					'status' => 'POST_HIDING_FOR_STREAM_SUCCESSFUL',
+					'description'   => 'Post hidden by ' . $property->last_modified_by
+				], 200);
+			}
+		} else {
+			return Response::json([
+				'status' => 'POST_HIDING_FOR_STREAM_FAILED',
+				'description' => 'Post already hidden by ' . $property->last_modified_by
+			], 200);
+		}
+
+		return Response::json([
+			'status' => 'POST_HIDDEN_FOR_STREAM_FAILED',
+			'description' => 'Details of error unknown'
+		], 200);
+	}
+
+	public function show_Shoutout() {
+		$post = new Post;
+
+		$post = $post->shoutout();
+
+		$post_count = $post->count();
+
+		if ($post_count != 0) {
+			$posts_a = [
+				'count'     => $post_count,
+				'result'    => $post->toArray()
+			];
+
+			return Response::json([
+				'status' => 'POST_SHOW_SUCCESSFUL',
+				'posts'  => $posts_a
+			], 200);
+		}
+
+		return Response::json([
+			'status'      => 'POST_SHOW_FAILED',
+			'description' => 'Returned empty result'
+		], 404);
 	}
 }

@@ -26,7 +26,7 @@ return array(
 	|
 	*/
 
-	'default'     => 'mysql',
+	'default'     => 'nyaasql',
 	/*
 	|--------------------------------------------------------------------------
 	| Database Connections
@@ -45,7 +45,7 @@ return array(
 
 	'connections' => array(
 
-		'mysql'  => array(
+		'nyaasql'  => array(
 			'driver'    => 'mysql',
 			'host'      => getenv('DB_HOST'),
 			'port'      => getenv('DB_PORT'),

@@ -34,24 +34,18 @@ App::after(function ($request, $response) {
 Route::filter('auth', function () {
 	if (Auth::guest()) {
 		if (Request::ajax()) {
-			return Response::make('', 401, array('HTTP/1.1 401 Unauthorized'));
+			return Response::json([
+				'status'        => 'USER_NOT_LOGGED_IN',
+				'description'   => 'HTTP/1.1 401 Unauthorized'
+			], 401);
 		}
 
 		return Response::json([
-			'status'    => 'USER_NOT_LOGGED_IN'
+			'status'        => 'USER_NOT_LOGGED_IN',
+		    'description'   => 'HTTP/1.1 401 Unauthorized'
 		], 401);
 	}
 });
-
-
-Route::filter('auth.basic', function () {
-	return Auth::onceBasic('username');
-});
-
-Route::filter('auth.standard', function () {
-	return Auth::once('username');
-});
-
 
 /*
 |--------------------------------------------------------------------------

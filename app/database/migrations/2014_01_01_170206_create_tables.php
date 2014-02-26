@@ -37,7 +37,7 @@ class CreateTables extends Migration {
 			$t->increments('id');
 			$t->tinyInteger('is_shown');
 			$t->tinyInteger('is_featured');
-			$t->string('approved_by');
+			$t->string('last_modified_by')->nullable();
 			$t->morphs('properties');
 			$t->timestamps();
 		});

@@ -14,7 +14,7 @@
  *
  * @category   Mockery
  * @package    Mockery
- * @copyright  Copyright (c) 2010 Pádraic Brady (http://blog.astrumfutura.com)
+ * @copyright  Copyright (c) 2010-2014 Pádraic Brady (http://blog.astrumfutura.com)
  * @license    http://github.com/padraic/mockery/blob/master/LICENSE New BSD License
  */
 
@@ -204,7 +204,7 @@ class Mockery
     }
 
     /**
-     * Reset the container to NULL
+     * Reset the container to null
      */
     public static function resetContainer()
     {
@@ -395,6 +395,10 @@ class Mockery
      */
     public static function formatObjects(array $args = null)
     {
+        static $formatting;
+        if($formatting)
+            return '[Recursion]';
+        $formatting = true;
         $hasObjects = false;
         $parts = array();
         $return = 'Objects: (';
@@ -409,6 +413,7 @@ class Mockery
         $return .= var_export($parts, true);
         $return .= ')';
         $return = $hasObjects ? $return : '';
+        $formatting = false;
         return $return;
     }
 
