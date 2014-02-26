@@ -20,6 +20,9 @@ use Zizaco\Entrust\HasRole;
  * @property-read \Illuminate\Database\Eloquent\Collection|\Like[] $like_count
  * @property-read \Profile $profile
  * @property-read \Illuminate\Database\Eloquent\Collection|\Role[] $roles
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Post[] $posts_ask
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Post[] $posts_relate
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Post[] $posts_shoutout
  */
 class User extends ConfideUser {
 
@@ -39,15 +42,21 @@ class User extends ConfideUser {
 	}
 
 	public function posts_ask() {
-
+		return $this->hasMany('Post')->whereHas('Category', function ($q) {
+			$q->where('name', '=', 'ask');
+		})->orderBy('created_at', 'desc');
 	}
 
 	public function posts_relate() {
-
+		return $this->hasMany('Post')->whereHas('Category', function ($q) {
+			$q->where('name', '=', 'relate');
+		})->orderBy('created_at', 'desc');
 	}
 
 	public function posts_shoutout() {
-
+		return $this->hasMany('Post')->whereHas('Category', function ($q) {
+			$q->where('name', '=', 'shoutout');
+		})->orderBy('created_at', 'desc');
 	}
 
 	public function comments() {

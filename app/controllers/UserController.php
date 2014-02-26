@@ -28,6 +28,15 @@ class UserController extends BaseController {
 		// auto validation.
 		$user->password_confirmation = Input::get('password_confirmation');
 
+		if(strcmp($user->password, $user->password_confirmation) != 0) {
+			$error = 'Passwords doesn\'t match';
+
+			return Response::json([
+				'status'      => 'USER_CREATE_FAILED',
+				'description' => $error
+			], 200);
+		}
+
 		// Save if valid. Password field will be hashed before save
 		$user->save();
 
@@ -37,6 +46,10 @@ class UserController extends BaseController {
 			$role = DB::table('roles')->where('name', '=', 'User')->first();
 
 			$user->roles()->attach($role->id);
+
+			$user->profile()->save(new Profile([
+				'user_id'   =>  $user->id
+			]));
 
 			return Response::json([
 				'status' => 'USER_CREATE_SUCCESSFUL',
@@ -59,7 +72,7 @@ class UserController extends BaseController {
 	 */
 	public function postLogin() {
 		$input = array(
-			'email'    => Input::get('email'), // May be the username too
+			'email' => Input::get('email'),
 			'username' => Input::get('username'), // so we have to pass both
 			'password' => Input::get('password'),
 			'remember' => Input::get('remember'),
@@ -69,7 +82,8 @@ class UserController extends BaseController {
 		// with the second parameter as true.
 		// logAttempt will check if the 'email' perhaps is the username.
 		// Get the value from the config file instead of changing the controller
-		if (Confide::logAttempt($input)) {
+
+		if (Confide::logAttempt($input, false, 'username')) {
 			return Response::json([
 				'status' => 'USER_LOGIN_SUCCESS',
 			    'user'   => Confide::user()->toArray()
@@ -177,6 +191,91 @@ class UserController extends BaseController {
 		return Response::json([
 			'status'    =>  'USER_LOGGED_OUT_SUCCESS'
 		], 200);
+	}
+
+	public function getIndex() {
+		$user = Confide::user();
+
+		$interaction_level = [
+			'total_posts'       => $user->post_count(),
+		    'total_comments'    => $user->comment_count(),
+		    'total_likes'       => $user->like_count()
+		];
+
+		$posts = [
+			'ask'       => $user->posts_ask()->get()->toArray(),
+			'relate'    => $user->posts_relate()->get()->toArray(),
+		    'shoutout'  => $user->posts_shoutout()->get()->toArray()
+		];
+
+		$comments = [
+			'comments'     =>  $user->comments()->get()->toArray()
+		];
+
+		return Response::json([
+			'status'    =>  'USER_HOME_RETRIEVE_SUCCESS',
+			'score'     =>  $interaction_level,
+		    'posts'     =>  $posts,
+		    'comments'  =>  $comments
+		], 200);
+	}
+
+	public function getPosts() {
+		$user = Confide::user();
+
+		$posts = [
+			'ask'       => $user->posts_ask()->get()->toArray(),
+			'relate'    => $user->posts_relate()->get()->toArray(),
+			'shoutout'  => $user->posts_shoutout()->get()->toArray()
+		];
+
+		return Response::json([
+			'status'    =>  'USER_POSTS_RETRIEVE_SUCCESS',
+			'posts'     =>  $posts
+		], 200);
+	}
+
+	public function getComments() {
+		$user = Confide::user();
+
+		return Response::json([
+			'status'    =>  'USER_COMMENTS_RETRIEVE_SUCCESS',
+			'comments'     =>  $user->comments()->get()->toArray()
+		], 200);
+	}
+
+	public function getProfile($id) {
+		$userprofile = User::find($id);
+
+		return Response::json([
+			'status'    =>  'USER_PROFILE_FETCH_SUCESS',
+			'profile'   =>  $userprofile->profile->toArray()
+		]);
+	}
+
+	public function postProfile() {
+		$user = Confide::user();
+
+		$input = Input::all();
+
+		$isSuccessful = $user->profile()->save(new Profile([
+			'badge'             => $input['badge'],
+			'twt_handle'        => $input['twt-handle'],
+			'facebook_username' => $input['facebook_username'],
+			'bio'               => $input['bio'],
+			'hompage_url'      => $input['hompage_url'],
+			'user_id'           => $user->id
+		]));
+
+		if($isSuccessful) {
+			return Response::json([
+				'status'    => 'USER_PROFILE_UPDATE_SUCCESSFUL'
+			], 200);
+		} else {
+			return Response::json([
+				'status'    => 'USER_PROFILE_UPDATE_FAILED'
+			], 200);
+		}
 	}
 
 }

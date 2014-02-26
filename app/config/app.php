@@ -120,6 +120,8 @@ return array(
 		
 		'Barryvdh\Cors\CorsServiceProvider',
 
+		'Toin0u\Geocoder\GeocoderServiceProvider',
+
 		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider', // ide_helpers
 	),
 
@@ -194,6 +196,8 @@ return array(
 
 		'AuthorizationServer' => 'LucaDegasperi\OAuth2Server\Facades\AuthorizationServerFacade',
 		'ResourceServer'      => 'LucaDegasperi\OAuth2Server\Facades\ResourceServerFacade',
+
+		'Geocoder' => 'Toin0u\Geocoder\GeocoderFacade',
 	),
 
 );

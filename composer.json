@@ -27,7 +27,7 @@
 		"barryvdh/laravel-cors" : "dev-master",
 		"mockery/mockery" : "dev-master@dev",
 		"laravelbook/ardent" : "dev-master",
-        "zizaco/confide": "dev-master",
+        "zizaco/confide": "3.2.x",
         "zizaco/entrust": "dev-master",
 		"way/laravel-test-helpers" : "dev-master",
 		"way/generators" : "dev-master",

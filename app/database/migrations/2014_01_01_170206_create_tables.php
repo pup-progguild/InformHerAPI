@@ -23,11 +23,11 @@ class CreateTables extends Migration {
 
 		Schema::create('profiles', function (Blueprint $t) {
 			$t->increments('id');
-			$t->string('badge');
-			$t->string('twt_handle');
-			$t->string('facebook_username');
-			$t->string('bio');
-			$t->string('hompage_url');
+			$t->string('badge')->nullable();
+			$t->string('twt_handle')->nullable();
+			$t->string('facebook_username')->nullable();
+			$t->string('bio')->nullable();
+			$t->string('hompage_url')->nullable();
 			$t->integer('user_id')->unsigned();
 			$t->foreign('user_id')->references('id')->on('users');
 			$t->timestamps();
@@ -40,6 +40,7 @@ class CreateTables extends Migration {
 			$t->string('last_modified_by')->nullable();
 			$t->morphs('properties');
 			$t->timestamps();
+			$t->softDeletes();
 		});
 
 		Schema::create('roles', function (Blueprint $t) {
