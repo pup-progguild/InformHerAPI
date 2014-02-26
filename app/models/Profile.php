@@ -15,7 +15,12 @@
  */
 class Profile extends Eloquent {
 
+	public $fillable = [ 'badge', 'twt_handle', 'facebook_username', 'bio', 'hompage_url', 'user_id' ];
+
+	protected $hidden = [ 'id' ];
+
 	public function user() {
+
 		return $this->belongsTo('User');
 	}
 }

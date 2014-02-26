@@ -12,6 +12,7 @@
  * @property-read mixed $likers
  * @property-read \User $author
  * @property-read \Post $post
+ * @property-read mixed $is_featured
  */
 class Comment extends Eloquent {
 
@@ -21,7 +22,7 @@ class Comment extends Eloquent {
 
 	protected $with = [ 'author' ];
 
-	protected $appends = [ 'likers', 'is_featured' ];
+	protected $appends = [ 'likers', 'is_featured', 'parent_post_id' ];
 
 	/**
 	 * Get the comment's content.
@@ -57,6 +58,10 @@ class Comment extends Eloquent {
 	 */
 	public function isFeatured() {
 		return Property::where('properties_id', '=', $this->id)->where('properties_type', '=', get_class())->where('is_featured', '=', 1)->exists();
+	}
+
+	public function getParentPostIdAttribute() {
+		return $this->post_id;
 	}
 
 	/**

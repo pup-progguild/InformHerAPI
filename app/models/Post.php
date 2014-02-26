@@ -17,13 +17,14 @@
  * @property-read \Category $category
  * @property-read \Illuminate\Database\Eloquent\Collection|\Tag[] $tags
  * @property-read \Illuminate\Database\Eloquent\Collection|\Comment[] $comments
+ * @property-read mixed $is_featured
  */
 class Post extends Eloquent {
 	protected $softDelete = true;
 
 	protected $hidden = [ 'category_id', 'user_id', 'deleted_at' ];
 
-	protected $with = [ 'tags', 'comments', 'author', 'category' ];
+	protected $with = [ 'tags', 'author', 'category' ];
 
 	protected $appends = [ 'likers' , 'is_featured' ];
 
