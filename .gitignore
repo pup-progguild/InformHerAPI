@@ -1,6 +1,7 @@
 # Laravel stuff
 # /bootstrap/compiled.php
 # /vendor
+/app/storage
 composer
 composer.lock
 .DS_Store
