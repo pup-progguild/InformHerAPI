@@ -379,7 +379,7 @@ class PostController extends BaseController {
 
 			return Response::json([
 				'status'  => $status . '_SUCCESS',
-				'comment' => $comment->toArray()
+				'comment' => $comment
 			], 201);
 		} else {
 			return Response::json([
