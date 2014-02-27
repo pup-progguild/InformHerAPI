@@ -32,7 +32,9 @@
 		"way/laravel-test-helpers" : "dev-master",
 		"way/generators" : "dev-master",
 		"lucadegasperi/oauth2-server-laravel" : "1.0.x",
-		"toin0u/geocoder-laravel": "0.2.*@dev"
+		"toin0u/geocoder-laravel": "0.2.*@dev",
+        "emberlabs/gravatarlib": "dev-master@dev",
+        "thomaswelton/laravel-gravatar": "dev-master"
 	},
 	"autoload" : {
 		"classmap" : [

@@ -19,8 +19,13 @@ class Profile extends Eloquent {
 
 	protected $hidden = [ 'id' ];
 
-	public function user() {
+	protected $appends = [ 'email_address' ];
 
+	public function user() {
 		return $this->belongsTo('User');
+	}
+
+	public function getEmailAddressAttribute() {
+		return implode(array_flatten($this->user()->get(['email'])->toArray()));
 	}
 }

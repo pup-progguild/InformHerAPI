@@ -48,7 +48,8 @@ class UserController extends BaseController {
 			$user->roles()->attach($role->id);
 
 			$user->profile()->save(new Profile([
-				'user_id'   =>  $user->id
+				'avatar_url'    => Gravatar::src($user->email),
+				'user_id'       =>  $user->id
 			]));
 
 			return Response::json([
@@ -258,7 +259,12 @@ class UserController extends BaseController {
 
 		$input = Input::all();
 
+		$user->email = $input['email'];
+
+		$user->save();
+
 		$isSuccessful = $user->profile()->save(new Profile([
+			'avatar_url'        => Gravatar::src($user->email),
 			'badge'             => $input['badge'],
 			'twt_handle'        => $input['twt-handle'],
 			'facebook_username' => $input['facebook_username'],

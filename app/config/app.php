@@ -122,6 +122,8 @@ return array(
 
 		'Toin0u\Geocoder\GeocoderServiceProvider',
 
+		'Thomaswelton\LaravelGravatar\LaravelGravatarServiceProvider',
+
 		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider', // ide_helpers
 	),
 
@@ -198,6 +200,8 @@ return array(
 		'ResourceServer'      => 'LucaDegasperi\OAuth2Server\Facades\ResourceServerFacade',
 
 		'Geocoder' => 'Toin0u\Geocoder\GeocoderFacade',
+
+		'Gravatar' => 'Thomaswelton\LaravelGravatar\Facades\Gravatar',
 	),
 
 );

@@ -23,6 +23,7 @@ class CreateTables extends Migration {
 
 		Schema::create('profiles', function (Blueprint $t) {
 			$t->increments('id');
+			$t->string('avatar_url')->nullable();
 			$t->string('badge')->nullable();
 			$t->string('twt_handle')->nullable();
 			$t->string('facebook_username')->nullable();

@@ -3174,5 +3174,102 @@
             "illuminate",
             "laravel"
         ]
+    },
+    {
+        "name": "emberlabs/gravatarlib",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "target-dir": "emberlabs/gravatarlib",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/emberlabs/gravatarlib.git",
+            "reference": "6bd70321aa59a8002d5fa08d9b592121683801df"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/emberlabs/gravatarlib/zipball/6bd70321aa59a8002d5fa08d9b592121683801df",
+            "reference": "6bd70321aa59a8002d5fa08d9b592121683801df",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "suggest": {
+            "twig/twig": ">=1.4.0"
+        },
+        "time": "2011-12-28 22:28:37",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "emberlabs\\gravatarlib\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Sam Thompson",
+                "email": "sam@emberlabs.org"
+            },
+            {
+                "name": "Damian Bushong",
+                "email": "damian@emberlabs.org"
+            }
+        ],
+        "description": "A lightweight PHP 5.3 OOP library providing easy gravatar integration.",
+        "homepage": "http://emberlabs.org/",
+        "keywords": [
+            "gravatar",
+            "templating",
+            "twig"
+        ]
+    },
+    {
+        "name": "thomaswelton/laravel-gravatar",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/thomaswelton/laravel-gravatar.git",
+            "reference": "571d89512783fbb12f5c16c703f89dc5f1494dc7"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/thomaswelton/laravel-gravatar/zipball/571d89512783fbb12f5c16c703f89dc5f1494dc7",
+            "reference": "571d89512783fbb12f5c16c703f89dc5f1494dc7",
+            "shasum": ""
+        },
+        "require": {
+            "emberlabs/gravatarlib": "dev-master",
+            "illuminate/support": "4.x",
+            "php": ">=5.3.0"
+        },
+        "time": "2014-02-03 13:52:02",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Thomaswelton\\LaravelGravatar": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "authors": [
+            {
+                "name": "ThomasWelton",
+                "email": "thomaswelton@me.com",
+                "homepage": "https://github.com/thomaswelton",
+                "role": "Developer"
+            }
+        ],
+        "description": "Laravel 4 Gravatar helper",
+        "homepage": "https://github.com/thomaswelton/laravel-gravatar",
+        "keywords": [
+            "gravatar",
+            "laravel",
+            "laravel4"
+        ]
     }
 ]

@@ -47,6 +47,10 @@ Route::filter('auth', function () {
 	}
 });
 
+Route::filter('basic', function() {
+	return Auth::onceBasic('username');
+});
+
 /*
 |--------------------------------------------------------------------------
 | Guest Filter

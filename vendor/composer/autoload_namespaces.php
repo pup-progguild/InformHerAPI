@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'phpDocumentor' => array($vendorDir . '/phpdocumentor/reflection-docblock/src'),
+    'emberlabs\\gravatarlib\\' => array($vendorDir . '/emberlabs/gravatarlib'),
     'dflydev\\markdown' => array($vendorDir . '/dflydev/markdown/src'),
     'Zizaco\\Entrust' => array($vendorDir . '/zizaco/entrust/src'),
     'Zizaco\\Confide' => array($vendorDir . '/zizaco/confide/src'),
@@ -14,6 +15,7 @@ return array(
     'Way\\Tests' => array($vendorDir . '/way/laravel-test-helpers/src'),
     'Way\\Generators' => array($vendorDir . '/way/generators/src'),
     'Toin0u\\Geocoder' => array($vendorDir . '/toin0u/geocoder-laravel/src'),
+    'Thomaswelton\\LaravelGravatar' => array($vendorDir . '/thomaswelton/laravel-gravatar/src'),
     'Symfony\\Component\\Translation\\' => array($vendorDir . '/symfony/translation'),
     'Symfony\\Component\\Routing\\' => array($vendorDir . '/symfony/routing'),
     'Symfony\\Component\\Process\\' => array($vendorDir . '/symfony/process'),
