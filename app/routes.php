@@ -66,7 +66,7 @@ Route::group(["prefix" => "posts"], function () {
 	    "uses" => "PostController@likes"
 	]);
 
-	Route::group(["before" => "auth"], function () {
+	Route::group(["before" => "auth|basic"], function () {
 		Route::post("/{post?}", [
 			"as"   => "CreateEditPost",
 			"uses" => "PostController@create_edit"
@@ -120,7 +120,7 @@ Route::get('user/confirm/{code}', 'UserController@getConfirm');
 Route::get('user/reset/{token}', 'UserController@getReset');
 Route::controller( 'user', 'UserController');
 
-Route::group(['prefix' => 'admin', 'before' => 'auth'], function () {
+Route::group(['prefix' => 'admin', 'before' => 'auth|basic'], function () {
 	Route::group(['prefix' => 'users'], function () {
 		Route::get('/{user}/delete', [
 			'as'   => 'DeleteUser',
