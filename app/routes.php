@@ -35,7 +35,7 @@ Route::model("comment", "Comment");
 Route::model("tag", "Tag");
 Route::model("user", "User");
 
-Route::group(["prefix" => "posts"], function () {
+Route::group(["prefix" => "posts", "before" => "basic"], function () {
 	Route::get("/", [
 		"as"   => "GetAllPosts",
 		"uses" => "PostController@index"
@@ -66,7 +66,7 @@ Route::group(["prefix" => "posts"], function () {
 	    "uses" => "PostController@likes"
 	]);
 
-	Route::group(["before" => "auth|basic"], function () {
+	Route::group(["before" => "auth"], function () {
 		Route::post("/{post?}", [
 			"as"   => "CreateEditPost",
 			"uses" => "PostController@create_edit"
@@ -100,14 +100,14 @@ Route::group(["prefix" => "posts"], function () {
 });
 
 
-Route::group(['prefix' => 'tags'], function () {
+Route::group(['prefix' => 'tags', 'before' => 'basic'], function () {
 	Route::get('/', [
 		'as'    =>  'Tags',
 	    'uses'  =>  'TagController@index'
 	]);
 });
 
-Route::group(['prefix' => 'category'], function () {
+Route::group(['prefix' => 'category', 'before' => 'basic'], function () {
 	Route::get('/', [
 		'as'    =>  'Categories',
 		'uses'  =>  'CategoryController@index'
