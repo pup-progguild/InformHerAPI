@@ -375,7 +375,7 @@ class PostController extends BaseController {
 				]));
 			}
 
-			$comment = Comment::find($comment->id)->get();
+			$comment = Comment::where('id', '=', $comment->id)->get();
 
 			return Response::json([
 				'status'  => $status . '_SUCCESS',
