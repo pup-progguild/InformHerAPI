@@ -47,11 +47,11 @@ return array(
 
 		'nyaasql'  => array(
 			'driver'    => 'mysql',
-			'host'      => getenv('DB_HOST'),
-			'port'      => getenv('DB_PORT'),
-			'database'  => getenv('DB_NAME'),
-			'username'  => getenv('DB_USERNAME'),
-			'password'  => getenv('DB_PASSWORD'),
+			'host'      => 'db-progguild.cloudapp.net',
+			'port'      => '12345',
+			'database'  => 'informher_db',
+			'username'  => 'informher',
+			'password'  => 'db_informher',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',

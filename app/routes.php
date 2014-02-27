@@ -23,15 +23,7 @@ Route::get('/test', function () {
 	foreach($users as $user) {
 		echo Gravatar::src($user->email) . ' ';
 	}
-});
-
-Route::post('/test2', function() {
-	$postdata = Input::all();
-
-	return Response::json([
-		'status' => 'SUCCESSFUL'
-	]);
-})->before('basic');
+})->before('basic');;
 
 Route::get('/test/{id}', function ($id) {
 
