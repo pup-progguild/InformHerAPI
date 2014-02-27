@@ -18,7 +18,7 @@ return array(
   |
   */
   'defaults' =>  array(
-      'allow_credentials' => false,
+      'allow_credentials' => true,
       'allow_origin'=> array('*'),
       'allow_headers'=> array('*'),
       'allow_methods'=> array(),
@@ -29,7 +29,7 @@ return array(
   'paths' => array(
       '^/' => array(
           'allow_origin'=> array('*'),
-          'allow_headers'=> array('Content-Type'),
+          'allow_headers'=> array('*'),
           'allow_methods'=> array('POST', 'PUT', 'GET', 'DELETE','OPTIONS'),
           'max_age' => 3600
       )
