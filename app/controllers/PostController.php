@@ -375,6 +375,8 @@ class PostController extends BaseController {
 				]));
 			}
 
+			$comment = Comment::find($comment->id)->get();
+
 			return Response::json([
 				'status'  => $status . '_SUCCESS',
 				'comment' => $comment->toArray()

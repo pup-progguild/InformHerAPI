@@ -25,10 +25,6 @@ Route::get('/test', function () {
 	}
 })->before('basic');;
 
-Route::get('/test/{id}', function ($id) {
-
-});
-
 /* InformHer API routes & endpoints */
 Route::model("post", "Post");
 Route::model("comment", "Comment");
@@ -98,7 +94,6 @@ Route::group(["prefix" => "posts", "before" => "basic"], function () {
 		]);
 	});
 });
-
 
 Route::group(['prefix' => 'tags', 'before' => 'basic'], function () {
 	Route::get('/', [

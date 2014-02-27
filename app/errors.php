@@ -20,3 +20,4 @@ App::missing(function($exception) {
 //	    'debug'         => $exception
 //	], 500);
 //});
+
