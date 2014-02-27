@@ -44,7 +44,7 @@ Route::group(["prefix" => "posts"], function () {
 		"uses" => "PostController@show"
 	]);
 
-	Route::get("/{post}/comments/{comment?}", [
+	Route::get("/{post}/comments/{id?}", [
 		"as"   => "GetCommentsFromPost",
 		"uses" => "PostController@comments"
 	]);

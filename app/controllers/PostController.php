@@ -252,21 +252,26 @@ class PostController extends BaseController {
 	 * Show all comments [or comment if $comment not null] for post
 	 *
 	 * @param  Post    $post
-	 * @param  Comment $comment = null
+	 * @param  Comment $comment_id = null
 	 *
 	 * @return Response
 	 */
-	public function comments(Post $post, Comment $comment = null) {
-		$comments = $post->comments;
+	public function comments(Post $post, $comment_id = null) {
+		if (is_null($comment_id)) {
+			$comments = $post->comments;
 
-		if (is_null($comment)) {
+			$comments_a = [
+				'count'  => $comments->count(),
+				'result' => $comments->toArray()
+			];
+
 			return Response::json([
-				'status'   => 'POST_COMMENT_RETRIEVE_SUCCESSFUL',
-				'comments' => $comments->toArray()
+				'status'  => 'POST_COMMENT_RETRIEVE_SUCCESSFUL',
+				'comment' => $comments_a
 			], 200);
 		}
 
-		$comments = Comment::where('post_id', '=', $post->id)->findOrFail($comment->id);
+		$comments = Comment::where('post_id', '=', $post->id)->where('id', '=', $comment_id)->get();
 
 		$comments_a = [
 			'count'  => $comments->count(),
@@ -393,11 +398,21 @@ class PostController extends BaseController {
 	public function delete_comment(Post $post, Comment $comment = null) {
 		if (is_null($comment)) {
 			if($post->isTheAuthor() or Entrust::hasRole('Moderator')) {
-				Comment::where('post_id', '=', $post->id)->delete();
+				$comments_a = array_flatten($post->comments()->get(['id'])->toArray());
+
+				Like::where('likeable_type', '=', 'comment')->whereIn('likeable_id', $comments_a)->delete();
+				Property::where('properties_type', '=', 'comment')->whereIn('properties_id', $comments_a)->delete();
+
+				$post->comments()->delete();
 
 				return Response::json([
 					'status' => 'POST_COMMENT_DELETE_SUCCESSFUL'
-				], 204);
+				], 200);
+			} else {
+				return Response::json([
+					'status'      => 'POST_COMMENT_DELETE_FAILED',
+					'description' => 'You are forbidden to delete this resource'
+				], 403);
 			}
 		}
 

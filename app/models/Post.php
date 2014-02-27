@@ -26,7 +26,7 @@ class Post extends Eloquent {
 
 	protected $with = [ 'tags', 'author', 'category' ];
 
-	protected $appends = [ 'likers' , 'is_featured' ];
+	protected $appends = [ 'likers' , 'is_featured' , 'comments_count'];
 
 	/**
 	 * Returns a formatted post content entry,
@@ -74,6 +74,10 @@ class Post extends Eloquent {
 		return $this->isFeatured();
 	}
 
+	public function getCommentsCountAttribute() {
+		return $this->comments_count();
+	}
+
 	/**
 	 * Returns the date of the blog post creation,
 	 * on a good and more readable format :)
@@ -108,6 +112,10 @@ class Post extends Eloquent {
 
 	public function comments() {
 		return $this->hasMany('Comment')->orderBy('created_at', 'desc');
+	}
+
+	public function comments_count() {
+		return $this->hasMany('Comment')->count();
 	}
 
 	public function likes() {
