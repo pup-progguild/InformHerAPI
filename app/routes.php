@@ -114,11 +114,12 @@ Route::group(['prefix' => 'category', 'before' => 'basic'], function () {
 	]);
 });
 
-
 // Confide RESTful route
-Route::get('user/confirm/{code}', 'UserController@getConfirm');
-Route::get('user/reset/{token}', 'UserController@getReset');
-Route::controller( 'user', 'UserController');
+Route::group(['before' => 'basic'], function() {        // TODO: Remove basic auth at   this!
+	Route::get('user/confirm/{code}', 'UserController@getConfirm');
+	Route::get('user/reset/{token}', 'UserController@getReset');
+	Route::controller( 'user', 'UserController');
+});
 
 Route::group(['prefix' => 'admin', 'before' => 'auth|basic'], function () {
 	Route::group(['prefix' => 'users'], function () {
