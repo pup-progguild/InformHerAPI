@@ -9,7 +9,48 @@ This is the [InformHer API](https://github.com/pup-progguild/InformHerAPI) for t
 
 ### Documentation
 
-TODO
+Base API URL is
+
+* http://informherapi.cloudapp.net
+
+We'll be making better docs, but we hope this would suffice in the meantime. Please see our uploaded [Postman Collection](https://www.getpostman.com/collections/cc6fb482c594bbb81f07) for using the endpoints with fields.
+
+| Domain | URI                                                      | Short Description      | Action                               | Before Filters                                                         | After Filters |
+|--------|----------------------------------------------------------|------------------------|--------------------------------------|------------------------------------------------------------------------|---------------|
+|        | GET posts                                                | GetAllPosts            | PostController@index                 |                                                                        |               |
+|        | GET posts/{post}                                         | GetPost                | PostController@show                  |                                                                        |               |
+|        | GET posts/{post}/comments/{comment?}                     | GetCommentsFromPost    | PostController@comments              |                                                                        |               |
+|        | GET posts/{post}/tags                                    | GetAllTagsFromPost     | PostController@tags                  |                                                                        |               |
+|        | GET posts/{post}/likes                                   | GetAllLikesFromPost    | PostController@likes                 |                                                                        |               |
+|        | GET posts/{post}/comments/{comment}/likes                | GetAllLikesFromComment | PostController@likes                 |                                                                        |               |
+|        | POST posts/{post?}                                       | CreateEditPost         | PostController@create_edit           | auth                                                                   |               |
+|        | POST posts/{post}/comments/{comment?}                    | CreateUpdateComment    | PostController@create_update_comment | auth                                                                   |               |
+|        | POST posts/{post}/like                                   | LikePost               | PostController@like                  | auth                                                                   |               |
+|        | POST posts/{post}/comments/{comment}/like                | LikePostComment        | PostController@like                  | auth                                                                   |               |
+|        | DELETE posts/{post}/comments/{comment?}                  | DeletePostComment      | PostController@delete_comment        | auth                                                                   |               |
+|        | DELETE posts/{post}                                      | DeletePost             | PostController@destroy               | auth                                                                   |               |
+|        | GET tags                                                 | Tags                   | TagController@index                  |                                                                        |               |
+|        | GET category                                             | Categories             | CategoryController@index             |                                                                        |               |
+|        | GET user/confirm/{code}                                  | ConfirmUser            | UserController@getConfirm            |                                                                        |               |
+|        | GET user/reset/{token}                                   | RetrieveResetPassToken | UserController@getReset              |                                                                        |               |
+|        | POST user											    | RegisterUser	         | UserController@postIndex             |                                                                        |               |
+|        | POST user/login									        | LoginToInformHer       | UserController@postLogin             |                                                                        |               |
+|        | POST user/forgot										    | ProcessForgotPass      | UserController@postForgot            |                                                                        |               |
+|        | POST user/reset 										    | ResetPassUsingToken    | UserController@postReset             |                                                                        |               |
+|        | GET user/logout									        | LogoutToInformHer      | UserController@getLogout             |                                                                        |               |
+|        | GET user                                                 | GetLoggedUserProps     | UserController@getIndex              |                                                                        |               |
+|        | GET user/posts    										| GetLoggedUserPosts     | UserController@getPosts              |                                                                        |               |
+|        | GET user/comments										| GetLoggedUserComments  | UserController@getComments           |                                                                        |               |
+|        | GET user/profile											| GetLoggedUserProfile   | UserController@getProfile            |                                                                        |               |
+|        | POST user/profile										| ProcessUserProfile     | UserController@postProfile           |                                                                        |               |
+|        | GET admin/users/{user}/delete                            | DeleteUser             | AdminController@delete_user          | auth, Administrator_Moderator_Response_Expert_923b09                   |               |
+|        | POST admin/users/{user}/promote                          | PromoteUser            | AdminController@promote              | auth, Administrator_Moderator_Response_Expert_923b09                   |               |
+|        | POST admin/users/{user}/demote                           | PromoteUser            | AdminController@demote               | auth, Administrator_Moderator_Response_Expert_923b09                   |               |
+|        | GET admin/posts/unapproved                               | ShowUnapprovedPosts    | AdminController@show_unapproved      | auth, Administrator_Moderator_Response_Expert_923b09, Moderator_c2b025 |               |
+|        | GET admin/posts/{post}/approve                           | ApprovePost            | AdminController@show_post            | auth, Administrator_Moderator_Response_Expert_923b09, Moderator_c2b025 |               |
+|        | GET admin/posts/{post}/hide                              | HidePost               | AdminController@hide                 | auth, Administrator_Moderator_Response_Expert_923b09, Moderator_c2b025 |               |
+|        | POST admin/tags/{tag?}                                   | AddCreateTags          | TagController@create_edit            | auth, Administrator_Moderator_Response_Expert_923b09, Moderator_fc6a28 |               |
+|        | DELETE admin/tags/{tag}                                  | DeleteTag              | TagController@destroy                | auth, Administrator_Moderator_Response_Expert_923b09, Moderator_fc6a28 |               |
 
 ### BuiltWith
 
@@ -18,7 +59,7 @@ TODO
 ### TechStack
 
 - PHP 5.4+
-- IIS 8
+- Nginx
 - MariaDB 10+
 
 ### Installation
