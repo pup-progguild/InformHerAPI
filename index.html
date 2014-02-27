@@ -41,9 +41,261 @@
 <h3>
 <a name="documentation" class="anchor" href="#documentation"><span class="octicon octicon-link"></span></a>Documentation</h3>
 
-<p>TODO</p>
+<p>Base API URL is</p>
 
-<h3>
+<ul>
+<li><a href="http://informherapi.cloudapp.net">http://informherapi.cloudapp.net</a></li>
+</ul><p>We'll be making better docs, but we hope this would suffice in the meantime. Please see our uploaded <a href="https://www.getpostman.com/collections/cc6fb482c594bbb81f07">Postman Collection</a> for using the endpoints with fields.</p>
+
+<table>
+<thead><tr>
+<th>URI</th>
+<th>Short Description</th>
+<th>Action</th>
+<th>Needs Auth?</th>
+<th>Required Roles (Any)</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>GET posts</td>
+<td>GetAllPosts</td>
+<td>PostController@index</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>GET posts/{post}</td>
+<td>GetPost</td>
+<td>PostController@show</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>GET posts/{post}/comments/{comment?}</td>
+<td>GetCommentsFromPost</td>
+<td>PostController@comments</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>GET posts/{post}/tags</td>
+<td>GetAllTagsFromPost</td>
+<td>PostController@tags</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>GET posts/{post}/likes</td>
+<td>GetAllLikesFromPost</td>
+<td>PostController@likes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>GET posts/{post}/comments/{comment}/likes</td>
+<td>GetAllLikesFromComment</td>
+<td>PostController@likes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>POST posts/{post?}</td>
+<td>CreateEditPost</td>
+<td>PostController@create_edit</td>
+<td>yes</td>
+<td></td>
+</tr>
+<tr>
+<td>POST posts/{post}/comments/{comment?}</td>
+<td>CreateUpdateComment</td>
+<td>PostController@create_update_comment</td>
+<td>yes</td>
+<td></td>
+</tr>
+<tr>
+<td>POST posts/{post}/like</td>
+<td>LikePost</td>
+<td>PostController@like</td>
+<td>yes</td>
+<td></td>
+</tr>
+<tr>
+<td>POST posts/{post}/comments/{comment}/like</td>
+<td>LikePostComment</td>
+<td>PostController@like</td>
+<td>yes</td>
+<td></td>
+</tr>
+<tr>
+<td>DELETE posts/{post}/comments/{comment?}</td>
+<td>DeletePostComment</td>
+<td>PostController@delete_comment</td>
+<td>yes</td>
+<td></td>
+</tr>
+<tr>
+<td>DELETE posts/{post}</td>
+<td>DeletePost</td>
+<td>PostController@destroy</td>
+<td>yes</td>
+<td></td>
+</tr>
+<tr>
+<td>GET tags</td>
+<td>Tags</td>
+<td>TagController@index</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>GET category</td>
+<td>Categories</td>
+<td>CategoryController@index</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>GET user/confirm/{code}</td>
+<td>ConfirmUser</td>
+<td>UserController@getConfirm</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>GET user/reset/{token}</td>
+<td>RetrieveResetPassToken</td>
+<td>UserController@getReset</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>POST user</td>
+<td>RegisterUser</td>
+<td>UserController@postIndex</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>POST user/login</td>
+<td>LoginToInformHer</td>
+<td>UserController@postLogin</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>POST user/forgot</td>
+<td>ProcessForgotPass</td>
+<td>UserController@postForgot</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>POST user/reset</td>
+<td>ResetPassUsingToken</td>
+<td>UserController@postReset</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>GET user/logout</td>
+<td>LogoutToInformHer</td>
+<td>UserController@getLogout</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>GET user</td>
+<td>GetLoggedUserProps</td>
+<td>UserController@getIndex</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>GET user/posts</td>
+<td>GetLoggedUserPosts</td>
+<td>UserController@getPosts</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>GET user/comments</td>
+<td>GetLoggedUserComments</td>
+<td>UserController@getComments</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>GET user/profile</td>
+<td>GetLoggedUserProfile</td>
+<td>UserController@getProfile</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>POST user/profile</td>
+<td>ProcessUserProfile</td>
+<td>UserController@postProfile</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>GET admin/users/{user}/delete</td>
+<td>DeleteUser</td>
+<td>AdminController@delete_user</td>
+<td>yes</td>
+<td>Administrator</td>
+</tr>
+<tr>
+<td>POST admin/users/{user}/promote</td>
+<td>PromoteUser</td>
+<td>AdminController@promote</td>
+<td>yes</td>
+<td>Administrator</td>
+</tr>
+<tr>
+<td>POST admin/users/{user}/demote</td>
+<td>DemoteUser</td>
+<td>AdminController@demote</td>
+<td>yes</td>
+<td>Administrator</td>
+</tr>
+<tr>
+<td>GET admin/posts/unapproved</td>
+<td>ShowUnapprovedPosts</td>
+<td>AdminController@show_unapproved</td>
+<td>yes</td>
+<td>Administrator, Moderator</td>
+</tr>
+<tr>
+<td>GET admin/posts/{post}/approve</td>
+<td>ApprovePost</td>
+<td>AdminController@show_post</td>
+<td>yes</td>
+<td>Administrator, Moderator</td>
+</tr>
+<tr>
+<td>GET admin/posts/{post}/hide</td>
+<td>HidePost</td>
+<td>AdminController@hide</td>
+<td>yes</td>
+<td>Administrator, Moderator</td>
+</tr>
+<tr>
+<td>POST admin/tags/{tag?}</td>
+<td>AddCreateTags</td>
+<td>TagController@create_edit</td>
+<td>yes</td>
+<td>Administrator, Moderator</td>
+</tr>
+<tr>
+<td>DELETE admin/tags/{tag}</td>
+<td>DeleteTag</td>
+<td>TagController@destroy</td>
+<td>yes</td>
+<td>Administrator, Moderator</td>
+</tr>
+</tbody>
+</table><h3>
 <a name="builtwith" class="anchor" href="#builtwith"><span class="octicon octicon-link"></span></a>BuiltWith</h3>
 
 <ul>
@@ -53,7 +305,7 @@
 
 <ul>
 <li>PHP 5.4+</li>
-<li>IIS 8</li>
+<li>Nginx</li>
 <li>MariaDB 10+</li>
 </ul><h3>
 <a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h3>
