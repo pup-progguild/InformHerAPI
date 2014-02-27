@@ -377,10 +377,15 @@ class PostController extends BaseController {
 
 			$comment = Comment::where('id', '=', $comment->id)->get();
 
+			$comments_a = [
+				'count'  => $comment->count(),
+				'result' => $comment->toArray()
+			];
+
 			return Response::json([
 				'status'  => $status . '_SUCCESS',
-				'comment' => $comment->toArray()
-			], 201);
+				'comment' => $comments_a
+			], 200);
 		} else {
 			return Response::json([
 				'status'      => $status . '_FAILED',
