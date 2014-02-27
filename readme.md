@@ -11,7 +11,52 @@ This is the [InformHer API](https://github.com/pup-progguild/InformHerAPI) for t
 
 Base API URL is
 
-* http://informherapi.cloudapp.net
+* http://informherapi.cloudapp.net/
+
+**NOTE**: You'll be redirected to this page if you access the Base API URL without any appended URIs
+
+### Usage
+
+If in cURL,
+
+```bash
+$> curl --include --request GET 'http://informherapi.cloudapp.net/posts/1'
+```
+
+Sample JSON response would be,
+
+```json
+{
+  "status": "POST_SHOW_SUCCESSFUL",
+  "posts": {
+    "id": "2",
+    "title": "Is it alright to ask a question here?",
+    "content": "To make your document look professionally produced, Word provides header, footer, cover page, and text box designs that complement each other. For example, you can add a matching cover page, header, and sidebar.",
+    "geolocation": null,
+    "srclink": null,
+    "created_at": "2014-02-27 07:40:21",
+    "updated_at": "2014-02-27 07:40:21",
+    "likers": "2",
+    "is_featured": false,
+    "tags": [
+      {
+        "id": "5",
+        "tagname": "news"
+      }
+    ],
+    "author": {
+      "id": "2",
+      "username": "ni-kun",
+      "email": "ni-kun@informher.com"
+    },
+    "category": {
+      "name": "ask"
+    }
+  }
+}
+```
+
+### Endpoints
 
 We'll be making better docs, but we hope this would suffice in the meantime. Please see our uploaded [Postman Collection](https://www.getpostman.com/collections/cc6fb482c594bbb81f07) for using the endpoints with fields.
 
@@ -61,13 +106,6 @@ We'll be making better docs, but we hope this would suffice in the meantime. Ple
 - PHP 5.4+
 - Nginx
 - MariaDB 10+
-
-### Installation
-
-```bash
-$> curl -s https://getcomposer.org/installer | php
-$> php composer.phar install
-```
 
 ### License
 

@@ -14,7 +14,7 @@
 // TODO: DESU.
 
 Route::get('/', function () {
-	return View::make('home');
+	return Redirect::to('http://pup-progguild.github.io/InformHerAPI/');
 });
 
 Route::get('/test', function () {
