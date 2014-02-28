@@ -32,6 +32,10 @@ class User extends ConfideUser {
 		'password', 'confirmation_code', 'confirmed', 'updated_at', 'created_at'
 	];
 
+	protected $with = [
+		'profile'
+	];
+
 	public static $rules = array(
 		'username' => 'unique:users,username',
 		'email'    => 'email'
@@ -78,6 +82,10 @@ class User extends ConfideUser {
 	public function like_count() {
 		return $this->hasMany('Like')->count();
 	}
+
+//	public function avatar_url() {
+//		return $this->profile()->avatar_url;
+//	}
 
 	public function profile() {
 		return $this->hasOne('Profile');
