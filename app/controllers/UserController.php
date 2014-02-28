@@ -259,7 +259,7 @@ class UserController extends BaseController {
 
 		$input = Input::all();
 
-		$user->email = $input['email'];
+		$user->email = $input['email_address'];
 
 		$user->save();
 
