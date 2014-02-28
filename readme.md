@@ -20,7 +20,7 @@ Base API URL is
 If in cURL,
 
 ```bash
-$> curl --include --request GET 'http://informherapi.cloudapp.net/posts/1'
+$> curl --include --request GET 'http://informherapi.cloudapp.net/posts/2'
 ```
 
 Sample JSON response would be,
@@ -63,17 +63,17 @@ We'll be making better docs, but we hope this would suffice in the meantime. Ple
 | URI                                         | Short Description      | Action                               | Needs Auth?     | Required Roles (Any)				|
 |---------------------------------------------|------------------------|--------------------------------------|-----------------|---------------|
 | GET posts                                   | GetAllPosts            | PostController@index                 |                 |               |
-| GET posts/{post}                            | GetPost                | PostController@show                  |                 |               |
-| GET posts/{post}/comments/{comment?}        | GetCommentsFromPost    | PostController@comments              |                 |               |
-| GET posts/{post}/tags                       | GetAllTagsFromPost     | PostController@tags                  |                 |               |
-| GET posts/{post}/likes                      | GetAllLikesFromPost    | PostController@likes                 |                 |               |
-| GET posts/{post}/comments/{comment}/likes   | GetAllLikesFromComment | PostController@likes                 |                 |               |
+| GET posts/{id}                            | GetPost                | PostController@show                  |                 |               |
+| GET posts/{id}/comments/{id?}        | GetCommentsFromPost    | PostController@comments              |                 |               |
+| GET posts/{id}/tags                       | GetAllTagsFromPost     | PostController@tags                  |                 |               |
+| GET posts/{id}/likes                      | GetAllLikesFromPost    | PostController@likes                 |                 |               |
+| GET posts/{id}/comments/{id}/likes   | GetAllLikesFromComment | PostController@likes                 |                 |               |
 | POST posts/{post?}                          | CreateEditPost         | PostController@create_edit           | yes            |               |
-| POST posts/{post}/comments/{comment?}       | CreateUpdateComment    | PostController@create_update_comment | yes            |               |
-| POST posts/{post}/like                      | LikePost               | PostController@like                  | yes            |               |
-| POST posts/{post}/comments/{comment}/like   | LikePostComment        | PostController@like                  | yes            |               |
-| DELETE posts/{post}/comments/{comment?}     | DeletePostComment      | PostController@delete_comment        | yes            |               |
-| DELETE posts/{post}                         | DeletePost             | PostController@destroy               | yes            |               |
+| POST posts/{id}/comments/{id?}       | CreateUpdateComment    | PostController@create_update_comment | yes            |               |
+| POST posts/{id}/like                      | LikePost               | PostController@like                  | yes            |               |
+| POST posts/{id}/comments/{id}/like   | LikePostComment        | PostController@like                  | yes            |               |
+| DELETE posts/{id}/comments/{id?}     | DeletePostComment      | PostController@delete_comment        | yes            |               |
+| DELETE posts/{id}                         | DeletePost             | PostController@destroy               | yes            |               |
 | GET tags                                    | Tags                   | TagController@index                  |                 |               |
 | GET category                                | Categories             | CategoryController@index             |                 |               |
 | GET user/confirm/{code}                     | ConfirmUser            | UserController@getConfirm            |                 |               |
@@ -88,14 +88,14 @@ We'll be making better docs, but we hope this would suffice in the meantime. Ple
 | GET user/comments							  | GetLoggedUserComments  | UserController@getComments           |                 |               |
 | GET user/profile							  | GetLoggedUserProfile   | UserController@getProfile            |                 |               |
 | POST user/profile							  | ProcessUserProfile     | UserController@postProfile           |     		 |               |
-| GET admin/users/{user}/delete               | DeleteUser             | AdminController@delete_user          | yes 		| Administrator              |
-| POST admin/users/{user}/promote             | PromoteUser            | AdminController@promote              | yes 		| Administrator              |
-| POST admin/users/{user}/demote              | DemoteUser            | AdminController@demote               | yes 		| Administrator              |
+| GET admin/users/{id}/delete               | DeleteUser             | AdminController@delete_user          | yes 		| Administrator              |
+| POST admin/users/{id}/promote             | PromoteUser            | AdminController@promote              | yes 		| Administrator              |
+| POST admin/users/{id}/demote              | DemoteUser            | AdminController@demote               | yes 		| Administrator              |
 | GET admin/posts/unapproved                  | ShowUnapprovedPosts    | AdminController@show_unapproved      | yes 			| Administrator, Moderator              |
-| GET admin/posts/{post}/approve              | ApprovePost            | AdminController@show_post            | yes 			| Administrator, Moderator              |
-| GET admin/posts/{post}/hide                 | HidePost               | AdminController@hide                 | yes 			| Administrator, Moderator              |
-| POST admin/tags/{tag?}                      | AddCreateTags          | TagController@create_edit            | yes 			| Administrator, Moderator              |
-| DELETE admin/tags/{tag}                     | DeleteTag              | TagController@destroy                | yes 		| Administrator, Moderator               |
+| GET admin/posts/{id}/approve              | ApprovePost            | AdminController@show_post            | yes 			| Administrator, Moderator              |
+| GET admin/posts/{id}/hide                 | HidePost               | AdminController@hide                 | yes 			| Administrator, Moderator              |
+| POST admin/tags/{id?}                      | AddCreateTags          | TagController@create_edit            | yes 			| Administrator, Moderator              |
+| DELETE admin/tags/{id}                     | DeleteTag              | TagController@destroy                | yes 		| Administrator, Moderator               |
 
 ### BuiltWith
 
