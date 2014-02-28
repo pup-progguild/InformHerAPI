@@ -14,23 +14,19 @@ class CommentController extends BaseController {
 	 * @return Response
 	 */
 	public function index() {
-		$comments = $this->comment;
+		$comments = $this->comment()->paginate(10);
 
-		$post_count = $comments->count();
-
-		$comments = $comments->get();
-
-		$comments_a = [
-			'count'  => $post_count,
-			'result' => $comments->toArray()
-		];
-
-		if ($post_count != 0) {
+		if ($comments->count() != 0) {
 			return Response::json([
 				'status' => 'COMMENTS_SHOW_SUCCESSFUL',
-				'posts'  => $comments_a
+				'posts'  => $comments->toArray()
 			], 200);
 		}
+
+		return Response::json([
+			'status' => 'COMMENTS_SHOW_FAILED',
+			'description'   => 'Returned empty result'
+		], 200);
 	}
 
 	/**
@@ -40,7 +36,6 @@ class CommentController extends BaseController {
 	 * @return Response
 	 */
 	public function show(Comment $comment) {      //TODO - wrong logic
-
 		if ($comment->count() == 0) {
 			return Response::json(array(
 					'status'      => 'COMMENT_SHOW_FAILED',

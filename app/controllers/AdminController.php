@@ -62,19 +62,12 @@ class AdminController extends BaseController {
 	public function show_unapproved() {
 		$posts = new Post;
 
-		$post = $posts->not_shown();
+		$post = $posts->not_shown()->paginate(10);
 
-		$post_count = is_null($post) ? 0 : $post->count();
-
-		if ($post_count != 0) {
-			$posts_a = [
-				'count'  => $post_count,
-				'result' => $post->get()->toArray()
-			];
-
+		if ($post->count() != 0) {
 			return Response::json([
 				'status' => 'POST_SHOW_UNAPPROVED_SUCCESSFUL',
-				'posts'  => $posts_a
+				'posts'  => $post
 			], 200);
 		}
 
@@ -143,19 +136,12 @@ class AdminController extends BaseController {
 	public function show_Shoutout() {
 		$post = new Post;
 
-		$post = $post->shoutout();
+		$post = $post->shoutout()->paginate(10);
 
-		$post_count = $post->count();
-
-		if ($post_count != 0) {
-			$posts_a = [
-				'count'     => $post_count,
-				'result'    => $post->toArray()
-			];
-
+		if ($post->count() != 0) {
 			return Response::json([
 				'status' => 'POST_SHOW_SUCCESSFUL',
-				'posts'  => $posts_a
+				'posts'  => $post->toArray()
 			], 200);
 		}
 

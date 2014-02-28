@@ -34,41 +34,24 @@ class PostController extends BaseController {
 			$category = Input::get('category');
 			$tagname  = Input::get('tagname');
 
-
 			if (is_null($category) && is_null($tagname)) {
-				$post_count = $post->count();
-
-				$post = $post->get();
-
-				$posts_a = [
-					'count'  => $post_count,
-					'result' => $post->toArray()
-				];
-
-				if ($post_count != 0) {
+				$post = $post->paginate(10);
+				if ($post->count() != 0) {
 					return Response::json([
 						'status' => 'POST_SHOW_SUCCESSFUL',
-						'posts'  => $posts_a
+						'posts'  => $post->toArray()
 					], 200);
 				}
 				// get posts where category={a-z}
 			} elseif (is_null($tagname)) {
 				$post = $post->whereHas('Category', function ($q) use ($category) {
 					$q->where('name', '=', $category);
-				})->get();
+				})->paginate(10);
 
-
-				$post_count = $post->count();
-
-				if ($post_count != 0) {
-					$posts_a = [
-						'count'  => $post_count,
-						'result' => $post->toArray()
-					];
-
+				if ($post->count() != 0) {
 					return Response::json([
 						'status' => 'POST_SHOW_SUCCESSFUL',
-						'posts'  => $posts_a
+						'posts'  => $post->toArray()
 					], 200);
 				}
 
@@ -134,19 +117,12 @@ class PostController extends BaseController {
 	}
 
 	public function show_unapproved() {
-		$post = $this->post->not_shown()->get();
+		$post = $this->post->not_shown()->paginate(10);
 
-		$post_count = $post->count();
-
-		if ($post_count != 0) {
-			$posts_a = [
-				'count'  => $post_count,
-				'result' => $post->toArray()
-			];
-
+		if ($post->count() != 0) {
 			return Response::json([
 				'status' => 'POST_SHOW_UNAPPROVED_SUCCESSFUL',
-				'posts'  => $posts_a
+				'posts'  => $post->toArray()
 			], 200);
 		}
 
@@ -258,29 +234,26 @@ class PostController extends BaseController {
 	 */
 	public function comments(Post $post, $comment_id = null) {
 		if (is_null($comment_id)) {
-			$comments = $post->comments;
-
-			$comments_a = [
-				'count'  => $comments->count(),
-				'result' => $comments->toArray()
-			];
+			$comments = $post->comments()->paginate(10);
 
 			return Response::json([
 				'status'  => 'POST_COMMENT_RETRIEVE_SUCCESSFUL',
-				'comment' => $comments_a
+				'comment' => $comments->toArray()
 			], 200);
 		}
 
 		$comments = Comment::where('post_id', '=', $post->id)->where('id', '=', $comment_id)->get();
 
-		$comments_a = [
-			'count'  => $comments->count(),
-			'result' => $comments->toArray()
-		];
+		if($comments->count() != 0) {
+			return Response::json([
+				'status'  => 'POST_COMMENT_RETRIEVE_SUCCESSFUL',
+				'comment' => $comments->toArray()
+			], 200);
+		}
 
 		return Response::json([
-			'status'  => 'POST_COMMENT_RETRIEVE_SUCCESSFUL',
-			'comment' => $comments_a
+			'status'  => 'POST_COMMENT_RETRIEVE_FAILED',
+			'description' => 'Comment id # ' . $comment_id . ' not member of Post id # ' . $post->id
 		], 200);
 	}
 
@@ -323,18 +296,13 @@ class PostController extends BaseController {
 	public function likes(Post $post, Comment $comment = null) {
 		$item = is_null($comment) ? $post : $comment;
 
-		$likes = $item->likes;
+		$likes = $item->likes()->paginate(10);
 
 		$type = get_class($item);
 
-		$likes_a = [
-			'count'  => $likes->count(),
-			'result' => $likes->toArray()
-		];
-
 		return Response::json([
 			'status' => strtoupper($type) . '_LIKES_RETRIEVE_SUCCESSFUL',
-			'likes'  => $likes_a
+			'likes'  => $likes->toArray()
 		], 200);
 	}
 
@@ -377,14 +345,9 @@ class PostController extends BaseController {
 
 			$comment = Comment::where('id', '=', $comment->id)->get();
 
-			$comments_a = [
-				'count'  => $comment->count(),
-				'result' => $comment->toArray()
-			];
-
 			return Response::json([
 				'status'  => $status . '_SUCCESS',
-				'comment' => $comments_a
+				'comment' => $comment->toArray()
 			], 200);
 		} else {
 			return Response::json([
@@ -471,16 +434,11 @@ class PostController extends BaseController {
 			]));
 		}
 
-		$likes = $item::find($item->id)->likes;
-
-		$likes_a = [
-			'count'  => $likes->count(),
-			'result' => $likes->toArray()
-		];
+		$likes = $item::find($item->id)->likes()->paginate(10);
 
 		return Response::json([
 			'status' => strtoupper($type) . '_CREATE_LIKE_SUCCESS',
-			'likes'  => $likes_a
+			'likes'  => $likes->toArray()
 		], 200);
 	}
 }

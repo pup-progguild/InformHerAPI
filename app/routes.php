@@ -18,10 +18,12 @@ Route::get('/', function () {
 });
 
 Route::get('/test', function () {
-	$comment = Comment::paginate(10);
-    
-    return Response::json($comment);
-})->before('basic');;
+	$users = User::all();
+
+	foreach($users as $user) {
+		echo Gravatar::src($user->email) . ' ';
+	}
+});
 
 /* InformHer API routes & endpoints */
 Route::model("post", "Post");
@@ -107,12 +109,36 @@ Route::group(['prefix' => 'category', 'before' => 'basic'], function () {
 	]);
 });
 
-// Confide RESTful route
-Route::group(['before' => 'basic'], function() {        // TODO: Remove basic auth at   this!
-	Route::get('user/confirm/{code}', 'UserController@getConfirm');
-	Route::get('user/reset/{token}', 'UserController@getReset');
-	Route::controller( 'user', 'UserController');
+Route::group(['before' => 'basic'], function() {
+	Route::group(['prefix' => 'user'], function () {
+		Route::get('/', [
+			'as'    =>  'UserDetails',
+			'uses'  =>  'UserController@index'
+		]);
+
+		Route::get('/posts', [
+			'as'    =>  'UserPosts',
+			'uses'  =>  'UserController@user_posts'
+		]);
+
+		Route::get('/comments', [
+			'as'    =>  'UserComments',
+			'uses'  =>  'UserController@user_comments'
+		]);
+
+		Route::post('/profile', [
+			'as'    =>  'UserProfile',
+			'uses'  =>  'UserController@profile'
+		]);
+	});
 });
+
+// Confide RESTful route
+//Route::group(['before' => 'basic'], function() {        // TODO: Remove basic auth at   this!
+Route::get('user/confirm/{code}', 'UserController@getConfirm');
+Route::get('user/reset/{token}', 'UserController@getReset');
+Route::controller( 'user', 'UserController');
+//});
 
 Route::group(['prefix' => 'admin', 'before' => 'auth|basic'], function () {
 	Route::group(['prefix' => 'users'], function () {

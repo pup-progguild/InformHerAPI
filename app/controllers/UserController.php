@@ -61,8 +61,8 @@ class UserController extends BaseController {
 			$error = $user->errors()->all(':message');
 
 			return Response::json([
-					'status'      => 'USER_CREATE_FAILED',
-					'description' => $error
+				'status'      => 'USER_CREATE_FAILED',
+				'description' => $error
 			], 200);
 		}
 	}
@@ -87,7 +87,7 @@ class UserController extends BaseController {
 		if (Confide::logAttempt($input, false, 'username')) {
 			return Response::json([
 				'status' => 'USER_LOGIN_SUCCESS',
-			    'user'   => Confide::user()->toArray()
+				'user'   => Confide::user()->toArray()
 			], 200);
 		} else {
 			$user = new User;
@@ -103,7 +103,7 @@ class UserController extends BaseController {
 
 			return Response::json([
 				'status' => 'USER_LOGIN_FAILED',
-			    'description'   => $err_msg
+				'description'   => $err_msg
 			], 401);
 		}
 	}
@@ -119,7 +119,7 @@ class UserController extends BaseController {
 
 			return Response::json([
 				'status'        =>  '_SUCCESSFUL',
-			    'description'   =>  $notice_msg
+				'description'   =>  $notice_msg
 			], 200);
 		} else {
 			$error_msg = Lang::get('confide::confide.alerts.wrong_confirmation');
@@ -148,7 +148,7 @@ class UserController extends BaseController {
 
 			return Response::json([
 				'status'        =>  'USER_FORGOT_PASSWORD_EMAIL_FAILED',
-			    'description'   =>  $error_msg
+				'description'   =>  $error_msg
 			], 200);
 		}
 	}
@@ -194,19 +194,19 @@ class UserController extends BaseController {
 		], 200);
 	}
 
-	public function getIndex() {
+	public function index() {
 		$user = Confide::user();
 
 		$interaction_level = [
 			'total_posts'       => $user->post_count(),
-		    'total_comments'    => $user->comment_count(),
-		    'total_likes'       => $user->like_count()
+			'total_comments'    => $user->comment_count(),
+			'total_likes'       => $user->like_count()
 		];
 
 		$posts = [
 			'ask'       => $user->posts_ask()->get()->toArray(),
 			'relate'    => $user->posts_relate()->get()->toArray(),
-		    'shoutout'  => $user->posts_shoutout()->get()->toArray()
+			'shoutout'  => $user->posts_shoutout()->get()->toArray()
 		];
 
 		$comments = [
@@ -216,12 +216,12 @@ class UserController extends BaseController {
 		return Response::json([
 			'status'    =>  'USER_HOME_RETRIEVE_SUCCESS',
 			'score'     =>  $interaction_level,
-		    'posts'     =>  $posts,
-		    'comments'  =>  $comments
+			'posts'     =>  $posts,
+			'comments'  =>  $comments
 		], 200);
 	}
 
-	public function getPosts() {
+	public function user_posts() {
 		$user = Confide::user();
 
 		$posts = [
@@ -236,7 +236,7 @@ class UserController extends BaseController {
 		], 200);
 	}
 
-	public function getComments() {
+	public function user_comments() {
 		$user = Confide::user();
 
 		return Response::json([
@@ -254,7 +254,7 @@ class UserController extends BaseController {
 		]);
 	}
 
-	public function postProfile() {
+	public function profile() {
 		$user = Confide::user();
 
 		$input = Input::all();
@@ -283,5 +283,4 @@ class UserController extends BaseController {
 			], 200);
 		}
 	}
-
 }
