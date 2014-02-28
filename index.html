@@ -52,7 +52,7 @@
 
 <p>If in cURL,</p>
 
-<div class="highlight highlight-bash"><pre><span class="nv">$&gt;</span> curl --include --request GET <span class="s1">'http://informherapi.cloudapp.net/posts/1'</span>
+<div class="highlight highlight-bash"><pre><span class="nv">$&gt;</span> curl --include --request GET <span class="s1">'http://informherapi.cloudapp.net/posts/2'</span>
 </pre></div>
 
 <p>Sample JSON response would be,</p>
@@ -109,35 +109,35 @@
 <td></td>
 </tr>
 <tr>
-<td>GET posts/{post}</td>
+<td>GET posts/{id}</td>
 <td>GetPost</td>
 <td>PostController@show</td>
 <td></td>
 <td></td>
 </tr>
 <tr>
-<td>GET posts/{post}/comments/{comment?}</td>
+<td>GET posts/{id}/comments/{id?}</td>
 <td>GetCommentsFromPost</td>
 <td>PostController@comments</td>
 <td></td>
 <td></td>
 </tr>
 <tr>
-<td>GET posts/{post}/tags</td>
+<td>GET posts/{id}/tags</td>
 <td>GetAllTagsFromPost</td>
 <td>PostController@tags</td>
 <td></td>
 <td></td>
 </tr>
 <tr>
-<td>GET posts/{post}/likes</td>
+<td>GET posts/{id}/likes</td>
 <td>GetAllLikesFromPost</td>
 <td>PostController@likes</td>
 <td></td>
 <td></td>
 </tr>
 <tr>
-<td>GET posts/{post}/comments/{comment}/likes</td>
+<td>GET posts/{id}/comments/{id}/likes</td>
 <td>GetAllLikesFromComment</td>
 <td>PostController@likes</td>
 <td></td>
@@ -151,35 +151,35 @@
 <td></td>
 </tr>
 <tr>
-<td>POST posts/{post}/comments/{comment?}</td>
+<td>POST posts/{id}/comments/{id?}</td>
 <td>CreateUpdateComment</td>
 <td>PostController@create_update_comment</td>
 <td>yes</td>
 <td></td>
 </tr>
 <tr>
-<td>POST posts/{post}/like</td>
+<td>POST posts/{id}/like</td>
 <td>LikePost</td>
 <td>PostController@like</td>
 <td>yes</td>
 <td></td>
 </tr>
 <tr>
-<td>POST posts/{post}/comments/{comment}/like</td>
+<td>POST posts/{id}/comments/{id}/like</td>
 <td>LikePostComment</td>
 <td>PostController@like</td>
 <td>yes</td>
 <td></td>
 </tr>
 <tr>
-<td>DELETE posts/{post}/comments/{comment?}</td>
+<td>DELETE posts/{id}/comments/{id?}</td>
 <td>DeletePostComment</td>
 <td>PostController@delete_comment</td>
 <td>yes</td>
 <td></td>
 </tr>
 <tr>
-<td>DELETE posts/{post}</td>
+<td>DELETE posts/{id}</td>
 <td>DeletePost</td>
 <td>PostController@destroy</td>
 <td>yes</td>
@@ -284,21 +284,21 @@
 <td></td>
 </tr>
 <tr>
-<td>GET admin/users/{user}/delete</td>
+<td>GET admin/users/{id}/delete</td>
 <td>DeleteUser</td>
 <td>AdminController@delete_user</td>
 <td>yes</td>
 <td>Administrator</td>
 </tr>
 <tr>
-<td>POST admin/users/{user}/promote</td>
+<td>POST admin/users/{id}/promote</td>
 <td>PromoteUser</td>
 <td>AdminController@promote</td>
 <td>yes</td>
 <td>Administrator</td>
 </tr>
 <tr>
-<td>POST admin/users/{user}/demote</td>
+<td>POST admin/users/{id}/demote</td>
 <td>DemoteUser</td>
 <td>AdminController@demote</td>
 <td>yes</td>
@@ -312,28 +312,28 @@
 <td>Administrator, Moderator</td>
 </tr>
 <tr>
-<td>GET admin/posts/{post}/approve</td>
+<td>GET admin/posts/{id}/approve</td>
 <td>ApprovePost</td>
 <td>AdminController@show_post</td>
 <td>yes</td>
 <td>Administrator, Moderator</td>
 </tr>
 <tr>
-<td>GET admin/posts/{post}/hide</td>
+<td>GET admin/posts/{id}/hide</td>
 <td>HidePost</td>
 <td>AdminController@hide</td>
 <td>yes</td>
 <td>Administrator, Moderator</td>
 </tr>
 <tr>
-<td>POST admin/tags/{tag?}</td>
+<td>POST admin/tags/{id?}</td>
 <td>AddCreateTags</td>
 <td>TagController@create_edit</td>
 <td>yes</td>
 <td>Administrator, Moderator</td>
 </tr>
 <tr>
-<td>DELETE admin/tags/{tag}</td>
+<td>DELETE admin/tags/{id}</td>
 <td>DeleteTag</td>
 <td>TagController@destroy</td>
 <td>yes</td>
