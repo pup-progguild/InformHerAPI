@@ -194,7 +194,7 @@ class UserController extends BaseController {
 		], 200);
 	}
 
-	public function getIndex() {
+	public function index() {
 		$user = Confide::user();
 
 		$interaction_level = [
@@ -221,7 +221,7 @@ class UserController extends BaseController {
 		], 200);
 	}
 
-	public function getPosts() {
+	public function posts() {
 		$user = Confide::user();
 
 		$posts = [
@@ -236,7 +236,7 @@ class UserController extends BaseController {
 		], 200);
 	}
 
-	public function getComments() {
+	public function comments() {
 		$user = Confide::user();
 
 		return Response::json([
@@ -254,7 +254,7 @@ class UserController extends BaseController {
 		]);
 	}
 
-	public function postProfile() {
+	public function profile() {
 		$user = Confide::user();
 
 		$input = Input::all();
