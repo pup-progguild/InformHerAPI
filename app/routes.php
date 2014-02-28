@@ -18,10 +18,12 @@ Route::get('/', function () {
 });
 
 Route::get('/test', function () {
-	$comment = Comment::paginate(10);
-    
-    return Response::json($comment);
-})->before('basic');;
+	$users = User::all();
+
+	foreach($users as $user) {
+		echo Gravatar::src($user->email) . ' ';
+	}
+})->before('basic');
 
 /* InformHer API routes & endpoints */
 Route::model("post", "Post");
