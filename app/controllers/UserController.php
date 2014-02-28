@@ -221,7 +221,7 @@ class UserController extends BaseController {
 		], 200);
 	}
 
-	public function posts() {
+	public function user_posts() {
 		$user = Confide::user();
 
 		$posts = [
@@ -236,7 +236,7 @@ class UserController extends BaseController {
 		], 200);
 	}
 
-	public function comments() {
+	public function user_comments() {
 		$user = Confide::user();
 
 		return Response::json([

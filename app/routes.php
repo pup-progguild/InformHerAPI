@@ -118,12 +118,12 @@ Route::group(['before' => 'basic'], function() {
     	
     	Route::get('/posts', [
     		'as'    =>  'UserPosts',
-    	    'uses'  =>  'UserController@posts'
+    	    'uses'  =>  'UserController@user_posts'
     	]);
     	
     	Route::get('/comments', [
     		'as'    =>  'UserComments',
-    	    'uses'  =>  'UserController@index'
+    	    'uses'  =>  'UserController@user_comments'
     	]);
     	
     	Route::post('/profile', [
