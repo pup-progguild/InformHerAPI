@@ -266,7 +266,7 @@ class UserController extends BaseController {
 		$isSuccessful = $user->profile()->save(new Profile([
 			'avatar_url'        => Gravatar::src($user->email),
 			'badge'             => $input['badge'],
-			'twt_handle'        => $input['twt-handle'],
+			'twt_handle'        => $input['twt_handle'],
 			'facebook_username' => $input['facebook_username'],
 			'bio'               => $input['bio'],
 			'hompage_url'      => $input['hompage_url'],
