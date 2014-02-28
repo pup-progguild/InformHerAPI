@@ -18,7 +18,7 @@ Route::get('/', function () {
 });
 
 Route::get('/test', function () {
-	$comment = Comment::all()->paginate(10);
+	$comment = Comment::paginate(10);
     
     return Response::json($comment);
 })->before('basic');;
