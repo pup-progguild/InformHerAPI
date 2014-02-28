@@ -17,13 +17,13 @@ Route::get('/', function () {
 	return Redirect::to('http://pup-progguild.github.io/InformHerAPI/');
 });
 
-Route::get('/test', function () {
-	$users = User::all();
+// Route::get('/test', function () {
+// 	$users = User::all();
 
-	foreach($users as $user) {
-		echo Gravatar::src($user->email) . ' ';
-	}
-})->before('basic');;
+// 	foreach($users as $user) {
+// 		echo Gravatar::src($user->email) . ' ';
+// 	}
+// })->before('basic');;
 
 /* InformHer API routes & endpoints */
 Route::model("post", "Post");

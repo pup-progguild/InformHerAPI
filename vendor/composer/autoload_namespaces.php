@@ -47,6 +47,8 @@ return array(
     'League\\OAuth2\\Server' => array($vendorDir . '/league/oauth2-server/src'),
     'LaravelBook\\Ardent' => array($vendorDir . '/laravelbook/ardent/src'),
     'Jeremeamia\\SuperClosure' => array($vendorDir . '/jeremeamia/SuperClosure/src'),
+    'Intouch\\Newrelic' => array($vendorDir . '/intouch/newrelic/src'),
+    'Intouch\\LaravelNewrelic' => array($vendorDir . '/intouch/laravel-newrelic/src'),
     'Illuminate' => array($vendorDir . '/laravel/framework/src'),
     'Geocoder' => array($vendorDir . '/willdurand/geocoder/src'),
     'File' => array($vendorDir . '/phpseclib/phpseclib/phpseclib'),

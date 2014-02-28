@@ -125,6 +125,7 @@ return array(
 		'Thomaswelton\LaravelGravatar\LaravelGravatarServiceProvider',
 
 		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider', // ide_helpers
+		'Intouch\LaravelNewrelic\LaravelNewrelicServiceProvider', // New Relic
 	),
 
 	/*
@@ -202,6 +203,8 @@ return array(
 		'Geocoder' => 'Toin0u\Geocoder\GeocoderFacade',
 
 		'Gravatar' => 'Thomaswelton\LaravelGravatar\Facades\Gravatar',
+		
+		'Newrelic'        => 'Intouch\LaravelNewrelic\Facades\Newrelic',
 	),
 
 );

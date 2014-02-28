@@ -34,7 +34,8 @@
 		"lucadegasperi/oauth2-server-laravel" : "1.0.x",
 		"toin0u/geocoder-laravel": "0.2.*@dev",
         "emberlabs/gravatarlib": "dev-master@dev",
-        "thomaswelton/laravel-gravatar": "dev-master"
+        "thomaswelton/laravel-gravatar": "dev-master",
+        "intouch/laravel-newrelic": "dev-master"
 	},
 	"autoload" : {
 		"classmap" : [
