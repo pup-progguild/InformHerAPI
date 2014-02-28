@@ -263,23 +263,16 @@ class UserController extends BaseController {
 
 		$user->save();
 
-//		$profile = Profile::where('user_id', '=', $user->id);
-//
-//		$profile->avatar_url            = Gravatar::src($user->email);
-//		$profile->badge                 = $input['badge'];
-//		$profile->twt_handle            = $input['twt_handle'];
-//		$profile->facebook_username     = $input['facebook_username'];
-//		$profile->bio                   = $input['bio'];
-//		$profile->hompage_url           = $input['hompage_url'];
+		$profile = Profile::where('user_id', '=', $user->id);
 
-		$isSuccessful = $user->profile()->save(new Profile([
-			'avatar_url'        => Gravatar::src($user->email),
-			'badge'             => $input['badge'],
-			'twt_handle'        => $input['twt_handle'],
-			'facebook_username' => $input['facebook_username'],
-			'bio'               => $input['bio'],
-			'hompage_url'      => $input['hompage_url'],
-		]));
+		$profile->avatar_url            = Gravatar::src($user->email);
+		$profile->badge                 = $input['badge'];
+		$profile->twt_handle            = $input['twt_handle'];
+		$profile->facebook_username     = $input['facebook_username'];
+		$profile->bio                   = $input['bio'];
+		$profile->hompage_url           = $input['hompage_url'];
+
+		$isSuccessful = $user->profile()->save($profile);
 
 		if($isSuccessful) {
 			return Response::json([
