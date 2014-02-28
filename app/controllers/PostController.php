@@ -175,7 +175,7 @@ class PostController extends BaseController {
 
 			if ($isNewPost) {
 				$post->properties()->save(new Property([
-					'is_shown'      =>  0,
+					'is_shown'      =>  1,
 					'is_featured'   =>  0
 				]));
 			}
