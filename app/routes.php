@@ -25,6 +25,7 @@ Route::get('/test', function () {
 	}
 });
 
+
 /* InformHer API routes & endpoints */
 Route::model("post", "Post");
 Route::model("comment", "Comment");
