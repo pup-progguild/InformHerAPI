@@ -47,7 +47,7 @@ class TagController extends BaseController {
 
 		$tagname = $input['tagname'];
 
-		$isTagExist = Tag::where('name', '=', $tagname)->exists();
+		$isTagExist = Tag::where('tagname', '=', $tagname)->exists();
 
 		if($isTagExist) {
 			return Response::json([
