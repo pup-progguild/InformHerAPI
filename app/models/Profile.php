@@ -26,6 +26,10 @@ class Profile extends Eloquent {
 	public function user() {
 		return $this->belongsTo('User');
 	}
+	
+	public function roles() {
+	    return $this->user()->roles;
+	}
 
 	public function getEmailAddressAttribute() {
 		return implode(array_flatten($this->user()->get(['email'])->toArray()));
