@@ -205,13 +205,15 @@ class UserController extends BaseController {
 		];
 
 		$posts = [
-			'ask'       => $user->posts_ask()->get()->toArray(),
-			'relate'    => $user->posts_relate()->get()->toArray(),
-			'shoutout'  => $user->posts_shoutout()->get()->toArray()
+			array_merge(
+			    $user->posts_ask()->get()->toArray(),
+			    $user->posts_relate()->get()->toArray(),
+			    $user->posts_shoutout()->get()->toArray()
+			)
 		];
 
 		$comments = [
-			'comments'     =>  $user->comments()->get()->toArray()
+			$user->comments()->get()->toArray()
 		];
 
 		return Response::json([
@@ -226,9 +228,11 @@ class UserController extends BaseController {
 		$user = Confide::user();
 
 		$posts = [
-			$user->posts_ask()->get()->toArray(),
-			$user->posts_relate()->get()->toArray(),
-			$user->posts_shoutout()->get()->toArray()
+			array_merge(
+			    $user->posts_ask()->get()->toArray(),
+			    $user->posts_relate()->get()->toArray(),
+			    $user->posts_shoutout()->get()->toArray()
+			)
 		];
 
 		return Response::json([
