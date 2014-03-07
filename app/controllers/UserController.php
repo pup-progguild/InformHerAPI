@@ -226,9 +226,9 @@ class UserController extends BaseController {
 		$user = Confide::user();
 
 		$posts = [
-			'ask'       => $user->posts_ask()->get()->toArray(),
-			'relate'    => $user->posts_relate()->get()->toArray(),
-			'shoutout'  => $user->posts_shoutout()->get()->toArray()
+			$user->posts_ask()->get()->toArray(),
+			$user->posts_relate()->get()->toArray(),
+			$user->posts_shoutout()->get()->toArray()
 		];
 
 		return Response::json([
