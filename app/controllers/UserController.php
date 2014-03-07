@@ -46,11 +46,12 @@ class UserController extends BaseController {
 			$role = DB::table('roles')->where('name', '=', 'User')->first();
 
 			$user->roles()->attach($role->id);
+			
+			$profile = new Profile;
+			
+			$profile->avatar_url = Gravatar::src($user->email);
 
-			$user->profile()->save(new Profile([
-				'avatar_url'    => Gravatar::src($user->email),
-				'user_id'       =>  $user->id
-			]));
+ 			$user->profile()->save($profile);
 
 			return Response::json([
 				'status' => 'USER_CREATE_SUCCESSFUL',
