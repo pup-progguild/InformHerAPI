@@ -10,5 +10,7 @@
 class AssignedRole extends Eloquent {
 	protected $table = 'assigned_roles';
 
+	protected $hidden = [ 'pivot' ];
+
 	public $timestamps = false;
 }

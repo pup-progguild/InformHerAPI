@@ -19,16 +19,18 @@ class Profile extends Eloquent {
 
 	protected $hidden = [ 'id' ];
 
-    protected $with = [ 'roles' ];
-
-	protected $appends = [ 'email_address' ];
+	protected $appends = [ 'email_address', 'assigned_roles' ];
 
 	public function user() {
 		return $this->belongsTo('User');
 	}
-	
+
+	public function getAssignedRolesAttribute() {
+		return array_flatten($this->roles()->get(['name'])->toArray());
+	}
+
 	public function roles() {
-	    return $this->user()->roles;
+		return $this->belongsToMany('Role', 'assigned_roles', 'user_id', 'role_id');
 	}
 
 	public function getEmailAddressAttribute() {

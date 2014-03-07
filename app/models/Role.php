@@ -15,6 +15,8 @@ use Zizaco\Entrust\EntrustRole;
  * @property mixed $permissions
  */
 class Role extends EntrustRole {
+	protected $hidden = [ 'pivot' ];
+
 	public static $rules = array(
 		'name' => 'required|between:4,255'
 	);
