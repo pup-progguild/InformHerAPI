@@ -10,3 +10,4 @@ Thumbs.db
 # IDE
 /.idea
 _ide_helper.php
+.settings

@@ -19,6 +19,8 @@ class Profile extends Eloquent {
 
 	protected $hidden = [ 'id' ];
 
+    protected $with = [ 'roles' ];
+
 	protected $appends = [ 'email_address' ];
 
 	public function user() {
