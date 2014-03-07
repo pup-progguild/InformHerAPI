@@ -80,7 +80,7 @@ class TagController extends BaseController {
 	public function show(Tag $id) { //TODO - wrong logic
 
 	}
-r
+
 	/**
 	 * Remove the specified resource from storage.
 	 *
