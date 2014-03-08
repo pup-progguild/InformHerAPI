@@ -19,7 +19,7 @@ class Profile extends Eloquent {
 
 	protected $hidden = [ 'id' ];
 
-	protected $appends = [ 'email_address', 'assigned_roles' ];
+	protected $appends = [ 'email_address', 'assigned_roles', 'username' ];
 
 	public function user() {
 		return $this->belongsTo('User');
@@ -29,11 +29,15 @@ class Profile extends Eloquent {
 		return array_flatten($this->roles()->get(['name'])->toArray());
 	}
 
-	public function roles() {
-		return $this->belongsToMany('Role', 'assigned_roles', 'user_id', 'role_id');
-	}
-
 	public function getEmailAddressAttribute() {
 		return implode(array_flatten($this->user()->get(['email'])->toArray()));
+	}
+
+	public function getUsernameAttribute() {
+		return implode(array_flatten($this->user()->get(['username'])->toArray()));
+	}
+
+	public function roles() {
+		return $this->belongsToMany('Role', 'assigned_roles', 'user_id', 'role_id');
 	}
 }
