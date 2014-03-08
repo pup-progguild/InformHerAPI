@@ -21,7 +21,7 @@ Route::get('loaderio-b747d6b7aece34bbe0b489539900a3fa', function () {
 	echo 'loaderio-b747d6b7aece34bbe0b489539900a3fa';
 });
 
-Route::get('mu-1234-cafe-5678-babe', function () {
+Route::get('mu-f02d10a1-3f94c9e6-13b8c9dc-55488748', function () {
 	echo '42';	
 });
 
