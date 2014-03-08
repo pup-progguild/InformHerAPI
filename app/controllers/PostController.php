@@ -479,7 +479,7 @@ class PostController extends BaseController {
 					$queryContent = $post::where('content', 'like', '%'.$queryString.'%');
 				}
 				if($searchOnAuthor == 1) {
-					$queryAuthor = $post::whereHas('users', function($q) use ($data) {
+					$queryAuthor = $post::whereHas('User', function($q) use ($data) {
 						$q->where('username', 'like', '%' . $data['author'] . '%');
 					});
 				}
@@ -492,7 +492,7 @@ class PostController extends BaseController {
 			} else {
 				$queryTitle = $post::where('title', 'like', '%' . $queryString . '%');
 				$queryContent = $post::where('content', 'like', '%' . $queryString . '%');
-				$queryAuthor = $post::whereHas('users', function ($q) use ($data) {
+				$queryAuthor = $post::whereHas('User', function ($q) use ($data) {
 					$q->where('username', 'like', '%' . $data['author'] . '%');
 				});
 				$queryTags = $post::whereHas('Tag', function ($q) use ($searchTags) {
