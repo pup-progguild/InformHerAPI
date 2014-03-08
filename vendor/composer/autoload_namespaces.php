@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'thomaswelton\\GravatarLib\\' => array($vendorDir . '/thomaswelton/gravatarlib'),
     'phpDocumentor' => array($vendorDir . '/phpdocumentor/reflection-docblock/src'),
     'emberlabs\\gravatarlib\\' => array($vendorDir . '/emberlabs/gravatarlib'),
     'dflydev\\markdown' => array($vendorDir . '/dflydev/markdown/src'),
@@ -39,7 +40,6 @@ return array(
     'OAuth' => array($vendorDir . '/lusitanian/oauth/src'),
     'Normalizer' => array($vendorDir . '/patchwork/utf8/class'),
     'Net' => array($vendorDir . '/phpseclib/phpseclib/phpseclib'),
-    'Mustache' => array($vendorDir . '/mustache/mustache/src'),
     'Monolog' => array($vendorDir . '/monolog/monolog/src'),
     'Mockery' => array($vendorDir . '/mockery/mockery/library'),
     'Math' => array($vendorDir . '/phpseclib/phpseclib/phpseclib'),
@@ -52,7 +52,6 @@ return array(
     'Illuminate' => array($vendorDir . '/laravel/framework/src'),
     'Geocoder' => array($vendorDir . '/willdurand/geocoder/src'),
     'File' => array($vendorDir . '/phpseclib/phpseclib/phpseclib'),
-    'Doctrine\\ORM\\' => array($vendorDir . '/doctrine/orm/lib'),
     'Doctrine\\DBAL\\' => array($vendorDir . '/doctrine/dbal/lib'),
     'Doctrine\\Common\\Lexer\\' => array($vendorDir . '/doctrine/lexer/lib'),
     'Doctrine\\Common\\Inflector\\' => array($vendorDir . '/doctrine/inflector/lib'),

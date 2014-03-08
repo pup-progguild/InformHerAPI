@@ -240,16 +240,19 @@ class Container implements ArrayAccess
         if (is_null($constructor)) {
             return new $concrete();
         }
-        $classes = $constructor->getParameters();
-        $deps = array_merge($parameters, $this->getDependencies(array_diff_key($classes, $parameters)));
-        return $reflector->newInstanceArgs($deps);
+        $dependencies = $constructor->getParameters();
+        $parameters = $this->keyParametersByArgument($dependencies, $parameters);
+        $instances = $this->getDependencies($dependencies, $parameters);
+        return $reflector->newInstanceArgs($instances);
     }
-    protected function getDependencies($parameters)
+    protected function getDependencies($parameters, array $primitives = array())
     {
         $dependencies = array();
         foreach ($parameters as $parameter) {
             $dependency = $parameter->getClass();
-            if (is_null($dependency)) {
+            if (array_key_exists($parameter->name, $primitives)) {
+                $dependencies[] = $primitives[$parameter->name];
+            } elseif (is_null($dependency)) {
                 $dependencies[] = $this->resolveNonClass($parameter);
             } else {
                 $dependencies[] = $this->resolveClass($parameter);
@@ -277,6 +280,16 @@ class Container implements ArrayAccess
                 throw $e;
             }
         }
+    }
+    protected function keyParametersByArgument(array $dependencies, array $parameters)
+    {
+        foreach ($parameters as $key => $value) {
+            if (is_numeric($key)) {
+                unset($parameters[$key]);
+                $parameters[$dependencies[$key]->name] = $value;
+            }
+        }
+        return $parameters;
     }
     public function resolving($abstract, Closure $callback)
     {
@@ -404,7 +417,7 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class Application extends Container implements HttpKernelInterface, TerminableInterface, ResponsePreparerInterface
 {
-    const VERSION = '4.1.22';
+    const VERSION = '4.1.23';
     protected $booted = false;
     protected $bootingCallbacks = array();
     protected $bootedCallbacks = array();
@@ -457,7 +470,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     }
     public static function getBootstrapFile()
     {
-        return '/home/awkwardusername/InformHerAPI/vendor/laravel/framework/src/Illuminate/Foundation' . '/start.php';
+        return 'C:\\xampp\\htdocs\\InformHerAPI\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation' . '/start.php';
     }
     public function startExceptionHandling()
     {
@@ -781,6 +794,10 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     {
         $this->deferredServices = $services;
     }
+    public function isDeferredService($service)
+    {
+        return isset($this->deferredServices[$service]);
+    }
     public static function requestClass($class = null)
     {
         if (!is_null($class)) {
@@ -881,6 +898,10 @@ class Request extends SymfonyRequest
     public function instance()
     {
         return $this;
+    }
+    public function method()
+    {
+        return $this->getMethod();
     }
     public function root()
     {
@@ -3341,7 +3362,7 @@ class ErrorHandler
         }
         if ($this->displayErrors && error_reporting() & $level && $this->level & $level) {
             if (!class_exists('Symfony\\Component\\Debug\\Exception\\ContextErrorException')) {
-                require '/home/awkwardusername/InformHerAPI/vendor/symfony/debug/Symfony/Component/Debug' . '/Exception/ContextErrorException.php';
+                require 'C:\\xampp\\htdocs\\InformHerAPI\\vendor\\symfony\\debug\\Symfony\\Component\\Debug' . '/Exception/ContextErrorException.php';
             }
             $exception = new ContextErrorException(sprintf('%s: %s in %s line %d', isset($this->levels[$level]) ? $this->levels[$level] : $level, $message, $file, $line), 0, $level, $file, $line, $context);
             $exceptionHandler = set_exception_handler(function () {
@@ -3351,7 +3372,7 @@ class ErrorHandler
             if (is_array($exceptionHandler) && $exceptionHandler[0] instanceof ExceptionHandler) {
                 $exceptionHandler[0]->handle($exception);
                 if (!class_exists('Symfony\\Component\\Debug\\Exception\\DummyException')) {
-                    require '/home/awkwardusername/InformHerAPI/vendor/symfony/debug/Symfony/Component/Debug' . '/Exception/DummyException.php';
+                    require 'C:\\xampp\\htdocs\\InformHerAPI\\vendor\\symfony\\debug\\Symfony\\Component\\Debug' . '/Exception/DummyException.php';
                 }
                 set_exception_handler(function (\Exception $e) use($exceptionHandler) {
                     if (!$e instanceof DummyException) {
@@ -7625,9 +7646,9 @@ class CookieJar
     {
         return $this->make($name, $value, 2628000, $path, $domain, $secure, $httpOnly);
     }
-    public function forget($name)
+    public function forget($name, $path = null, $domain = null)
     {
-        return $this->make($name, null, -2628000);
+        return $this->make($name, null, -2628000, $path, $domain);
     }
     public function hasQueued($key)
     {
@@ -9045,7 +9066,7 @@ class Environment
         if (isset($resolver)) {
             $this->engines->register($engine, $resolver);
         }
-        unset($this->extensions[$engine]);
+        unset($this->extensions[$extension]);
         $this->extensions = array_merge(array($extension => $engine), $this->extensions);
     }
     public function getExtensions()
@@ -10465,7 +10486,7 @@ class PrettyPageHandler extends Handler
             return Handler::DONE;
         }
         if (!($resources = $this->getResourcesPath())) {
-            $resources = '/home/awkwardusername/InformHerAPI/vendor/filp/whoops/src/Whoops/Handler' . '/../Resources';
+            $resources = 'C:\\xampp\\htdocs\\InformHerAPI\\vendor\\filp\\whoops\\src\\Whoops\\Handler' . '/../Resources';
         }
         $templateFile = "{$resources}/pretty-template.php";
         $cssFile = "{$resources}/pretty-page.css";

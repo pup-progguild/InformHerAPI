@@ -18,9 +18,9 @@ class PostController extends BaseController {
 	 */
 	public function index() {
 		if (Entrust::hasRole('Response'))
-			$post = $this->post->shown();
+			$post = $this->post->shown()->orderBy('created_at', 'desc');
 		else
-			$post = $this->post->everything_else();
+			$post = $this->post->everything_else()->orderBy('created_at', 'desc');
 
 		$data = Input::all();
 
@@ -60,32 +60,7 @@ class PostController extends BaseController {
 					'description' => 'No posts for query.',
 					'input'       => 'category?=' . $category
 				], 200);
-				// get posts where tags={a-z} // TODO: Tag find not working
-			} /*elseif (is_null($category)) {
-				$post = $post->whereHas('Tag', function ($q) use ($tagname) {
-					$q->where('tagname', '=', $tagname);
-				})->get();
-
-				$post_count = $post->count();
-
-				if ($post_count != 0) {
-					$posts_a = [
-						'count'     => $post_count,
-					    'result'    => $post->toArray()
-					];
-
-					return Response::json([
-						'status' => 'POST_SHOW_SUCCESSFUL',
-						'posts'  => $posts_a
-					], 200);
-				}
-
-				return Response::json([
-					'status'      => 'POST_SHOW_FAILED',
-					'description' => 'No posts for query.',
-					'input'       => 'tagname?=' . $tagname
-				], 404);
-			}*/
+			}
 		}
 
 		// F@iLZOR$$$$
@@ -96,7 +71,7 @@ class PostController extends BaseController {
 	}
 
 	/**
-	 * Display the specified resource.
+	 * GET: Display the specified resource.
 	 *
 	 * @param  Post $post
 	 *
@@ -116,6 +91,11 @@ class PostController extends BaseController {
 		], 200);
 	}
 
+	/**
+	 * GET: Show unnapproved posts. For Mod use only
+	 *
+	 * @return \Illuminate\Http\JsonResponse
+	 */
 	public function show_unapproved() {
 		$post = $this->post->not_shown()->paginate(10);
 
@@ -133,7 +113,7 @@ class PostController extends BaseController {
 	}
 
 	/**
-	 * Store a newly created resource in storage.
+	 * POST: Store a newly created resource in storage.
 	 *
 	 * @param Post $post
 	 *
@@ -166,6 +146,7 @@ class PostController extends BaseController {
 
 		$post->title   = $input['title'];
 		$post->content = $input['content'];
+		$post->geolocation = $input['geolocation'];
 
 		if($isNewPost)
 			$post->user_id = Confide::user()->getAuthIdentifier();
@@ -177,7 +158,7 @@ class PostController extends BaseController {
 
 			if ($isNewPost) {
 				$post->properties()->save(new Property([
-					'is_shown'      =>  1,
+					'is_shown'      =>  0, //1, // DO THIS. Set to 0 to not show new posts without approval of mod.
 					'is_featured'   =>  0
 				]));
 			}
@@ -195,7 +176,7 @@ class PostController extends BaseController {
 	}
 
 	/**
-	 * Remove the specified resource from storage.
+	 * POST: Remove the specified resource from storage.
 	 *
 	 * @param  Post $post
 	 *
@@ -227,7 +208,7 @@ class PostController extends BaseController {
 	}
 
 	/**
-	 * Show all comments [or comment if $comment not null] for post
+	 * GET: Show all comments [or comment if $comment not null] for post
 	 *
 	 * @param  Post    $post
 	 * @param  Comment $comment_id = null
@@ -236,7 +217,7 @@ class PostController extends BaseController {
 	 */
 	public function comments(Post $post, $comment_id = null) {
 		if (is_null($comment_id)) {
-			$comments = $post->comments()->paginate(10);
+			$comments = $post->comments()->orderBy('created_at', 'desc')->paginate(10);
 
 			return Response::json([
 				'status'  => 'POST_COMMENT_RETRIEVE_SUCCESSFUL',
@@ -244,7 +225,7 @@ class PostController extends BaseController {
 			], 200);
 		}
 
-		$comments = Comment::where('post_id', '=', $post->id)->where('id', '=', $comment_id)->get();
+		$comments = Comment::where('post_id', '=', $post->id)->where('id', '=', $comment_id)->orderBy('created_at', 'desc')->get();
 
 		if($comments->count() != 0) {
 			return Response::json([
@@ -260,7 +241,7 @@ class PostController extends BaseController {
 	}
 
 	/**
-	 * Show all tags for post
+	 * GET: Show all tags for post
 	 *
 	 * @param Post $post
 	 *
@@ -288,7 +269,7 @@ class PostController extends BaseController {
 	}
 
 	/**
-	 * Show all likes for post/comment
+	 * GET: Show all likes for post/comment
 	 *
 	 * @param Post    $post
 	 * @param Comment $comment
@@ -309,7 +290,7 @@ class PostController extends BaseController {
 	}
 
 	/**
-	 * Create or Update Comment for Post
+	 * POST: Create or Update Comment for Post
 	 *
 	 * @param Post    $post
 	 * @param Comment $comment
@@ -317,8 +298,6 @@ class PostController extends BaseController {
 	 * @return \Illuminate\Http\JsonResponse
 	 */
 	public function create_update_comment(Post $post, Comment $comment = null) {
-		$isNewComment = false;
-
 		if (is_null($comment)) {
 			$comment = new Comment;
 			$status  = 'POST_COMMENT_CREATE';
@@ -361,7 +340,7 @@ class PostController extends BaseController {
 	}
 
 	/**
-	 * Delete comment from post
+	 * POST: Delete comment from post
 	 *
 	 * @param Post    $post
 	 * @param Comment $comment
@@ -412,7 +391,7 @@ class PostController extends BaseController {
 	}
 
 	/**
-	 * Like/unlike Post/Comment
+	 * POST: Like/unlike Post/Comment
 	 *
 	 * @param Post    $post
 	 * @param Comment $comment
@@ -445,66 +424,108 @@ class PostController extends BaseController {
 		], 200);
 	}
 
+	/** // TODO: This thing searches ALL POSTS. Fix on notshown() in the case of non-Response role.
+	 * POST: Search for things.
+	 *
+	 * @return \Illuminate\Http\JsonResponse
+	 */
 	public function search() {
 		$data = Input::all();
 
-		$post = $this->post;
-
-		$postCollection = [];
+		$post = $this->post->where('id', '=', 'a');
 
 		$rules = [
-			'title'     => 'required|in:1,0',
-		    'content'   => 'required|in:1,0',
-		    'author'    => 'required|in:1,0',
-		    'tags'      => 'array',
-		    'query'     => 'regex:[:print:]',
-		    'all'     => ['required_without_all:title,content,author,tags' , 'regex:[:print:]']
+		    'query'     => ['required','regex:([[:print:][:alnum:]]+)'],
+		    'offset'    => 'integer',
+		    'limit'     => 'integer'
 		];
 
-		$searchOnTitle = is_null($data['title']) ? null : $data['title'];
-		$searchOnContent = is_null($data['content']) ? null : $data['content'];
-		$searchOnAuthor = is_null($data['author']) ? null : $data['author'];
-		$searchTags = is_null($data['tags']) ? null : $data['tags'];
-		$queryString = is_null($data['query']) ? null : $data['query'];
-		$queryAll = is_null($data['all']) ? null : $data['all'];
+		$searchOnTitle = isset($data['title']) ? true : false;
+		$searchOnContent = isset($data['content']) ? true : false;
+		$searchOnAuthor = isset($data['author']) ? true : false;
+		$searchTags = isset($data['tags']) ? true : false;
+		$searchCategory = isset($data['category']) ? true : false;
+		$searchAll = isset($data['all']) ? true : false;
+		$queryString = empty($data['query']) ? "" : $data['query'];
+
+		$offset = isset($data['offset']) ? $data['offset'] : 0;
+		$limit = isset($data['limit']) ? $data['limit'] : 10;
 
 		$validator = Validator::make($data, $rules);
 
-		if ($validator->passes()) {
-			if (is_null($queryAll)) {
-				if($searchOnTitle == 1) {
-					$queryTitle = $post::where('title', 'like', '%' .$queryString.'%');
-				}
-				if($searchOnContent == 1) {
-					$queryContent = $post::where('content', 'like', '%'.$queryString.'%');
-				}
-				if($searchOnAuthor == 1) {
-					$queryAuthor = $post::whereHas('User', function($q) use ($data) {
-						$q->where('username', 'like', '%' . $data['author'] . '%');
-					});
-				}
-				if(!(is_null($searchTags))) {
-					$queryTags = $post::whereHas('Tag', function ($q) use ($searchTags) {
-						$q->whereIn('tagname', $searchTags);
-					});
-				}
+//		if($validator->passes())
+//			return Response::json([$searchOnTitle, $searchOnContent, $searchOnAuthor, $searchTags, $searchAll, $queryString]);
+//		else
+//			return "YOUSUCK";
 
+
+		if ($validator->passes()) {
+			if (!$searchAll) {
+				if($searchOnTitle) {
+					$queryTitle = Post::where('title', 'like', '%' .$queryString.'%')->getQuery();
+					$post = $post->union($queryTitle);
+				}
+				if($searchOnContent) {
+					$queryContent = Post::where('content', 'like', '%'.$queryString.'%')->getQuery();
+					$post = $post->union($queryContent);
+				}
+				if($searchOnAuthor) {
+					$queryAuthor = Post::whereHas('author', function($q) use ($queryString) {
+						$q->where('username', 'like', '%'.$queryString.'%');
+					})->getQuery();
+
+					$post = $post->union($queryAuthor);
+				}
+				if($searchTags) {
+					$queryTags = Post::whereHas('tags', function ($q) use ($queryString) {
+						$q->where('tagname', 'like', '%' . $queryString . '%');
+					})->getQuery();
+
+					$post = $post->union($queryTags);
+				}
+				if($searchCategory) {
+					$queryCategory = Post::whereHas('category', function($q) use ($queryString) {
+						$q->where('name', 'like', '%' . $queryString . '%');
+					})->getQuery();
+
+					$post = $post->union($queryCategory);
+				}
 			} else {
-				$queryTitle = $post::where('title', 'like', '%' . $queryString . '%');
-				$queryContent = $post::where('content', 'like', '%' . $queryString . '%');
-				$queryAuthor = $post::whereHas('User', function ($q) use ($data) {
-					$q->where('username', 'like', '%' . $data['author'] . '%');
-				});
-				$queryTags = $post::whereHas('Tag', function ($q) use ($searchTags) {
-					$q->whereIn('tagname', $searchTags);
-				});
+				$queryTitle = Post::where('title', 'like', '%' . $queryString . '%')->getQuery();
+
+				$queryContent = Post::where('content', 'like', '%' . $queryString . '%')->getQuery();
+
+				$queryAuthor = Post::whereHas('author', function ($q) use ($queryString) {
+					$q->where('username', 'like', '%' . $queryString . '%');
+				})->getQuery();
+
+				$queryTags = Post::whereHas('tags', function ($q) use ($queryString) {
+					$q->where('tagname', 'like', '%' . $queryString . '%');
+				})->getQuery();
+
+				$queryCategory = Post::whereHas('category', function ($q) use ($queryString) {
+					$q->where('name', 'like', '%' . $queryString . '%');
+				})->getQuery();
+
+				$post = $post->union($queryTitle)
+							 ->union($queryContent)
+							 ->union($queryAuthor)
+					         ->union($queryTags)
+					         ->union($queryCategory);
 			}
 
-			$postCollection = $post::union($queryAuthor, $queryContent, $queryTags, $queryTitle)->toSql();
+			$postCollection = $post->skip($offset)->take($limit)->get(); // TODO: this fails miserably
+
+			if($postCollection->count() != 0) {
+				return Response::json([
+					'status' => 'POST_SEARCH_SUCCESSFUL',
+					'posts'  => $postCollection->toArray()
+				], 200);
+			}
 
 			return Response::json([
-				'status'    => 'POST_SEARCH_SUCCESSFUL',
-			    'posts'     => $postCollection
+				'status'      => 'POST_SEARCH_FAILED',
+				'description' => 'No posts containing the string "' . $queryString . '" found. Sorry :P'
 			], 200);
 		}
 

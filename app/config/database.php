@@ -47,8 +47,8 @@ return array(
 
 		'nyaasql'  => array(
 			'driver'    => 'mysql',
-			'host'      => 'db-progguild.cloudapp.net',
-			'port'      => '12345',
+			'host'      => 'localhost',
+			'port'      => '3306',
 			'database'  => 'informher_db',
 			'username'  => 'informher',
 			'password'  => 'db_informher',

@@ -26,7 +26,7 @@ class Post extends Eloquent {
 
 	protected $with = [ 'tags', 'author', 'category' ];
 
-	protected $appends = [ 'likers' , 'is_featured' , 'comments_count'];
+	protected $appends = [ 'likers' , 'is_featured' , 'comments_count' ];
 
 	/**
 	 * Returns a formatted post content entry,
@@ -36,6 +36,10 @@ class Post extends Eloquent {
 	 */
 	public function content() {
 		return nl2br($this->content);
+	}
+
+	public function setContentAttribute() {
+		$this->attributes['content'] = $this->content();
 	}
 
 	public function isTheAuthor() {
