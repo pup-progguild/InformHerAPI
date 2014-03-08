@@ -461,12 +461,12 @@ class PostController extends BaseController {
 		    'all'     => ['required_without_all:title,content,author,tags' , 'regex:[:print:]']
 		];
 
-		$searchOnTitle = $data['title'];
-		$searchOnContent = $data['content'];
-		$searchOnAuthor = $data['author'];
-		$searchTags = $data['tags'];
-		$queryString = $data['query'];
-		$queryAll = $data['all'];
+		$searchOnTitle = is_null($data['title']) ? null : $data['title'];
+		$searchOnContent = is_null($data['content']) ? null : $data['content'];
+		$searchOnAuthor = is_null($data['author']) ? null : $data['author'];
+		$searchTags = is_null($data['tags']) ? null : $data['tags'];
+		$queryString = is_null($data['query']) ? null : $data['query'];
+		$queryAll = is_null($data['all']) ? null : $data['all'];
 
 		$validator = Validator::make($data, $rules);
 
