@@ -21,6 +21,10 @@ Route::get('loaderio-b747d6b7aece34bbe0b489539900a3fa', function () {
 	echo 'loaderio-b747d6b7aece34bbe0b489539900a3fa';
 });
 
+Route::get('mu-1234-cafe-5678-babe', function () {
+	echo '42';	
+});
+
 /* InformHer API routes & endpoints */
 Route::model("post", "Post");
 Route::model("comment", "Comment");
