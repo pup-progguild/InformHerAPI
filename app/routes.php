@@ -17,14 +17,9 @@ Route::get('/', function () {
 	return Redirect::to('http://pup-progguild.github.io/InformHerAPI/');
 });
 
-Route::get('/test', function () {
-	$users = User::all();
-
-	foreach($users as $user) {
-		echo Gravatar::src($user->email) . ' ';
-	}
+Route::get('loaderio-b747d6b7aece34bbe0b489539900a3fa', function () {
+	echo 'loaderio-b747d6b7aece34bbe0b489539900a3fa';
 });
-
 
 /* InformHer API routes & endpoints */
 Route::model("post", "Post");
@@ -61,6 +56,11 @@ Route::group(["prefix" => "posts", "before" => "basic"], function () {
 	Route::get("/{post}/comments/{comment}/likes", [
 		"as"   => "GetAllLikesFromComment",
 	    "uses" => "PostController@likes"
+	]);
+
+	Route::post("/search", [
+		"as"    => "SearchPosts",
+	    "uses"  => "PostController@search"
 	]);
 
 	Route::group(["before" => "auth"], function () {

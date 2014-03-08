@@ -166,7 +166,9 @@ class PostController extends BaseController {
 
 		$post->title   = $input['title'];
 		$post->content = $input['content'];
-		$post->user_id = Confide::user()->getAuthIdentifier();
+
+		if($isNewPost)
+			$post->user_id = Confide::user()->getAuthIdentifier();
 
 		$post->category()->associate($category);
 
@@ -332,7 +334,8 @@ class PostController extends BaseController {
 			], 403);
 		}
 
-		$comment->user_id = Confide::user()->getAuthIdentifier();
+		if($isNewComment)
+			$comment->user_id = Confide::user()->getAuthIdentifier();
 		$comment->message = Input::get('message');
 
 		if ($comment = $post->comments()->save($comment)) {
@@ -439,6 +442,77 @@ class PostController extends BaseController {
 		return Response::json([
 			'status' => strtoupper($type) . '_CREATE_LIKE_SUCCESS',
 			'likes'  => $likes->toArray()
+		], 200);
+	}
+
+	public function search() {
+		$data = Input::all();
+
+		$post = $this->post;
+
+		$postCollection = [];
+
+		$rules = [
+			'title'     => 'required|in:1,0',
+		    'content'   => 'required|in:1,0',
+		    'author'    => 'required|in:1,0',
+		    'tags'      => 'array',
+		    'query'     => 'regex:[:print:]',
+		    'all'     => ['required_without_all:title,content,author,tags' , 'regex:[:print:]']
+		];
+
+		$searchOnTitle = $data['title'];
+		$searchOnContent = $data['content'];
+		$searchOnAuthor = $data['author'];
+		$searchTags = $data['tags'];
+		$queryString = $data['query'];
+		$queryAll = $data['all'];
+
+		$validator = Validator::make($data, $rules);
+
+		if ($validator->passes()) {
+			if (is_null($queryAll)) {
+				if($searchOnTitle == 1) {
+					$queryTitle = $post::where('title', 'like', '%' .$queryString.'%');
+				}
+				if($searchOnContent == 1) {
+					$queryContent = $post::where('content', 'like', '%'.$queryString.'%');
+				}
+				if($searchOnAuthor == 1) {
+					$queryAuthor = $post::whereHas('users', function($q) use ($data) {
+						$q->where('username', 'like', '%' . $data['author'] . '%');
+					});
+				}
+				if(!(is_null($searchTags))) {
+					$queryTags = $post::whereHas('Tag', function ($q) use ($searchTags) {
+						$q->whereIn('tagname', $searchTags);
+					});
+				}
+
+			} else {
+				$queryTitle = $post::where('title', 'like', '%' . $queryString . '%');
+				$queryContent = $post::where('content', 'like', '%' . $queryString . '%');
+				$queryAuthor = $post::whereHas('users', function ($q) use ($data) {
+					$q->where('username', 'like', '%' . $data['author'] . '%');
+				});
+				$queryTags = $post::whereHas('Tag', function ($q) use ($searchTags) {
+					$q->whereIn('tagname', $searchTags);
+				});
+			}
+
+			$postCollection = $post::union($queryAuthor, $queryContent, $queryTags, $queryTitle)->toSql();
+
+			return Response::json([
+				'status'    => 'POST_SEARCH_SUCCESSFUL',
+			    'posts'     => $postCollection
+			], 200);
+		}
+
+		$messages = $validator->messages();
+
+		return Response::json([
+			'status'      => 'POST_SEARCH_FAILED',
+		    'description' => $messages->toArray()
 		], 200);
 	}
 }

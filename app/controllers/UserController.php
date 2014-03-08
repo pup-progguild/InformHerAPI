@@ -113,6 +113,7 @@ class UserController extends BaseController {
 	 * Attempt to confirm account with code
 	 *
 	 * @param  string $code
+	 * @return Response
 	 */
 	public function getConfirm($code) {
 		if (Confide::confirm($code)) {
@@ -204,17 +205,13 @@ class UserController extends BaseController {
 			'total_likes'       => $user->like_count()
 		];
 
-		$posts = [
-			array_merge(
+		$posts = array_merge(
 			    $user->posts_ask()->get()->toArray(),
 			    $user->posts_relate()->get()->toArray(),
 			    $user->posts_shoutout()->get()->toArray()
-			)
-		];
+			);
 
-		$comments = [
-			$user->comments()->get()->toArray()
-		];
+		$comments = $user->comments()->get()->toArray();
 
 		return Response::json([
 			'status'    =>  'USER_HOME_RETRIEVE_SUCCESS',
@@ -227,13 +224,11 @@ class UserController extends BaseController {
 	public function user_posts() {
 		$user = Confide::user();
 
-		$posts = [
-			array_merge(
+		$posts = array_merge(
 			    $user->posts_ask()->get()->toArray(),
 			    $user->posts_relate()->get()->toArray(),
 			    $user->posts_shoutout()->get()->toArray()
-			)
-		];
+			);
 
 		return Response::json([
 			'status'    =>  'USER_POSTS_RETRIEVE_SUCCESS',
