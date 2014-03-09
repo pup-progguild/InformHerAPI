@@ -22,45 +22,12 @@ class PostController extends BaseController {
 		else
 			$post = $this->post->everything_else()->orderBy('created_at', 'asc');
 
-		$data = Input::all();
-
-		$rules = [
-			'category' => 'alpha_num' // , 'tagname'  => 'alpha_num'
-		];
-
-		$isValid = Validator::make($data, $rules)->passes();
-
-		if ($isValid) {
-			$category = Input::get('category');
-			$tagname  = Input::get('tagname');
-
-			if (is_null($category) && is_null($tagname)) {
-				$post = $post->paginate(10);
-				if ($post->count() != 0) {
-					return Response::json([
-						'status' => 'POST_SHOW_SUCCESSFUL',
-						'posts'  => $post->toArray()
-					], 200);
-				}
-				// get posts where category={a-z}
-			} elseif (is_null($tagname)) {
-				$post = $post->whereHas('Category', function ($q) use ($category) {
-					$q->where('name', '=', $category);
-				})->paginate(10);
-
-				if ($post->count() != 0) {
-					return Response::json([
-						'status' => 'POST_SHOW_SUCCESSFUL',
-						'posts'  => $post->toArray()
-					], 200);
-				}
-
-				return Response::json([
-					'status'      => 'POST_SHOW_FAILED',
-					'description' => 'No posts for query.',
-					'input'       => 'category?=' . $category
-				], 200);
-			}
+		$post = $post->remember(1)->paginate(10);
+		if ($post->count() != 0) {
+			return Response::json([
+				'status' => 'POST_SHOW_SUCCESSFUL',
+				'posts'  => $post->toArray()
+			], 200);
 		}
 
 		// F@iLZOR$$$$
@@ -424,7 +391,7 @@ class PostController extends BaseController {
 		], 500);
 	}
 
-	/** // TODO: This thing searches ALL POSTS. Fix on notshown() in the case of non-Response role.
+	/** // TODO: This thing searches ALL POSTS. Fix on notShown() in the case of non-Response role.
 	 * POST: Search for things.
 	 *
 	 * @return \Illuminate\Http\JsonResponse
@@ -440,24 +407,18 @@ class PostController extends BaseController {
 		    'limit'     => 'integer'
 		];
 
-		$searchOnTitle = isset($data['title']) ? true : false;
-		$searchOnContent = isset($data['content']) ? true : false;
-		$searchOnAuthor = isset($data['author']) ? true : false;
-		$searchTags = isset($data['tags']) ? true : false;
-		$searchCategory = isset($data['category']) ? true : false;
-		$searchAll = isset($data['all']) ? true : false;
+		$searchOnTitle = isset($data['title']);
+		$searchOnContent = isset($data['content']);
+		$searchOnAuthor = isset($data['author']);
+		$searchTags = isset($data['tags']);
+		$searchCategory = isset($data['category']);
+		$searchAll = isset($data['all']);
 		$queryString = empty($data['query']) ? "" : $data['query'];
 
 		$offset = isset($data['offset']) ? $data['offset'] : 0;
 		$limit = isset($data['limit']) ? $data['limit'] : 10;
 
 		$validator = Validator::make($data, $rules);
-
-//		if($validator->passes())
-//			return Response::json([$searchOnTitle, $searchOnContent, $searchOnAuthor, $searchTags, $searchAll, $queryString]);
-//		else
-//			return "YOUSUCK";
-
 
 		if ($validator->passes()) {
 			if (!$searchAll) {
@@ -517,7 +478,7 @@ class PostController extends BaseController {
 					         ->union($queryCategory);
 			}
 
-			$postCollection = $post->skip($offset)->take($limit)->get(); // TODO: this fails miserably
+			$postCollection = $post->skip($offset)->take($limit)->get(); // TODO: this fails miserably, i mean the offset and limit
 
 			if($postCollection->count() != 0) {
 				return Response::json([
