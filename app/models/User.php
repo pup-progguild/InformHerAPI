@@ -83,12 +83,16 @@ class User extends ConfideUser {
 		return $this->hasMany('Like')->count();
 	}
 
-//	public function avatar_url() {
-//		return $this->profile()->avatar_url;
-//	}
-
 	public function profile() {
 		return $this->hasOne('Profile');
+	}
+
+	public function setCreatedAtAttribute() {
+		$this->attributes['created_at'] = strtotime($this->created_at);
+	}
+
+	public function setUpdatedAtAttribute() {
+		$this->attributes['updated_at'] = strtotime($this->updated_at);
 	}
 
 	protected function getDateFormat() {
