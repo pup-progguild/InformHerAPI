@@ -340,7 +340,7 @@ class PostController extends BaseController {
 			], 403);
 		}
 
-		$message = Input::get('message');
+		$message = Input::all();
 
 		$rules = [
 			'message' => ['required', 'regex:([[:print:][:alnum:]]+)']
