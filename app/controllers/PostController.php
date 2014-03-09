@@ -279,13 +279,13 @@ class PostController extends BaseController {
 	public function likes(Post $post, Comment $comment = null) {
 		$item = is_null($comment) ? $post : $comment;
 
-		$likes = $item->likes()->get(['user_id'])->toArray();
+		$likes = $item->likes()->lists('user_id');
 
 		$type = get_class($item);
 
 		return Response::json([
 			'status' => strtoupper($type) . '_LIKES_RETRIEVE_SUCCESSFUL',
-			'likes'  => array_flatten($likes)
+			'likes'  => $likes
 		], 200);
 	}
 
@@ -315,11 +315,11 @@ class PostController extends BaseController {
 			]));
 		}
 
-		$likes = $item::find($item->id)->likes()->get(['user_id'])->toArray();
+		$likes = $item::find($item->id)->likes()->lists('user_id');
 
 		return Response::json([
 			'status' => strtoupper($type) . '_CREATE_LIKE_SUCCESS',
-			'likes'  => array_flatten($likes)
+			'likes'  => $likes
 		], 200);
 	}
 
