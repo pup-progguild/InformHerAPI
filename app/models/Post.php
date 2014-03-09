@@ -169,11 +169,9 @@ class Post extends Eloquent {
 	 * @return \Illuminate\Database\Query\Builder|null|static
 	 */
 	public function not_shown() {
-		$not_shown_ids = Property::where('is_shown', '=', 0)->where('properties_type', '=', get_class());
+		$not_shown_ids = Property::where('is_shown', '=', 0)->where('properties_type', '=', 'post')->lists('properties_id');
 
-		$not_shown_a = array_flatten($not_shown_ids->get(['properties_id'])->toArray());
-
-		return (count($not_shown_a) != 0) ? $this::whereIn('id', $not_shown_a) : null;
+		return (count($not_shown_ids) != 0) ? $this::whereIn('id', $not_shown_ids) : null;
 	}
 
 	/**
@@ -182,9 +180,7 @@ class Post extends Eloquent {
 	 * @return \Illuminate\Database\Eloquent\Builder|null|static
 	 */
 	public function everything_else() {
-		$shown_ids = Property::where('is_shown', '=', 1)->where('properties_type', '=', get_class());
-
-		$everything_else = array_flatten($shown_ids->get(['properties_id'])->toArray());
+		$everything_else = Property::where('is_shown', '=', 1)->where('properties_type', '=', 'post')->lists('properties_id');
 
 		return (count($everything_else) != 0) ? $this::whereIn('id', $everything_else)->whereHas('Category', function($q) {
 				$q->where('name', '!=', 'shoutout');}) : null;
