@@ -23,9 +23,14 @@ class PostController extends BaseController {
 			$post = $this->post->everything_else()->orderBy('created_at', 'asc');
 
 		$post = $post->paginate(10);
+		$paginate = Input::all();
 
 		if ($post->count() != 0) {
-			$cached = Cache::remember('posts', 2, function() use ($post) {
+			if(isset($paginate['page'])) {
+				Cache::forget('posts');
+			}
+
+			$cached = Cache::remember('posts', 1, function() use ($post) {
 				return Response::json([
 					'status' => 'POST_SHOW_SUCCESSFUL',
 					'posts'  => $post->toArray()
