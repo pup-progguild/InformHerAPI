@@ -279,13 +279,47 @@ class PostController extends BaseController {
 	public function likes(Post $post, Comment $comment = null) {
 		$item = is_null($comment) ? $post : $comment;
 
-		$likes = $item->likes()->paginate(10);
+		$likes = $item->likes()->get(['user_id'])->toArray();
 
 		$type = get_class($item);
 
 		return Response::json([
 			'status' => strtoupper($type) . '_LIKES_RETRIEVE_SUCCESSFUL',
-			'likes'  => $likes->toArray()
+			'likes'  => array_flatten($likes)
+		], 200);
+	}
+
+	/**
+	 * POST: Like/unlike Post/Comment
+	 *
+	 * @param Post $post
+	 * @param Comment $comment
+	 *
+	 * @return \Illuminate\Http\JsonResponse
+	 */
+	public function like(Post $post, Comment $comment = null) {
+		$item = is_null($comment) ? $post : $comment;
+
+		$user_id = Confide::user()->getAuthIdentifier();
+		$item_id = $item->id;
+
+		$type = get_class($item);
+
+		$like = Like::where('user_id', '=', $user_id)->where('likeable_id', '=', $item_id)->where('likeable_type', '=', $type)->first();
+
+		if (!is_null($like)) {
+			$like->delete();
+		} else {
+			$item->likes()->save(new Like([
+				'user_id' => $user_id
+			]));
+		}
+
+		$likes = $item::find($item->id)->likes()->get(['user_id'])->toArray();
+
+		return Response::json([
+			'status' => strtoupper($type) . '_CREATE_LIKE_SUCCESS',
+			'likes'  => array_flatten($likes)
 		], 200);
 	}
 
@@ -388,40 +422,6 @@ class PostController extends BaseController {
 			'status'      => 'POST_COMMENT_DELETE_FAILED',
 			'description' => 'Unknown error occured.'
 		], 500);
-	}
-
-	/**
-	 * POST: Like/unlike Post/Comment
-	 *
-	 * @param Post    $post
-	 * @param Comment $comment
-	 *
-	 * @return \Illuminate\Http\JsonResponse
-	 */
-	public function like(Post $post, Comment $comment = null) {
-		$item = is_null($comment) ? $post : $comment;
-
-		$user_id = Confide::user()->getAuthIdentifier();
-		$item_id = $item->id;
-
-		$type = get_class($item);
-
-		$like = Like::where('user_id', '=', $user_id)->where('likeable_id', '=', $item_id)->where('likeable_type', '=', $type)->first();
-
-		if (!is_null($like)) {
-			$like->delete();
-		} else {
-			$item->likes()->save(new Like([
-				'user_id' => $user_id
-			]));
-		}
-
-		$likes = $item::find($item->id)->likes()->paginate(10);
-
-		return Response::json([
-			'status' => strtoupper($type) . '_CREATE_LIKE_SUCCESS',
-			'likes'  => $likes->toArray()
-		], 200);
 	}
 
 	/** // TODO: This thing searches ALL POSTS. Fix on notshown() in the case of non-Response role.
