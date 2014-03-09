@@ -22,9 +22,9 @@ class PostController extends BaseController {
 		else
 			$post = $this->post->everything_else()->orderBy('created_at', 'asc');
 
-		$post = $post->paginate(10);
+		//$post = $post->paginate(10);
 
-		$paginate = Input::all();
+		//$paginate = Input::all();
 
 		if ($post->count() != 0) {
 //			if(isset($paginate['page'])) {
@@ -33,10 +33,14 @@ class PostController extends BaseController {
 //				}
 //			}
 
+			$cached = Cache::remember('posts', 1, function() use ($post) {
+				return $post->paginate(10);
+			});
+
 //			$cached = Cache::remember('posts', 1, function() use ($post) {
 				return Response::json([
 					'status' => 'POST_SHOW_SUCCESSFUL',
-					'posts'  => $post->toArray()
+					'posts'  => $cached->toArray()
 				], 200);
 //			});
 
