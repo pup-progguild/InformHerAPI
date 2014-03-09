@@ -38,9 +38,9 @@ class Post extends Eloquent {
 		return nl2br($this->content);
 	}
 
-	public function setContentAttribute() {
-		$this->attributes['content'] = $this->content();
-	}
+//	public function setContentAttribute() {
+//		$this->attributes['content'] = $this->content();
+//	}
 
 	public function isTheAuthor() {
         return $this->user_id === Confide::user()->id ? true : false;
