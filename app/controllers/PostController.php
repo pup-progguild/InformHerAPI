@@ -34,8 +34,10 @@ class PostController extends BaseController {
 //			}
 
 			$cached = Cache::remember('posts', 1, function() use ($post) {
-				return $post->paginate(10);
+				return $post;
 			});
+
+			$cached->paginate(10);
 
 //			$cached = Cache::remember('posts', 1, function() use ($post) {
 				return Response::json([
