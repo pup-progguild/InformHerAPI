@@ -158,11 +158,9 @@ class Post extends Eloquent {
 	 * @return \Illuminate\Database\Query\Builder|null|static
 	 */
 	public function shown() {
-		$shown_ids = Property::where('is_shown', '=', 1)->where('properties_type', '=', get_class());
+		$shown_ids = Property::where('is_shown', '=', 1)->where('properties_type', '=', 'post')->lists('properties_id');
 
-		$shown_a = array_flatten($shown_ids->get(['properties_id'])->toArray());
-
-		return (count($shown_a) != 0) ? $this::whereIn('id', $shown_a) : null;
+		return (count($shown_ids) != 0) ? $this::whereIn('id', $shown_ids) : null;
 	}
 
 	/**
