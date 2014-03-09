@@ -435,7 +435,7 @@ class PostController extends BaseController {
 		$post = $this->post->where('id', '=', 'a');
 
 		$rules = [
-		    'query'     => ['required','regex:([[:print:][:alnum:]]+)'],
+		    'query'     => [ 'required','regex:([[:print:][:alnum:]]+)' ],
 		    'offset'    => 'integer',
 		    'limit'     => 'integer'
 		];
@@ -465,10 +465,12 @@ class PostController extends BaseController {
 					$queryTitle = Post::where('title', 'like', '%' .$queryString.'%')->getQuery();
 					$post = $post->union($queryTitle);
 				}
+
 				if($searchOnContent) {
 					$queryContent = Post::where('content', 'like', '%'.$queryString.'%')->getQuery();
 					$post = $post->union($queryContent);
 				}
+
 				if($searchOnAuthor) {
 					$queryAuthor = Post::whereHas('author', function($q) use ($queryString) {
 						$q->where('username', 'like', '%'.$queryString.'%');
@@ -476,6 +478,7 @@ class PostController extends BaseController {
 
 					$post = $post->union($queryAuthor);
 				}
+
 				if($searchTags) {
 					$queryTags = Post::whereHas('tags', function ($q) use ($queryString) {
 						$q->where('tagname', 'like', '%' . $queryString . '%');
