@@ -28,7 +28,9 @@
         </ul>
       </header>
       <section>
-        <h1>
+        <p><a href="http://pup-progguild.github.io/InformHerAPI/"><img src="https://raw.github.com/pup-progguild/InformHerWeb/master/img/informher-banner-with-icon.png" alt="InformHer"></a></p>
+
+<h1>
 <a name="informher-api" class="anchor" href="#informher-api"><span class="octicon octicon-link"></span></a>InformHer API</h1>
 
 <p><a href="https://travis-ci.org/pup-progguild/InformHerAPI"><img src="https://travis-ci.org/pup-progguild/InformHerAPI.png" alt="Build Status"></a>
@@ -58,46 +60,59 @@
 <p>Sample JSON response would be,</p>
 
 <div class="highlight highlight-json"><pre><span class="p">{</span>
-  <span class="nt">"status"</span><span class="p">:</span> <span class="s2">"POST_SHOW_SUCCESSFUL"</span><span class="p">,</span>
-  <span class="nt">"posts"</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">"id"</span><span class="p">:</span> <span class="s2">"2"</span><span class="p">,</span>
-    <span class="nt">"title"</span><span class="p">:</span> <span class="s2">"Is it alright to ask a question here?"</span><span class="p">,</span>
-    <span class="nt">"content"</span><span class="p">:</span> <span class="s2">"To make your document look professionally produced, Word provides header, footer, cover page, and text box designs that complement each other. For example, you can add a matching cover page, header, and sidebar."</span><span class="p">,</span>
-    <span class="nt">"geolocation"</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
-    <span class="nt">"srclink"</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
-    <span class="nt">"created_at"</span><span class="p">:</span> <span class="s2">"2014-02-27 07:40:21"</span><span class="p">,</span>
-    <span class="nt">"updated_at"</span><span class="p">:</span> <span class="s2">"2014-02-27 07:40:21"</span><span class="p">,</span>
-    <span class="nt">"likers"</span><span class="p">:</span> <span class="s2">"2"</span><span class="p">,</span>
-    <span class="nt">"is_featured"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-    <span class="nt">"tags"</span><span class="p">:</span> <span class="p">[</span>
-      <span class="p">{</span>
-        <span class="nt">"id"</span><span class="p">:</span> <span class="s2">"5"</span><span class="p">,</span>
-        <span class="nt">"tagname"</span><span class="p">:</span> <span class="s2">"news"</span>
-      <span class="p">}</span>
-    <span class="p">],</span>
-    <span class="nt">"author"</span><span class="p">:</span> <span class="p">{</span>
-      <span class="nt">"id"</span><span class="p">:</span> <span class="s2">"2"</span><span class="p">,</span>
-      <span class="nt">"username"</span><span class="p">:</span> <span class="s2">"ni-kun"</span><span class="p">,</span>
-      <span class="nt">"email"</span><span class="p">:</span> <span class="s2">"ni-kun@informher.com"</span>
-    <span class="p">},</span>
-    <span class="nt">"category"</span><span class="p">:</span> <span class="p">{</span>
-      <span class="nt">"name"</span><span class="p">:</span> <span class="s2">"ask"</span>
+    <span class="nt">"status"</span><span class="p">:</span> <span class="s2">"POST_SHOW_SUCCESSFUL"</span><span class="p">,</span>
+    <span class="nt">"posts"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">"id"</span><span class="p">:</span> <span class="s2">"2"</span><span class="p">,</span>
+        <span class="nt">"title"</span><span class="p">:</span> <span class="s2">"Is it alright to ask a question here?"</span><span class="p">,</span>
+        <span class="nt">"content"</span><span class="p">:</span> <span class="s2">"To make your document look professionally produced, Word provides header, footer, cover page, and text box designs that complement each other. For example, you can add a matching cover page, header, and sidebar."</span><span class="p">,</span>
+        <span class="nt">"geolocation"</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+        <span class="nt">"srclink"</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+        <span class="nt">"created_at"</span><span class="p">:</span> <span class="s2">"2014-02-27 07:40:21"</span><span class="p">,</span>
+        <span class="nt">"updated_at"</span><span class="p">:</span> <span class="s2">"2014-02-27 07:40:21"</span><span class="p">,</span>
+        <span class="nt">"likers"</span><span class="p">:</span> <span class="s2">"3"</span><span class="p">,</span>
+        <span class="nt">"is_featured"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+        <span class="nt">"comments_count"</span><span class="p">:</span> <span class="s2">"8"</span><span class="p">,</span>
+        <span class="nt">"tags"</span><span class="p">:</span> <span class="p">[{</span>
+            <span class="nt">"id"</span><span class="p">:</span> <span class="s2">"5"</span><span class="p">,</span>
+            <span class="nt">"tagname"</span><span class="p">:</span> <span class="s2">"news"</span>
+        <span class="p">}],</span>
+        <span class="nt">"author"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">"id"</span><span class="p">:</span> <span class="s2">"2"</span><span class="p">,</span>
+            <span class="nt">"username"</span><span class="p">:</span> <span class="s2">"ni-kun"</span><span class="p">,</span>
+            <span class="nt">"email"</span><span class="p">:</span> <span class="s2">"ni-kun@informher.com"</span><span class="p">,</span>
+            <span class="nt">"profile"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="nt">"avatar_url"</span><span class="p">:</span> <span class="s2">"https:\/\/secure.gravatar.com\/avatar\/fabe04b0ebf26d5e9bd05a504778f382?s=80&amp;amp;r=g&amp;amp;d=identicon"</span><span class="p">,</span>
+                <span class="nt">"badge"</span><span class="p">:</span> <span class="s2">"The Second User"</span><span class="p">,</span>
+                <span class="nt">"twt_handle"</span><span class="p">:</span> <span class="s2">"ni-kun"</span><span class="p">,</span>
+                <span class="nt">"facebook_username"</span><span class="p">:</span> <span class="s2">"ni-kun"</span><span class="p">,</span>
+                <span class="nt">"bio"</span><span class="p">:</span> <span class="s2">"This is the second user. Name was taken from the Japanese word for 'two'"</span><span class="p">,</span>
+                <span class="nt">"hompage_url"</span><span class="p">:</span> <span class="s2">"http:\/\/ni-kun.com"</span><span class="p">,</span>
+                <span class="nt">"user_id"</span><span class="p">:</span> <span class="s2">"2"</span><span class="p">,</span>
+                <span class="nt">"created_at"</span><span class="p">:</span> <span class="s2">"2014-02-27 07:40:23"</span><span class="p">,</span>
+                <span class="nt">"updated_at"</span><span class="p">:</span> <span class="s2">"2014-02-27 07:40:23"</span><span class="p">,</span>
+                <span class="nt">"email_address"</span><span class="p">:</span> <span class="s2">"ni-kun@informher.com"</span><span class="p">,</span>
+                <span class="nt">"assigned_roles"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"User"</span><span class="p">],</span>
+                <span class="nt">"username"</span><span class="p">:</span> <span class="s2">"ni-kun"</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="nt">"category"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">"name"</span><span class="p">:</span> <span class="s2">"ask"</span>
+        <span class="p">}</span>
     <span class="p">}</span>
-  <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 
 <h3>
 <a name="endpoints" class="anchor" href="#endpoints"><span class="octicon octicon-link"></span></a>Endpoints</h3>
 
-<p>We'll be making better docs, but we hope this would suffice in the meantime. Please see our uploaded <a href="https://www.getpostman.com/collections/cc6fb482c594bbb81f07">Postman Collection</a> for using the endpoints with fields.</p>
+<p>We'll be making better docs, but we hope this would suffice in the meantime. Please see our uploaded <a href="https://www.getpostman.com/collections/8ccf078ae58b3ecdc019">Postman Collection</a> for testing the endpoints.</p>
 
 <table>
 <thead><tr>
 <th>URI</th>
 <th>Short Description</th>
 <th>Action</th>
-<th>Needs Auth?</th>
+<th>POST Params</th>
 <th>Required Roles (Any)</th>
 </tr></thead>
 <tbody>
@@ -147,42 +162,49 @@
 <td>POST posts/{post?}</td>
 <td>CreateEditPost</td>
 <td>PostController@create_edit</td>
-<td>yes</td>
+<td>string:['title', 'content', 'geolocation'] , array:['tags']</td>
 <td></td>
 </tr>
 <tr>
 <td>POST posts/{id}/comments/{id?}</td>
 <td>CreateUpdateComment</td>
 <td>PostController@create_update_comment</td>
-<td>yes</td>
+<td>string:['message']</td>
 <td></td>
 </tr>
 <tr>
 <td>POST posts/{id}/like</td>
 <td>LikePost</td>
 <td>PostController@like</td>
-<td>yes</td>
+<td></td>
 <td></td>
 </tr>
 <tr>
 <td>POST posts/{id}/comments/{id}/like</td>
 <td>LikePostComment</td>
 <td>PostController@like</td>
-<td>yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>POST posts/search</td>
+<td>SearchPosts</td>
+<td>PostController@search</td>
+<td>params:[title,content,author,tags,all] , string:['query']</td>
 <td></td>
 </tr>
 <tr>
 <td>DELETE posts/{id}/comments/{id?}</td>
 <td>DeletePostComment</td>
 <td>PostController@delete_comment</td>
-<td>yes</td>
+<td></td>
 <td></td>
 </tr>
 <tr>
 <td>DELETE posts/{id}</td>
 <td>DeletePost</td>
 <td>PostController@destroy</td>
-<td>yes</td>
+<td></td>
 <td></td>
 </tr>
 <tr>
@@ -217,14 +239,14 @@
 <td>POST user</td>
 <td>RegisterUser</td>
 <td>UserController@postIndex</td>
-<td></td>
+<td>string:['username', 'password', 'email']</td>
 <td></td>
 </tr>
 <tr>
 <td>POST user/login</td>
 <td>LoginToInformHer</td>
 <td>UserController@postLogin</td>
-<td></td>
+<td>string:['username', 'password']</td>
 <td></td>
 </tr>
 <tr>
@@ -287,56 +309,56 @@
 <td>GET admin/users/{id}/delete</td>
 <td>DeleteUser</td>
 <td>AdminController@delete_user</td>
-<td>yes</td>
+<td></td>
 <td>Administrator</td>
 </tr>
 <tr>
 <td>POST admin/users/{id}/promote</td>
 <td>PromoteUser</td>
 <td>AdminController@promote</td>
-<td>yes</td>
+<td></td>
 <td>Administrator</td>
 </tr>
 <tr>
 <td>POST admin/users/{id}/demote</td>
 <td>DemoteUser</td>
 <td>AdminController@demote</td>
-<td>yes</td>
+<td></td>
 <td>Administrator</td>
 </tr>
 <tr>
 <td>GET admin/posts/unapproved</td>
 <td>ShowUnapprovedPosts</td>
 <td>AdminController@show_unapproved</td>
-<td>yes</td>
+<td></td>
 <td>Administrator, Moderator</td>
 </tr>
 <tr>
 <td>GET admin/posts/{id}/approve</td>
 <td>ApprovePost</td>
 <td>AdminController@show_post</td>
-<td>yes</td>
+<td></td>
 <td>Administrator, Moderator</td>
 </tr>
 <tr>
 <td>GET admin/posts/{id}/hide</td>
 <td>HidePost</td>
 <td>AdminController@hide</td>
-<td>yes</td>
+<td></td>
 <td>Administrator, Moderator</td>
 </tr>
 <tr>
 <td>POST admin/tags/{id?}</td>
 <td>AddCreateTags</td>
 <td>TagController@create_edit</td>
-<td>yes</td>
+<td></td>
 <td>Administrator, Moderator</td>
 </tr>
 <tr>
 <td>DELETE admin/tags/{id}</td>
 <td>DeleteTag</td>
 <td>TagController@destroy</td>
-<td>yes</td>
+<td></td>
 <td>Administrator, Moderator</td>
 </tr>
 </tbody>
@@ -349,9 +371,12 @@
 <a name="techstack" class="anchor" href="#techstack"><span class="octicon octicon-link"></span></a>TechStack</h3>
 
 <ul>
-<li>PHP 5.4+</li>
-<li>Nginx</li>
-<li>MariaDB 10+</li>
+<li><a href="http://php.net">PHP 5.4+</a></li>
+<li><a href="http://nginx.org/">Nginx</a></li>
+<li><a href="https://mariadb.com/">MariaDB 10+</a></li>
+<li><a href="http://memcached.org/">Memcached</a></li>
+<li><a href="http://www.ubuntu.com">Ubuntu 13.10</a></li>
+<li><a href="http://www.windowsazure.com">Windows Azure</a></li>
 </ul><h3>
 <a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h3>
 
