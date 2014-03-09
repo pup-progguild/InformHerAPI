@@ -208,4 +208,8 @@ class Post extends Eloquent {
 	public function set_property(User $user, $category = null) {
 
 	}
+
+	protected function getDateFormat() {
+		return 'U';
+	}
 }

@@ -20,4 +20,8 @@ class Role extends EntrustRole {
 	public static $rules = array(
 		'name' => 'required|between:4,255'
 	);
+
+	protected function getDateFormat() {
+		return 'U';
+	}
 }

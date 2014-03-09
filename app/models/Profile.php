@@ -40,4 +40,8 @@ class Profile extends Eloquent {
 	public function roles() {
 		return $this->belongsToMany('Role', 'assigned_roles', 'user_id', 'role_id');
 	}
+
+	protected function getDateFormat() {
+		return 'U';
+	}
 }

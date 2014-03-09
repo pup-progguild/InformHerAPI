@@ -90,4 +90,8 @@ class User extends ConfideUser {
 	public function profile() {
 		return $this->hasOne('Profile');
 	}
+
+	protected function getDateFormat() {
+		return 'U';
+	}
 }

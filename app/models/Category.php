@@ -20,4 +20,8 @@ class Category extends Eloquent {
 	public function posts() {
 		return $this->hasMany('Post');
 	}
+
+	protected function getDateFormat() {
+		return 'U';
+	}
 }

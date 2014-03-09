@@ -69,7 +69,7 @@ return array(
 
 	'memcached'  => array(
 
-		array('host' => 'db-progguild.cloudapp.net', 'port' => 9128, 'weight' => 100),
+		array('host' => 'localhost', 'port' => 9128, 'weight' => 100),
 
 	),
 

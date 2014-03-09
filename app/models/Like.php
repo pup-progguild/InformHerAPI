@@ -25,4 +25,8 @@ class Like extends Eloquent {
 	public function liker() {
 		return $this->belongsTo('User', 'user_id');
 	}
+
+	protected function getDateFormat() {
+		return 'U';
+	}
 }
