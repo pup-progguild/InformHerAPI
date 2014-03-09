@@ -160,7 +160,7 @@ class Post extends Eloquent {
 	public function shown() {
 		$shown_ids = Property::where('is_shown', '=', 1)->where('properties_type', '=', 'post')->lists('properties_id');
 
-		return (count($shown_ids) != 0) ? $this::whereIn('id', $shown_ids) : null;
+		return (count($shown_ids) != 0) ? $this::whereIn('id', $shown_ids)->whereNull('deleted_at') : null;
 	}
 
 	/**
@@ -171,7 +171,7 @@ class Post extends Eloquent {
 	public function not_shown() {
 		$not_shown_ids = Property::where('is_shown', '=', 0)->where('properties_type', '=', 'post')->lists('properties_id');
 
-		return (count($not_shown_ids) != 0) ? $this::whereIn('id', $not_shown_ids) : null;
+		return (count($not_shown_ids) != 0) ? $this::whereIn('id', $not_shown_ids)->whereNull('deleted_at') : null;
 	}
 
 	/**
@@ -183,7 +183,7 @@ class Post extends Eloquent {
 		$everything_else = Property::where('is_shown', '=', 1)->where('properties_type', '=', 'post')->lists('properties_id');
 
 		return (count($everything_else) != 0) ? $this::whereIn('id', $everything_else)->whereHas('Category', function($q) {
-				$q->where('name', '!=', 'shoutout');}) : null;
+				$q->where('name', '!=', 'shoutout');})->whereNull('deleted_at') : null;
 	}
 
 	/**
@@ -194,6 +194,6 @@ class Post extends Eloquent {
 	public function featured() {
 		$featured_ids = Property::where('is_featured', '=', 1)->where('properties_type', '=', 'post')->lists('properties_id');
 
-		return (count($featured_ids) != 0) ? $this::whereIn('id', $featured_ids) : null;
+		return (count($featured_ids) != 0) ? $this::whereIn('id', $featured_ids)->whereNull('deleted_at') : null;
 	}
 }
