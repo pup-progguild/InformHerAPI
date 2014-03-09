@@ -23,11 +23,14 @@ class PostController extends BaseController {
 			$post = $this->post->everything_else()->orderBy('created_at', 'asc');
 
 		$post = $post->paginate(10);
+
 		$paginate = Input::all();
 
 		if ($post->count() != 0) {
 			if(isset($paginate['page'])) {
-				Cache::forget('posts');
+				if ($paginate['page'] > 1) {
+					Cache::forget('posts');
+				}
 			}
 
 			$cached = Cache::remember('posts', 1, function() use ($post) {
