@@ -47,11 +47,11 @@ class Post extends Eloquent {
     }
 
 	public function isShown() {
-		return Property::where('properties_id', '=', $this->id)->where('properties_type', '=', get_class())->where('is_shown', '=', 1)->exists();
+		return Property::where('properties_id', '=', $this->id)->where('properties_type', '=', 'post')->where('is_shown', '=', 1)->exists();
 	}
 
 	public function isFeatured() {
-		return Property::where('properties_id', '=', $this->id)->where('properties_type', '=', get_class())->where('is_featured', '=', 1)->exists();
+		return Property::where('properties_id', '=', $this->id)->where('properties_type', '=', 'post')->where('is_featured', '=', 1)->exists();
 	}
 
 	/**
@@ -192,14 +192,8 @@ class Post extends Eloquent {
 	 * @return \Illuminate\Database\Query\Builder|null|static
 	 */
 	public function featured() {
-		$featured_ids = Property::where('is_featured', '=', 1)->where('properties_type', '=', get_class());
+		$featured_ids = Property::where('is_featured', '=', 1)->where('properties_type', '=', 'post')->lists('properties_id');
 
-		$featured_a = array_flatten($featured_ids->get(['properties_id'])->toArray());
-
-		return (count($featured_a) != 0) ? $this::whereIn('id', $featured_a) : null;
-	}
-
-	public function set_property(User $user, $category = null) {
-
+		return (count($featured_ids) != 0) ? $this::whereIn('id', $featured_ids) : null;
 	}
 }

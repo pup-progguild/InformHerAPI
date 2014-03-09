@@ -48,7 +48,7 @@ class Comment extends Eloquent {
 	 * @return bool
 	 */
 	public function isShown() {
-		return Property::where('properties_id', '=', $this->id)->where('properties_type', '=', get_class())->where('is_shown', '=', 1)->exists();
+		return Property::where('properties_id', '=', $this->id)->where('properties_type', '=', 'comment')->where('is_shown', '=', 1)->exists();
 	}
 
 	/**
@@ -57,7 +57,7 @@ class Comment extends Eloquent {
 	 * @return bool
 	 */
 	public function isFeatured() {
-		return Property::where('properties_id', '=', $this->id)->where('properties_type', '=', get_class())->where('is_featured', '=', 1)->exists();
+		return Property::where('properties_id', '=', $this->id)->where('properties_type', '=', 'comment')->where('is_featured', '=', 1)->exists();
 	}
 
 	public function getParentPostIdAttribute() {
@@ -169,11 +169,9 @@ class Comment extends Eloquent {
 	 * @return \Illuminate\Database\Query\Builder|static
 	 */
 	public function shown() {
-		$shown_ids = Property::where('is_shown', '=', 1)->where('properties_type', '=', get_class());
+		$shown_ids = Property::where('is_shown', '=', 1)->where('properties_type', '=', 'comment')->lists('properties_id');
 
-		$shown_a = array_flatten($shown_ids->get(['properties_id'])->toArray());
-
-		return (count($shown_a) != 0) ? $this::whereIn('id', $shown_a) : null;
+		return (count($shown_ids) != 0) ? $this::whereIn('id', $shown_ids) : null;
 	}
 
 	/**
@@ -182,11 +180,9 @@ class Comment extends Eloquent {
 	 * @return \Illuminate\Database\Query\Builder|static
 	 */
 	public function not_shown() {
-		$not_shown_ids = Property::where('is_shown', '=', 0)->where('properties_type', '=', get_class());
+		$not_shown_ids = Property::where('is_shown', '=', 0)->where('properties_type', '=', 'comment')->lists('properties_id');
 
-		$not_shown_a = array_flatten($not_shown_ids->get(['properties_id'])->toArray());
-
-		return (count($not_shown_a) != 0) ? $this::whereIn('id', $not_shown_a) : null;
+		return (count($not_shown_ids) != 0) ? $this::whereIn('id', $not_shown_ids) : null;
 	}
 
 	/**
@@ -195,10 +191,8 @@ class Comment extends Eloquent {
 	 * @return \Illuminate\Database\Query\Builder|static
 	 */
 	public function featured() {
-		$featured_ids = Property::where('is_featured', '=', 1)->where('properties_type', '=', get_class());
+		$featured_ids = Property::where('is_featured', '=', 1)->where('properties_type', '=', 'comment')->lists('properties_id');
 
-		$featured_a = array_flatten($featured_ids->get(['properties_id'])->toArray());
-
-		return (count($featured_a) != 0) ? $this::whereIn('id', $featured_a) : null;
+		return (count($featured_ids) != 0) ? $this::whereIn('id', $featured_ids) : null;
 	}
 }
