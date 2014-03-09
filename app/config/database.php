@@ -47,8 +47,8 @@ return array(
 
 		'nyaasql'  => array(
 			'driver'    => 'mysql',
-			'host'      => '168.63.151.64',
-			'port'      => '12345',
+			'host'      => '127.0.0.1',
+			'port'      => '3306',
 			'database'  => 'informher_db',
 			'username'  => 'informher',
 			'password'  => 'db_informher',
