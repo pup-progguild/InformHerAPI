@@ -27,20 +27,20 @@ class PostController extends BaseController {
 		$paginate = Input::all();
 
 		if ($post->count() != 0) {
-			if(isset($paginate['page'])) {
-				if ($paginate['page'] > 1) {
-					Cache::forget('posts');
-				}
-			}
+//			if(isset($paginate['page'])) {
+//				if ($paginate['page'] > 1) {
+//					Cache::forget('posts');
+//				}
+//			}
 
-			$cached = Cache::remember('posts', 1, function() use ($post) {
+//			$cached = Cache::remember('posts', 1, function() use ($post) {
 				return Response::json([
 					'status' => 'POST_SHOW_SUCCESSFUL',
 					'posts'  => $post->toArray()
 				], 200);
-			});
+//			});
 
-			return $cached;
+//			return $cached;
 		}
 
 		// F@iLZOR$$$$
