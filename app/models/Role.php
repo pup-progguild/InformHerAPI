@@ -20,16 +20,4 @@ class Role extends EntrustRole {
 	public static $rules = array(
 		'name' => 'required|between:4,255'
 	);
-
-	public function setCreatedAtAttribute() {
-		$this->attributes['created_at'] = strtotime($this->created_at);
-	}
-
-	public function setUpdatedAtAttribute() {
-		$this->attributes['updated_at'] = strtotime($this->updated_at);
-	}
-
-	protected function getDateFormat() {
-		return 'U';
-	}
 }

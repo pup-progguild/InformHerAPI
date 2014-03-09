@@ -86,20 +86,4 @@ class User extends ConfideUser {
 	public function profile() {
 		return $this->hasOne('Profile');
 	}
-
-	public function setCreatedAtAttribute() {
-		$this->attributes['created_at'] = strtotime($this->created_at);
-	}
-
-	public function setUpdatedAtAttribute() {
-		$this->attributes['updated_at'] = strtotime($this->updated_at);
-	}
-
-	public function getDates() {
-		return array();
-	}
-
-	protected function getDateFormat() {
-		return 'U';
-	}
 }

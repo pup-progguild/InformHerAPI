@@ -12,7 +12,4 @@ use Zizaco\Entrust\EntrustPermission;
  * @property-read \Illuminate\Database\Eloquent\Collection|\Role[] $roles
  */
 class Permission extends EntrustPermission {
-	protected function getDateFormat() {
-		return 'U';
-	}
 }

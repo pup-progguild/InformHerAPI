@@ -13,7 +13,7 @@ return array(
 	|
 	*/
 
-	'debug'     => true,        // TODO: Set to 'false' in prod.
+	'debug'     => false,        // TODO: Set to 'false' in prod.
 
 	/*
 	|--------------------------------------------------------------------------

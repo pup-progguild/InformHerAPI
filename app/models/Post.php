@@ -208,20 +208,4 @@ class Post extends Eloquent {
 	public function set_property(User $user, $category = null) {
 
 	}
-
-	public function setCreatedAtAttribute() {
-		$this->attributes['created_at'] = strtotime($this->created_at);
-	}
-
-	public function setUpdatedAtAttribute() {
-		$this->attributes['updated_at'] = strtotime($this->updated_at);
-	}
-
-	public function getDates() {
-		return array();
-	}
-
-	protected function getDateFormat() {
-		return 'U';
-	}
 }

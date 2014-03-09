@@ -98,14 +98,6 @@ class Comment extends Eloquent {
 		return String::date($date);
 	}
 
-	public function setCreatedAtAttribute() {
-		$this->attributes['created_at'] = strtotime($this->created_at);
-	}
-
-	public function setUpdatedAtAttribute() {
-		$this->attributes['updated_at'] = strtotime($this->updated_at);
-	}
-
 	/**
 	 * Returns the date of the blog post creation,
 	 * on a good and more readable format :)
@@ -208,13 +200,5 @@ class Comment extends Eloquent {
 		$featured_a = array_flatten($featured_ids->get(['properties_id'])->toArray());
 
 		return (count($featured_a) != 0) ? $this::whereIn('id', $featured_a) : null;
-	}
-
-	public function getDates() {
-		return array();
-	}
-
-	protected function getDateFormat() {
-		return 'U';
 	}
 }

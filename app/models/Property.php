@@ -21,19 +21,7 @@ class Property extends Eloquent {
 
 	protected $softDelete = true;
 
-	public function setCreatedAtAttribute() {
-		$this->attributes['created_at'] = strtotime($this->created_at);
-	}
-
-	public function setUpdatedAtAttribute() {
-		$this->attributes['updated_at'] = strtotime($this->updated_at);
-	}
-
 	public function demprops() {
 		return $this->morphTo();
-	}
-
-	protected function getDateFormat() {
-		return 'U';
 	}
 }
