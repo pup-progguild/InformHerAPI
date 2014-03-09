@@ -22,7 +22,7 @@ class PostController extends BaseController {
 		else
 			$post = $this->post->everything_else()->orderBy('created_at', 'asc');
 
-		$post = $post->remember(1)->paginate(10);
+		$post = $post->paginate(10);
 		if ($post->count() != 0) {
 			return Response::json([
 				'status' => 'POST_SHOW_SUCCESSFUL',
