@@ -18,9 +18,9 @@ class PostController extends BaseController {
 	 */
 	public function index() {
 		if (Entrust::hasRole('Response'))
-			$post = $this->post->shown()->orderBy('created_at', 'desc');
+			$post = $this->post->shown()->orderBy('created_at', 'asc');
 		else
-			$post = $this->post->everything_else()->orderBy('created_at', 'desc');
+			$post = $this->post->everything_else()->orderBy('created_at', 'asc');
 
 		$data = Input::all();
 
@@ -217,7 +217,7 @@ class PostController extends BaseController {
 	 */
 	public function comments(Post $post, $comment_id = null) {
 		if (is_null($comment_id)) {
-			$comments = $post->comments()->orderBy('created_at', 'desc')->paginate(10);
+			$comments = $post->comments()->orderBy('created_at', 'asc')->paginate(10);
 
 			return Response::json([
 				'status'  => 'POST_COMMENT_RETRIEVE_SUCCESSFUL',
@@ -225,7 +225,7 @@ class PostController extends BaseController {
 			], 200);
 		}
 
-		$comments = Comment::where('post_id', '=', $post->id)->where('id', '=', $comment_id)->orderBy('created_at', 'desc')->get();
+		$comments = Comment::where('post_id', '=', $post->id)->where('id', '=', $comment_id)->orderBy('created_at', 'asc')->get();
 
 		if($comments->count() != 0) {
 			return Response::json([
