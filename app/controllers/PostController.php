@@ -133,7 +133,7 @@ class PostController extends BaseController {
 
 			$post->title       = $input['title'];
 			$post->content     = $input['content'];
-			$post->geolocation = $input['geolocation'];
+			$post->geolocation = isset($input['geolocation']) ? $input['geolocation'] : null;
 
 			if ($isNewPost)
 				$post->user_id = Confide::user()->getAuthIdentifier();
