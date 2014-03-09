@@ -148,7 +148,7 @@ class PostController extends BaseController {
 
 				if ($isNewPost) {
 					$post->properties()->save(new Property([
-						'is_shown'    => 0, //1, // DO THIS. Set to 0 to not show new posts without approval of mod.
+						'is_shown'    => 1, //1, // DO THIS. Set to 0 to not show new posts without approval of mod.
 						'is_featured' => 0
 					]));
 				}
