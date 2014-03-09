@@ -217,6 +217,10 @@ class Post extends Eloquent {
 		$this->attributes['updated_at'] = strtotime($this->updated_at);
 	}
 
+	public function getDates() {
+		return array();
+	}
+
 	protected function getDateFormat() {
 		return 'U';
 	}

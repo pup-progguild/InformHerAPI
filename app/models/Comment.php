@@ -210,6 +210,10 @@ class Comment extends Eloquent {
 		return (count($featured_a) != 0) ? $this::whereIn('id', $featured_a) : null;
 	}
 
+	public function getDates() {
+		return array();
+	}
+
 	protected function getDateFormat() {
 		return 'U';
 	}
