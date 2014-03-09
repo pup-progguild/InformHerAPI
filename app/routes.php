@@ -145,7 +145,7 @@ Route::get('user/reset/{token}', 'UserController@getReset');
 Route::controller( 'user', 'UserController');
 //});
 
-Route::group(['prefix' => 'admin', 'before' => 'auth|basic'], function () {
+Route::group(['prefix' => 'admin', 'before' => 'basic'], function () {
 	Route::group(['prefix' => 'users'], function () {
 		Route::get('/{user}/delete', [
 			'as'   => 'DeleteUser',
