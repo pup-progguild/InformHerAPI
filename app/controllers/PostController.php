@@ -359,7 +359,7 @@ class PostController extends BaseController {
 			if ($isNewComment)
 				$comment->user_id = Confide::user()->getAuthIdentifier();
 
-			$comment->message = $message;
+			$comment->message = $message['message'];
 
 			if ($comment = $post->comments()->save($comment)) {
 				if ($isNewComment) {
