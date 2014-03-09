@@ -98,8 +98,6 @@ class PostController extends BaseController {
 	 * @return Response
 	 */
 	public function create_edit(Post $post = null) {
-		$isNewPost = false;
-
 		if (is_null($post)) {
 			$post   = $this->post;
 			$status = 'POST_ADD';
@@ -118,39 +116,56 @@ class PostController extends BaseController {
 
 		$input = Input::all();
 
-		$category = Category::where('name', '=', $input['category'])->firstOrFail();
+		$rules = [
+			'title'         => ['required', 'regex:([[:print:][:alnum:]]+)'],
+			'content'       => ['required', 'regex:([[:print:][:alnum:]]+)'],
+		    'geolocation'   => ['regex:[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)']
+		];
 
-		$tags = Tag::whereIn('tagname', $input['tags'])->lists('id');
+		$validator = Validator::make($input, $rules);
 
-		$post->title   = $input['title'];
-		$post->content = $input['content'];
-		$post->geolocation = $input['geolocation'];
+		if($validator->passes()) {
+			$category = Category::where('name', '=', $input['category'])->firstOrFail();
 
-		if($isNewPost)
-			$post->user_id = Confide::user()->getAuthIdentifier();
+			$tags = Tag::whereIn('tagname', $input['tags'])->lists('id');
 
-		$post->category()->associate($category);
+			$post->title       = $input['title'];
+			$post->content     = $input['content'];
+			$post->geolocation = $input['geolocation'];
 
-		if ($post->save()) {
-			$post->tags()->sync($tags);
+			if ($isNewPost)
+				$post->user_id = Confide::user()->getAuthIdentifier();
 
-			if ($isNewPost) {
-				$post->properties()->save(new Property([
-					'is_shown'      =>  0, //1, // DO THIS. Set to 0 to not show new posts without approval of mod.
-					'is_featured'   =>  0
-				]));
+			$post->category()->associate($category);
+
+			if ($post->save()) {
+				$post->tags()->sync($tags);
+
+				if ($isNewPost) {
+					$post->properties()->save(new Property([
+						'is_shown'    => 0, //1, // DO THIS. Set to 0 to not show new posts without approval of mod.
+						'is_featured' => 0
+					]));
+				}
+
+				return Response::json([
+					'status' => $status . '_SUCCESSFUL',
+					'posts'  => $post->toArray()
+				], 201);
 			}
 
 			return Response::json([
-				'status' => $status . '_SUCCESSFUL',
+				'status' => $status . '_FAILED',
 				'posts'  => $post->toArray()
-			], 201);
-		}
+			], 500);
+		} else {
+			$messages = $validator->messages();
 
-		return Response::json([
-			'status' => $status . '_FAILED',
-			'posts'  => $post->toArray()
-		], 500);
+			return Response::json([
+				'status'      => $status . '_FAILED',
+				'description' => $messages->toArray()
+			], 200);
+		}
 	}
 
 	/**
@@ -325,28 +340,46 @@ class PostController extends BaseController {
 			], 403);
 		}
 
-		if($isNewComment)
-			$comment->user_id = Confide::user()->getAuthIdentifier();
-		$comment->message = Input::get('message');
+		$message = Input::get('message');
 
-		if ($comment = $post->comments()->save($comment)) {
-			if ($isNewComment) {
-				$comment->properties()->save(new Property([
-					'is_shown'    => 1,
-					'is_featured' => 0
-				]));
+		$rules = [
+			'message' => ['required', 'regex:([[:print:][:alnum:]]+)']
+		];
+
+		$validator = Validator::make($message, $rules);
+
+		if($validator->passes()) {
+			if ($isNewComment)
+				$comment->user_id = Confide::user()->getAuthIdentifier();
+
+			$comment->message = $message;
+
+			if ($comment = $post->comments()->save($comment)) {
+				if ($isNewComment) {
+					$comment->properties()->save(new Property([
+						'is_shown'    => 1,
+						'is_featured' => 0
+					]));
+				}
+
+				$comment = Comment::where('id', '=', $comment->id)->get();
+
+				return Response::json([
+					'status'  => $status . '_SUCCESS',
+					'comment' => $comment->toArray()
+				], 200);
+			} else {
+				return Response::json([
+					'status'      => $status . '_FAILED',
+					'description' => 'Comment edit failed.'
+				], 200);
 			}
-
-			$comment = Comment::where('id', '=', $comment->id)->get();
-
-			return Response::json([
-				'status'  => $status . '_SUCCESS',
-				'comment' => $comment->toArray()
-			], 200);
 		} else {
+			$messages = $validator->messages();
+
 			return Response::json([
 				'status'      => $status . '_FAILED',
-				'description' => 'Comment edit failed.'
+				'description' => $messages->toArray()
 			], 200);
 		}
 	}
