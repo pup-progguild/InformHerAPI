@@ -103,9 +103,11 @@ class PostController extends BaseController {
 			$status = 'POST_ADD';
 			$isNewPost = true;
 
+            // TODO: on validation of geoloc coords.
 			$rules = [
 				'title'       => ['required', 'regex:([[:print:][:alnum:]]+)'],
-				'content'     => ['required', 'regex:([[:print:][:alnum:]]+)'] //,'geolocation' => ['regex:[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)']
+				'content'     => ['required', 'regex:([[:print:][:alnum:]]+)'], //,'geolocation' => ['regex:[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)']
+                'tags'        => ['required', 'array']
 			];
 		} elseif ($post->isTheAuthor() or Entrust::hasRole('Moderator')) {
 			$status = 'POST_UPDATE';
@@ -113,7 +115,8 @@ class PostController extends BaseController {
 
 			$rules = [
 				'title'       => ['regex:([[:print:][:alnum:]]+)'],
-				'content'     => ['regex:([[:print:][:alnum:]]+)'] //, 'geolocation' => ['regex:[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)']
+				'content'     => ['regex:([[:print:][:alnum:]]+)'], //, 'geolocation' => ['regex:[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)']
+                'tags'        => ['array']
 			];
 		} else {
 			return Response::json([
