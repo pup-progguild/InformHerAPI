@@ -103,10 +103,20 @@ class PostController extends BaseController {
 			$status = 'POST_ADD';
 			$isNewPost = true;
 
+			$rules = [
+				'title'       => ['required', 'regex:([[:print:][:alnum:]]+)'],
+				'content'     => ['required', 'regex:([[:print:][:alnum:]]+)'],
+				'geolocation' => ['regex:[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)']
+			];
 		} elseif ($post->isTheAuthor() or Entrust::hasRole('Moderator')) {
 			$status = 'POST_UPDATE';
 			$isNewPost = false;
 
+			$rules = [
+				'title'       => ['regex:([[:print:][:alnum:]]+)'],
+				'content'     => ['regex:([[:print:][:alnum:]]+)'],
+				'geolocation' => ['regex:[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)']
+			];
 		} else {
 			return Response::json([
 				'status'      => 'POST_UPDATE_FAILED',
@@ -115,12 +125,6 @@ class PostController extends BaseController {
 		}
 
 		$input = Input::all();
-
-		$rules = [
-			'title'         => ['required', 'regex:([[:print:][:alnum:]]+)'],
-			'content'       => ['required', 'regex:([[:print:][:alnum:]]+)'],
-		    'geolocation'   => ['regex:[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)']
-		];
 
 		$validator = Validator::make($input, $rules);
 
@@ -330,9 +334,16 @@ class PostController extends BaseController {
 			$status  = 'POST_COMMENT_CREATE';
 			$isNewComment = true;
 
+			$rules = [
+				'message' => ['required', 'regex:([[:print:][:alnum:]]+)']
+			];
 		} elseif ($comment->isTheAuthor() or Entrust::hasRole('Moderator')) {
 			$status = 'POST_COMMENT_EDIT';
 			$isNewComment = false;
+
+			$rules = [
+				'message' => ['regex:([[:print:][:alnum:]]+)']
+			];
 		} else {
 			return Response::json([
 				'status'      => 'POST_COMMENT_EDIT_FAILED',
@@ -341,10 +352,6 @@ class PostController extends BaseController {
 		}
 
 		$message = Input::all();
-
-		$rules = [
-			'message' => ['required', 'regex:([[:print:][:alnum:]]+)']
-		];
 
 		$validator = Validator::make($message, $rules);
 
