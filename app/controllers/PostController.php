@@ -131,8 +131,9 @@ class PostController extends BaseController {
 
 		if($validator->passes()) {
 			$category = Category::where('name', '=', $input['category'])->firstOrFail();
-
-			$tags = Tag::whereIn('tagname', $input['tags'])->lists('id');
+			
+          	if(isset($input['tags']))
+				$tags = Tag::whereIn('tagname', $input['tags'])->lists('id');
 
 			$post->title       = $input['title'];
 			$post->content     = $input['content'];
@@ -144,7 +145,8 @@ class PostController extends BaseController {
 			$post->category()->associate($category);
 
 			if ($post->save()) {
-				$post->tags()->sync($tags);
+              	if(isset($input['tags']))
+					$post->tags()->sync($tags);
 
 				if ($isNewPost) {
 					$post->properties()->save(new Property([
