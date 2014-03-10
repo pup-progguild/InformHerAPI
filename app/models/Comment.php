@@ -22,7 +22,7 @@ class Comment extends Eloquent {
 
 	protected $with = [ 'author' ];
 
-	protected $appends = [ 'likers', 'is_featured', 'parent_post_id' ];
+	protected $appends = [ 'likers' , 'likers_id' , 'is_featured', 'parent_post_id' ];
 
 	/**
 	 * Get the comment's content.
@@ -74,6 +74,10 @@ class Comment extends Eloquent {
 
 		return is_null($like_count) ? 0 : $like_count;
 	}
+  
+  	public function getLikersIdAttribute() {
+  		return $this->likes()->lists('user_id');
+    }
 
 	/**
 	 * Get is_featured attribute
